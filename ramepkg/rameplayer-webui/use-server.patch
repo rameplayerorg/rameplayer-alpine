@@ -1,0 +1,68 @@
+diff --git a/src/rameplayer/core/dataservice.js b/src/rameplayer/core/dataservice.js
+index cb38138..253b2ed 100644
+--- a/src/rameplayer/core/dataservice.js
++++ b/src/rameplayer/core/dataservice.js
+@@ -33,6 +33,13 @@
+             seek: seek
+         };
+ 
++        if (settings.server_port !== undefined && settings.server_port !== 0) {
++            settings.urls.player = location.protocol + '//' + location.hostname +
++                                   ':' + settings.server_port + '/player';
++            settings.urls.lists = location.protocol + '//' + location.hostname +
++                                   ':' + settings.server_port + '/media';
++	}
++
+         return service;
+ 
+         function getLists() {
+diff --git a/src/rameplayer/player/player.html b/src/rameplayer/player/player.html
+index 38c8802..52b5e77 100644
+--- a/src/rameplayer/player/player.html
++++ b/src/rameplayer/player/player.html
+@@ -21,11 +21,9 @@
+     </div> <!-- .row -->
+     <div class="row" id="player-playlist-controls">
+         <div class="col-xs-3">
+-            <!--
+             <button id="previous" type="button" class="btn btn-default btn-xs" title="{{ 'Previous' | translate }}" ng-click="player.toggleStop()">
+                 <span class="glyphicon" ng-class="{ 'glyphicon-step-backward': player.playerStatus.state !== 'playing', 'glyphicon-stop': player.playerStatus.state === 'playing' }"></span>
+             </button>
+-            -->
+         </div>
+         <div class="col-xs-6 text-center">
+             <div ng-show="player.playerStatus.media">
+@@ -42,11 +40,9 @@
+             </div>
+         </div>
+         <div class="col-xs-3 text-right">
+-            <!--
+             <button id="next" type="button" class="btn btn-default btn-xs disabled" title="Next">
+                 <span class="glyphicon glyphicon-step-forward"></span>
+             </button>
+-            -->
+         </div>
+     </div> <!-- .row -->
+ </div> <!-- .container -->
+diff --git a/src/stubs/settings.json b/src/stubs/settings.json
+index b2bc65d..776220c 100644
+--- a/src/stubs/settings.json
++++ b/src/stubs/settings.json
+@@ -1,12 +1,13 @@
+ {
+     "language": "en",
++    "server_port": 8000,
+     "urls": {
+-        "lists": "stubs/lists.json",
++        "lists": "lists",
+         "player": "player"
+     },
+     "statusPollingInterval": 1000,
+     "development": {
+-        "enabled": true,
+-        "simulateStatus": true
++        "enabled": false,
++        "simulateStatus": false
+     }
+ }
+

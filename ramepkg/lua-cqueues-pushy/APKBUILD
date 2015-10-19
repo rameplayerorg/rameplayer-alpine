@@ -1,0 +1,47 @@
+# Maintainer: Timo Teräs <timo.teras@iki.fi>
+pkgname=lua-cqueues-pushy
+pkgver=0.20151016
+_commitid=09b557967f5269aae359fc3116775a8f1959b6d3
+pkgrel=0
+pkgdesc="Framework for logic control (based on cqueues)"
+url="https://github.com/fabled/lua-cqueues-pushy"
+arch="all"
+license="GPLv2"
+depends=""
+makedepends="lua5.2>=5.2 lua5.2-cqueues>=20150616 lua5.2-struct lua5.2-posix lua5.2-ldbus"
+install=""
+subpackages=""
+source="$pkgname-$pkgver.tar.gz::https://github.com/fabled/$pkgname/archive/$_commitid.tar.gz
+	cqpushy.initd
+	"
+
+_srcdir="$srcdir"/$pkgname-$_commitid
+
+prepare() {
+	local i
+	cd "$_srcdir"
+	for i in $source; do
+		case $i in
+		*.patch) msg $i; patch -p1 -i "$srcdir"/$i || return 1;;
+		esac
+	done
+}
+
+build() {
+	cd "$_srcdir"
+	make
+}
+
+package() {
+	cd "$_srcdir"
+	make install DESTDIR="$pkgdir" || return 1
+	install -m755 -D "$srcdir"/cqpushy.initd \
+		"$pkgdir"/etc/init.d/cqpushy || return 1
+}
+
+md5sums="8c10daf7afb50d649078c57e282bdf93  lua-cqueues-pushy-0.20151016.tar.gz
+f585d5983128ccb9b9d33a6019107158  cqpushy.initd"
+sha256sums="5bffeba06f6d67531d490cfc02c5063bc73429e915aa0dbe54410da89b67feec  lua-cqueues-pushy-0.20151016.tar.gz
+4ebdbd3299c4b18b7224edc202bd9a4d5a97f325a474ec222901dbedf7f3bc58  cqpushy.initd"
+sha512sums="ba1c238b87fd183b4065c7833f06e858013415d0e76a04caed502b7f7553e5c3eae837999a0282bb19b205713af2953c42318d0afd861777ca02cd6217031fa2  lua-cqueues-pushy-0.20151016.tar.gz
+9599db364c3a2e77a7fee61304182961cb6132ce9cb58e9b6837312f52a582e838fdb54eb932c3204b558e3db7228a0412870d0a02125d1017f3402155647bd0  cqpushy.initd"

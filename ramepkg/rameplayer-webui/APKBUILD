@@ -1,0 +1,122 @@
+# Maintainer: Timo Teräs <timo.teras@iki.fi>
+pkgname=rameplayer-webui
+pkgver=0.0.20151014
+_commitid=d39a67746a6a212bdb32f7d22dc8c05033d08f62
+pkgrel=0
+pkgdesc="Rameplayer Web Interface"
+url="https://github.com/rameplayerorg/rameplayer-webui"
+arch="noarch"
+license="GPLv2"
+depends=""
+makedepends=""
+install=""
+subpackages=""
+source="$pkgname-$pkgver.tar.gz::https://github.com/rameplayerorg/rameplayer-webui/archive/$_commitid.tar.gz
+	use-server.patch
+
+	http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css
+	http://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css
+	http://code.jquery.com/jquery-2.1.4.min.js
+	http://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js
+	http://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-animate.min.js
+	http://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-sanitize.min.js
+	http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.4.js
+	http://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js
+	http://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.8.1/angular-translate.min.js
+	http://netdna.bootstrapcdn.com/bootstrap/3.1.1/fonts/glyphicons-halflings-regular.eot
+	http://netdna.bootstrapcdn.com/bootstrap/3.1.1/fonts/glyphicons-halflings-regular.woff
+	http://netdna.bootstrapcdn.com/bootstrap/3.1.1/fonts/glyphicons-halflings-regular.ttf
+	http://netdna.bootstrapcdn.com/bootstrap/3.1.1/fonts/glyphicons-halflings-regular.svg
+	https://themes.googleusercontent.com/static/fonts/ptserifcaption/v6/7xkFOeTxxO1GMC1suOUYWWhBabBbEjGd1iRmpyoZukE.woff
+	https://themes.googleusercontent.com/static/fonts/opensans/v8/DXI1ORHCpsQm3Vp6mXoaTZ1r3JsPcQLi8jytr04NNhU.woff
+	https://themes.googleusercontent.com/static/fonts/opensans/v8/K88pR3goAWT7BTt32Z01mz8E0i7KZn-EPnyo3HZu7kw.woff
+	https://themes.googleusercontent.com/static/fonts/opensans/v8/k3k702ZOKiLJc3WVjuplzJ1r3JsPcQLi8jytr04NNhU.woff
+	"
+
+_srcdir="$srcdir"/$pkgname-$_commitid
+
+prepare() {
+	local i
+	cd "$_srcdir"
+	for i in $source; do
+		case $i in
+		*.patch) msg $i; patch -p1 -i "$srcdir"/$i || return 1;;
+		esac
+	done
+}
+
+build() {
+	cd "$_srcdir"
+}
+
+package() {
+	cd "$_srcdir"
+	mkdir -p "$pkgdir"/usr/share/$pkgname/www/ "$pkgdir"/usr/share/$pkgname/www/ext/ "$pkgdir"/usr/share/$pkgname/www/fonts
+	cp -a src/* "$pkgdir"/usr/share/$pkgname/www/
+	for i in $source; do
+		case $i in
+		*.css|*.js) cp "$srcdir"/${i##*/} "$pkgdir"/usr/share/$pkgname/www/ext/ ;;
+		*.woff|*.ttf|*.eot|*.svg) cp "$srcdir"/${i##*/} "$pkgdir"/usr/share/$pkgname/www/fonts/ ;;
+		esac
+	done
+	sed -re 's,"//.*/(.*)","ext/\1",g' -i "$pkgdir"/usr/share/$pkgname/www/index.html
+	sed -re 's,url\(.*/([^/]*)\),url(/fonts/\1),g' -i "$pkgdir"/usr/share/$pkgname/www/css/rameplayer.css
+}
+
+md5sums="29e29f8b8cd7ce39f2a846d10b5ad7e8  rameplayer-webui-0.0.20151014.tar.gz
+cfd7381377ef2498407f4f342b0070f6  use-server.patch
+8a7442ca6bedd62cec4881040b9a9e83  bootstrap.min.css
+94dc143d099325003c266df15d85334e  bootstrap-toggle.min.css
+f9c7afd05729f10f55b689f36bb20172  jquery-2.1.4.min.js
+26680517e1024ca2c4f9ed4e0aa1619e  angular.min.js
+9bff95026ba5899f303e521fd6a36486  angular-animate.min.js
+d5c3fd2933db0b93c96dcdf9f7fd87d1  angular-sanitize.min.js
+7f85ecb0424f2b1d25087d51dba2a4e4  ui-bootstrap-tpls-0.13.4.js
+4f3a8e499de27e992b7f0e0f92de3491  bootstrap-toggle.min.js
+4a58ccb27689656a443605c041ddd40f  angular-translate.min.js
+7ad17c6085dee9a33787bac28fb23d46  glyphicons-halflings-regular.eot
+68ed1dac06bf0409c18ae7bc62889170  glyphicons-halflings-regular.woff
+e49d52e74b7689a0727def99da31f3eb  glyphicons-halflings-regular.ttf
+32941d6330044744c02493835b799e90  glyphicons-halflings-regular.svg
+fbab4b1c8cc18cbd06cd64819399b110  7xkFOeTxxO1GMC1suOUYWWhBabBbEjGd1iRmpyoZukE.woff
+32eb33cb1b3372cc5407ca24dc49d95f  DXI1ORHCpsQm3Vp6mXoaTZ1r3JsPcQLi8jytr04NNhU.woff
+48a40d69fc0470991491bb9da3ea7126  K88pR3goAWT7BTt32Z01mz8E0i7KZn-EPnyo3HZu7kw.woff
+cc42266cd7747dc5baf34d3c9346588f  k3k702ZOKiLJc3WVjuplzJ1r3JsPcQLi8jytr04NNhU.woff"
+sha256sums="68cf7276ed1547aa28ff284de4d9101f8040b288d365e25d11fe27d8cb2bcb57  rameplayer-webui-0.0.20151014.tar.gz
+57bdcccc3497f94605219c446bea5223b7695e9b19b6bef3c7bb4667573c9e87  use-server.patch
+e9503448692b738dd260fbd7f7cabf2e11f09b600fa97e6eb3a56eba5b1a7e9b  bootstrap.min.css
+ac3597e97ae646db56c9505e3e19aba479e767510f98ce96411425ea1d21ec9f  bootstrap-toggle.min.css
+f16ab224bb962910558715c82f58c10c3ed20f153ddfaa199029f141b5b0255c  jquery-2.1.4.min.js
+44f3ec41c48fab96c7477bc3516a6bf5747f34731ef50009f14c1f7f0dcb0433  angular.min.js
+48f477e1622f070acc4d9a2405d6b689891ce07ba8c0383e903e15886ba5ed17  angular-animate.min.js
+77507acdc56bfaf327c9ebf36c55d01ee652fc673059d06608e36f3c4e685e19  angular-sanitize.min.js
+382cf4c20ce884a777dba5a4c136555fd084220c8339eadd0685d0043eb9eb33  ui-bootstrap-tpls-0.13.4.js
+799360060bad2c8e3bacace97d48e2fdd0fdb7a2d1b36808dd8a9729da033a6a  bootstrap-toggle.min.js
+dc4609175642cf9b68bd6651fc5072269d18d5df87fd8844c4785a123759dc2c  angular-translate.min.js
+f495f34e4f177cf0115af995bbbfeb3fcabc88502876e76fc51a4ab439bc8431  glyphicons-halflings-regular.eot
+fc969dc1c6ff531abcf368089dcbaf5775133b0626ff56b52301a059fc0f9e1e  glyphicons-halflings-regular.woff
+bd18efd3efd70fec8ad09611a20cdbf99440b2c1d40085c29be036f891d65358  glyphicons-halflings-regular.ttf
+d168d50a88c730b4e6830dc0da2a2b51dae4658a77d9619943c27b8ecfc19d1a  glyphicons-halflings-regular.svg
+ef093aa8946b3b28ffcaffc4b2d6a06c60006e3a49cde27088321a19163fa7ac  7xkFOeTxxO1GMC1suOUYWWhBabBbEjGd1iRmpyoZukE.woff
+09fd48874849a3dfa4a496483dd50687a91062ed0f57c9f00d3b73a394f50337  DXI1ORHCpsQm3Vp6mXoaTZ1r3JsPcQLi8jytr04NNhU.woff
+7a723d2f99415f393e2537d9b0b0ba4c1b4d7a1ea964d1abdce0f310d92643ad  K88pR3goAWT7BTt32Z01mz8E0i7KZn-EPnyo3HZu7kw.woff
+0628cef3bdb6e9823751f942a02252ae562bdfb98f94f2de68e176c35b7c84ba  k3k702ZOKiLJc3WVjuplzJ1r3JsPcQLi8jytr04NNhU.woff"
+sha512sums="c7a9ffaf5da0bb8d94f0b0506198a19f9e1fcd87240c3febb3b98bfda18e891e668d1bb6dbfe1419780a0908b74d90366585491ef96e0d67e0509cf9685c32d8  rameplayer-webui-0.0.20151014.tar.gz
+826e5911256181d1fcd0f850bae7d50c48de3b801bf8d8d0dc9f74168c71b3021199e7a0fdfc2f5c97bc23483fd8e12311d55675c1ae8c85060f24a93e07a361  use-server.patch
+057fd1d2e51df045db3dadbd41fac2b31839c4f651f897ccd24e8aeb3162ca04e37b50977f11dc96b50a25b94ee2525ea2b2539862788e38f43636d0b5b4d192  bootstrap.min.css
+8627af820103fbf21c7f1858452af802ea358db88e733a6aa4b6707d354bffa84500275b237590f12f4d097e7482c33d41513eccb93ff306fd4e582b8856d7f9  bootstrap-toggle.min.css
+3dcae1ff6e98c64e3586be3eb14dd486c51f7d4e9fa1b8f9a628be4fbb6a9ab562f31f9b50e16d2e0c72b942bdbe84eee8e0ef87fa730db1428b199a59d88232  jquery-2.1.4.min.js
+cb648ec1fb29db0fccd8af4bcd647215dfd5eb6c37cfd7eb4af001f7aa7b00997234817b3b8d00e9ecdcb55120c88da06a9ea2912a05a52aed0bc1b3b668e9e0  angular.min.js
+c7156c4c643c45d49dc3797822e8ed7fd4dfc4430701628c8ad0390fe05cb69e10e3f226765940a7c2be60c391a2df297829e00d08950fe29f4c4dbcbd7d31c4  angular-animate.min.js
+94e876663476da6d062b24b70c8e3aace40cb21b5d6c126b562432ffa287bacbba0972b2f9268e9c0db0e7902743bfed13fddcbdbbd93cf7de619d9aa1f14ea6  angular-sanitize.min.js
+c6774cccaf71d59844f49b23dfcfa0c7c95203127d519aedb026fc718f4fd505fe5f8a818b417e27f4dbc41932c1ce77c384b6a9a68163f5a3bc7e1b516e16f5  ui-bootstrap-tpls-0.13.4.js
+17adfa30090c021b53a656a12fd17a2a64dfc53998700723702932bb47f4be84f737feafcc0b89e0dba6e796b480427e8512c785dcf7bc3bd9a5fea4aa011ae7  bootstrap-toggle.min.js
+f33e163355d01253922d27f07062600e8ab6238e449f421f7711ae196a1d5d0ccfb29d8cb525be9413e01972871bd316b1323c648de3b642d994a6f668d918f2  angular-translate.min.js
+830f534f97a8eb849fa7e67e533d89d150ca79233c0a31a9a54f27b4757a86c345f94533c41fc239899e642502fde7800170e6889d1544de69bd6809ade8387b  glyphicons-halflings-regular.eot
+88beda715a3de8ea031048feb71fd3ffff9c695fd9874b06c8b1d31c88c7a8a653c4a67efab3b6f0b1f4dedc3c18a6436a4455984c0abce10a210baca0cb689d  glyphicons-halflings-regular.woff
+f47c250403fbb7f2dfe1cb7068ea3a1496fd26d9df6bfc3a701d3909c5a2b69f43bab042df0dcb66e64c308945745b76b0e9ad2a750c69cc0c7271c6d6051a96  glyphicons-halflings-regular.ttf
+c4847ea43f1de7621fda5e54211f313c90d5aa043e39cca99a7c24842e69f3ae20ae28c47f5046b5d9d89872e2b8c1a49e74db3fc40b61aa1be92be1a2c637a6  glyphicons-halflings-regular.svg
+6ba2b826a7f5b83bd64e9d8b89965474247505ebf8aaf2434f52562d0a8e1f00df653a4b07e744005bcbfa2bbedd25e6b14d31a9cc4367064ff48fbb5a369ea3  7xkFOeTxxO1GMC1suOUYWWhBabBbEjGd1iRmpyoZukE.woff
+37234f7986f18cd3bc5567059ad8f3d1b45d9f8cd62ebf6cd97a98c0ffb3d10458e69bf550a08af844c7c44bfaa2df509f6c84e841daed45b3e44a2b8ef61a66  DXI1ORHCpsQm3Vp6mXoaTZ1r3JsPcQLi8jytr04NNhU.woff
+3b762e744913c511f0ea68af4e2c6548b68379067ab5f52408b3d68f8be8ffa922eebb40df66f1a00562963c8c5715575a0053e3a7bccf76064d05466dcb4f26  K88pR3goAWT7BTt32Z01mz8E0i7KZn-EPnyo3HZu7kw.woff
+537ab65fc260e9bf4fd4c8410a7f1e9f4b24640ea9e7e2ce8e346620e0399e6474a4fd0c38980db250e563f02c755a17421bd30812d0417b2584a682e7943cb1  k3k702ZOKiLJc3WVjuplzJ1r3JsPcQLi8jytr04NNhU.woff"
