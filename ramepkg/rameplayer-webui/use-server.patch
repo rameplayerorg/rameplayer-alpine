@@ -1,8 +1,8 @@
 diff --git a/src/rameplayer/core/dataservice.js b/src/rameplayer/core/dataservice.js
-index cb38138..253b2ed 100644
+index fb471db..f17a3fb 100644
 --- a/src/rameplayer/core/dataservice.js
 +++ b/src/rameplayer/core/dataservice.js
-@@ -33,6 +33,13 @@
+@@ -39,6 +39,13 @@
              seek: seek
          };
  
@@ -10,14 +10,14 @@ index cb38138..253b2ed 100644
 +            settings.urls.player = location.protocol + '//' + location.hostname +
 +                                   ':' + settings.server_port + '/player';
 +            settings.urls.lists = location.protocol + '//' + location.hostname +
-+                                   ':' + settings.server_port + '/media';
++                                   ':' + settings.server_port + '/lists';
 +	}
 +
          return service;
  
          function getLists() {
 diff --git a/src/rameplayer/player/player.html b/src/rameplayer/player/player.html
-index 38c8802..52b5e77 100644
+index 7ea3f35..8a9256a 100644
 --- a/src/rameplayer/player/player.html
 +++ b/src/rameplayer/player/player.html
 @@ -21,11 +21,9 @@
@@ -45,16 +45,20 @@ index 38c8802..52b5e77 100644
      </div> <!-- .row -->
  </div> <!-- .container -->
 diff --git a/src/stubs/settings.json b/src/stubs/settings.json
-index b2bc65d..776220c 100644
+index 9527353..92a6870 100644
 --- a/src/stubs/settings.json
 +++ b/src/stubs/settings.json
-@@ -1,12 +1,13 @@
+@@ -1,14 +1,15 @@
  {
      "language": "en",
 +    "server_port": 8000,
      "urls": {
 -        "lists": "stubs/lists.json",
+-        "defaultPlaylist": "stubs/playlists/default.json",
+-        "playlists": "stubs/playlists.json",
 +        "lists": "lists",
++        "defaultPlaylist": "playlists/default",
++        "playlists": "playlists",
          "player": "player"
      },
      "statusPollingInterval": 1000,
