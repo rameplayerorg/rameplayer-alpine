@@ -1,14 +1,14 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=lua-cqueues-pushy
-pkgver=0.20151105
-_commitid=df90d2c031ff916dc2d154c623ce17cc028c1e1d
+pkgver=0.20151110
+_commitid=2b269fce62e320ea457819b53697a12b7c7b8a91
 pkgrel=0
 pkgdesc="Framework for logic control (based on cqueues)"
 url="https://github.com/fabled/lua-cqueues-pushy"
 arch="all"
 license="GPLv2"
-depends=""
-makedepends="lua5.2>=5.2 lua5.2-cqueues>=20150616 lua5.2-struct lua5.2-posix lua5.2-ldbus"
+depends="lua5.3 lua5.3-cqueues>=20150616 lua5.3-struct lua5.3-posix lua5.3-ldbus"
+makedepends="lua5.3-dev"
 install=""
 subpackages=""
 source="$pkgname-$pkgver.tar.gz::https://github.com/fabled/$pkgname/archive/$_commitid.tar.gz
@@ -29,19 +29,19 @@ prepare() {
 
 build() {
 	cd "$_srcdir"
-	make
+	make LUA_VERSION=5.3
 }
 
 package() {
 	cd "$_srcdir"
-	make install DESTDIR="$pkgdir" || return 1
+	make LUA_VERSION=5.3 install DESTDIR="$pkgdir" || return 1
 	install -m755 -D "$srcdir"/cqpushy.initd \
 		"$pkgdir"/etc/init.d/cqpushy || return 1
 }
 
-md5sums="eb78d84279f4a3feb272e4eb7475ffc6  lua-cqueues-pushy-0.20151105.tar.gz
+md5sums="554fdf1d12a1e8e194fbea8da8c62b1c  lua-cqueues-pushy-0.20151110.tar.gz
 f585d5983128ccb9b9d33a6019107158  cqpushy.initd"
-sha256sums="c026a8f6e73e76351154526b17615f7475e67bcda75d8c9b561f4eb2d2d46190  lua-cqueues-pushy-0.20151105.tar.gz
+sha256sums="dfd5f7d116379ed11ee6dcac435bbc2522693d894de992270a7b236ecd2d1e09  lua-cqueues-pushy-0.20151110.tar.gz
 4ebdbd3299c4b18b7224edc202bd9a4d5a97f325a474ec222901dbedf7f3bc58  cqpushy.initd"
-sha512sums="8c30c94a28f047fbdcc22e0240d16e6f11d9e91f8ba675bf28fed03e2bee93f0d869611739a04d488301090bc193144cf4d642a8f9317f1e88dfc70270f32bcb  lua-cqueues-pushy-0.20151105.tar.gz
+sha512sums="253dce008cc67e2774d931505567aed73b4b8bb936ebf3fb658831ca07b5b03f58301bd3256bf68d6cfd4153f81275178a712987cec18215a02b7895d73954c9  lua-cqueues-pushy-0.20151110.tar.gz
 9599db364c3a2e77a7fee61304182961cb6132ce9cb58e9b6837312f52a582e838fdb54eb932c3204b558e3db7228a0412870d0a02125d1017f3402155647bd0  cqpushy.initd"
