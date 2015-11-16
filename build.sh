@@ -3,7 +3,7 @@
 # locally built packages should be in apk repositories
 # packages: kmod imagemagick alpine-sdk
 
-RPI_FIRMWARE_COMMITID=ba7a8fb709adab287495f4e836b1cd3e5c9db409
+RPI_FIRMWARE_COMMITID=fa627390f76d7d3c38e80fc88ad1cc6697c04334
 TARGET=$PWD/_image
 
 # Build our packages first
@@ -48,7 +48,7 @@ if [ ! -e "$TARGET"/config.txt ]; then
 disable_splash=1
 boot_delay=0
 [pi1]
-gpu_mem_256=128
+gpu_mem_256=64
 gpu_mem_512=256
 cmdline=cmdline-rpi.txt
 kernel=boot/vmlinuz-rpi
@@ -63,6 +63,7 @@ dtparam=i2c,spi
 disable_overscan=1
 config_hdmi_boost=4
 hdmi_clock_change_limit=20
+hdmi_force_hotplug=1
 include usercfg.txt
 EOF
 
