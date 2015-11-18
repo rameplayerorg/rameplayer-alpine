@@ -8,7 +8,7 @@ TARGET=$PWD/_image
 
 # Build our packages first
 local ret=0
-for A in lua-cqueues-pushy rameplayer-webui rameplayer-backend; do
+for A in lua-cqueues-pushy rameplayer-webui rameplayer-utils rameplayer-backend; do
 	(cd ramepkg/$A ; abuild -r) || ret=1
 done
 [ "$ret" == 0 ] || return $ret

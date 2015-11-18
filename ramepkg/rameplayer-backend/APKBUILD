@@ -1,7 +1,7 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer-backend
-pkgver=0.0.20151110
-_commitid=b13ed6794fa67c2219ee577661b493183df156a6
+pkgver=0.0.20151118
+_commitid=0a62a694bbdd70dc1ba767cbb54aaa05c559ce13
 pkgrel=0
 pkgdesc="Rameplayer Backend"
 url="https://github.com/rameplayerorg/rameplayer-backend"
@@ -9,7 +9,7 @@ arch="noarch"
 license="GPLv2"
 depends="
 	lua5.3 lua5.3-cjson lua5.3-penlight lua5.3-posix lua5.3-cqueues lua5.3-ldbus lua5.3-socket
-	dbus omxplayer eudev ffmpeg lua-cqueues-pushy
+	dbus omxplayer eudev ffmpeg lua-cqueues-pushy rameplayer-utils
 	"
 makedepends=""
 install=""
@@ -32,6 +32,6 @@ package() {
 	install -m755 "$_srcdir"/*.lua "$pkgdir"/usr/share/$pkgname/
 }
 
-md5sums="be54d24e3ea0f7d40ce796c3e87198e9  rameplayer-backend-0.0.20151110.tar.gz"
-sha256sums="6f3b9fa31a460cdadeef2c7750970898e80c44f2fce13e4ab01bbf5cdefce276  rameplayer-backend-0.0.20151110.tar.gz"
-sha512sums="9ac084920090484963432ca3e50158b8fb65a83f878d741d47d2b942d4e5ca53df9a80364ff70e87fe92d5263cd0e71346b88716bad27ee251f021bd87ce7f2c  rameplayer-backend-0.0.20151110.tar.gz"
+md5sums="f1d4027f6233b09460d7a805a788e687  rameplayer-backend-0.0.20151118.tar.gz"
+sha256sums="25c150322c322436b38dfb2e0dc69d396402e72b60c80c004936710fb17e7c59  rameplayer-backend-0.0.20151118.tar.gz"
+sha512sums="8f14344c94ae2a2583d7cfaf395072703f008612aad2e3adf059e35aecbddaa6c0b6e9564eddb4bfc53214046d8bb2020c4ea823b13447d1a4213f90c2618ff0  rameplayer-backend-0.0.20151118.tar.gz"
