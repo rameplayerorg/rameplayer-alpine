@@ -5,7 +5,7 @@ index 9527353..92a6870 100644
 @@ -1,14 +1,15 @@
  {
      "language": "en",
-+    "server_port": 8000,
++    "serverPort": 8000,
      "urls": {
 -        "lists": "stubs/lists.json",
 -        "defaultPlaylist": "stubs/playlists/default.json",
