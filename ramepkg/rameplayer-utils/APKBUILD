@@ -2,7 +2,7 @@
 pkgname=rameplayer-utils
 pkgver=0.0.20151208.1
 _commitid=65eab052630618a644cbe2f53c5cf6aef541e9d0
-pkgrel=0
+pkgrel=1
 pkgdesc="Rameplayer Backend"
 url="https://github.com/rameplayerorg/rameplayer-utils"
 arch="armhf"
@@ -28,6 +28,7 @@ build() {
 package() {
 	mkdir -p "$pkgdir"/usr/bin/ "$pkgdir"/usr/share/fonts/TTF/
 	install -m755 "$_srcdir"/rametext/rametext "$pkgdir"/usr/bin/
+	install -m755 "$_srcdir"/rameclock/rameclock "$pkgdir"/usr/bin/
 	install -m755 "$_srcdir"/ramefbcp/ramefbcp "$pkgdir"/usr/bin/
 	install -m644 "$_srcdir"/ramefbcp/ramefbcp.ttf "$pkgdir"/usr/share/fonts/TTF/
 }
