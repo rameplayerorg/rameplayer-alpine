@@ -1,26 +1,11 @@
-diff --git a/src/stubs/settings.json b/src/stubs/settings.json
-index 9527353..92a6870 100644
---- a/stubs/settings.json
-+++ b/stubs/settings.json
-@@ -1,14 +1,15 @@
- {
-     "language": "en",
-+    "serverPort": 8000,
-     "urls": {
--        "lists": "stubs/lists.json",
--        "defaultPlaylist": "stubs/playlists/default.json",
--        "playlists": "stubs/playlists.json",
-+        "lists": "lists",
-+        "defaultPlaylist": "playlists/default",
-+        "playlists": "playlists",
-         "player": "player"
+--- rameplayer-webui/stubs/settings.json.orig
++++ rameplayer-webui/stubs/settings.json
+@@ -11,7 +11,7 @@
      },
      "statusPollingInterval": 1000,
      "development": {
 -        "enabled": true,
--        "simulateStatus": true
 +        "enabled": false,
-+        "simulateStatus": false
-     }
- }
-
+         "serverSimulation": {
+             "enabled": true,
+             "delay": 25,
