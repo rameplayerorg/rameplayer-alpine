@@ -19,4 +19,5 @@ rsync \
 	$FIRMWARE_URI \
 	/media/mmcblk0p1/
 mount -o remount,ro /media/mmcblk0p1
+/etc/init.d/udev stop
 /etc/init.d/modloop stop

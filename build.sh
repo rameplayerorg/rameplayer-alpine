@@ -8,7 +8,7 @@ TARGET=$PWD/_image
 
 # Build our packages first
 local ret=0
-for A in lua-cqueues-pushy rameplayer-webui rameplayer-utils rameplayer-backend; do
+for A in lua-cqueues-pushy rameplayer-webui rameplayer-utils rameplayer-backend rameplayer; do
 	(cd ramepkg/$A ; abuild -r) || ret=1
 done
 [ "$ret" == 0 ] || return $ret
@@ -27,9 +27,7 @@ fi
 if [ ! -e $TARGET/apks ]; then
 	mkdir -p "$TARGET"/apks/armhf
 	apk fetch --output "$TARGET"/apks/armhf --recursive \
-		alpine-base acct openssh tzdata strace tmux ffmpeg \
-		raspberrypi omxplayer rsync dhcpcd eudev dbus \
-		rameplayer-webui rameplayer-backend \
+		alpine-base acct strace tmux rameplayer \
 		&& \
 	apk index --description "Rameplayer build $(date)" \
 		--rewrite-arch armhf -o "$TARGET"/apks/armhf/APKINDEX.tar.gz "$TARGET"/apks/armhf/*.apk \
@@ -55,6 +53,7 @@ file_from_stdin() {
 		echo "Updated $1"
 		mv "$tmp" "$1"
 	fi
+	chmod a+r "$1"
 }
 
 file_from_stdin "$TARGET"/config.txt <<EOF
