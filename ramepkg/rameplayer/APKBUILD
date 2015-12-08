@@ -1,0 +1,96 @@
+# Maintainer: Timo Teräs <timo.teras@iki.fi>
+pkgname=rameplayer
+pkgver=0.1
+pkgrel=0
+pkgdesc="Rameplayer configuration"
+url="https://github.com/rameplayerorg/rameplayer-alpine"
+arch="noarch"
+license="GPLv2"
+depends="tzdata openssh rsync dhcpcd eudev dbus
+	raspberrypi alsa-utils ffmpeg omxplayer
+	rameplayer-webui rameplayer-backend
+	"
+replaces="alpine-baselayout alpine-conf openssh"
+replaces_priority="10"
+makedepends=""
+install=""
+subpackages=""
+
+source="interfaces
+	modules
+	rpi.conf
+	httpd.confd
+	lbu.conf
+	rame-upgrade-firmware
+	sshd_config
+	"
+
+prepare() {
+	:
+}
+
+build() {
+	:
+}
+
+rc_add() {
+	mkdir -p "$pkgdir"/etc/runlevels/"$2"
+        ln -sf /etc/init.d/"$1" "$pkgdir"/etc/runlevels/"$2"/"$1"
+}
+
+package() {
+	install -D -m644 interfaces "$pkgdir"/etc/networking/interfaces
+	install -D -m644 modules "$pkgdir"/etc/modules
+	install -D -m644 rpi.conf "$pkgdir"/etc/modprobe.d/rpi.conf
+	install -D -m644 httpd.confd "$pkgdir"/etc/conf.d/httpd
+	install -D -m644 lbu.conf "$pkgdir"/etc/lbu/lbu.conf
+	install -D -m755 rame-upgrade-firmware "$pkgdir"/sbin/rame-upgrade-firmware
+	install -D -m644 sshd_config "$pkgdir"/etc/ssh/sshd_config
+
+	mkdir -p "$pkgdir"/etc/cqpushy/
+	ln -s /usr/share/rameplayer-backend/rameplayer.lua "$pkgdir"/etc/cqpushy/cqpushy.lua
+
+	rc_add hwdrivers default
+	rc_add ntpd default
+	rc_add httpd default
+	rc_add cqpushy default
+	rc_add sshd default
+	rc_add networking default
+	rc_add dhcpcd default
+	rc_add devfs sysinit
+	rc_add dmesg sysinit
+	rc_add modloop sysinit
+	rc_add udev sysinit
+	rc_add udev-trigger sysinit
+	rc_add udev-postmount sysinit 
+	rc_add modules boot
+	rc_add sysctl boot
+	rc_add hostname boot
+	rc_add bootmisc boot
+	rc_add syslog boot
+	rc_add mount-ro shutdown
+	rc_add killprocs shutdown
+	rc_add savecache shutdown
+}
+
+md5sums="2892f43477bf99c9dd76141a347ef5c8  interfaces
+b33dea15c06d5cd9184cd943e514362c  modules
+87a81919f31862743793a42493024bdd  rpi.conf
+42e5da277b126b5f3b4cea9bce5138d4  httpd.confd
+984e979c6ed96f98d63cda0706780dfe  lbu.conf
+da9b17af41df749fa3bba9ac3a287099  rame-upgrade-firmware
+5e67152f41f19a64dc8e3fe27a6fc5a7  sshd_config"
+sha256sums="3157c93d752a8e3e26d564abf4f92b2b4c0236ff478367c81add68bb9d1ef3ca  interfaces
+a0122aef4832a599c2129ee9d8df2d988e76ab1521ad0185e660e6b917697d77  modules
+7d15bfa0994a0f4cf057e1803aff3267e6d21559ef7a4c0a777f43a7ff1d1338  rpi.conf
+198103cc212b855c606f28b6ea991360102b524a3aca22c0405f8ae486407221  httpd.confd
+8a8645340d730ca1df3754917493cbc5c01c3c3e544dc362ea89351f721c1c68  lbu.conf
+6f2782bd3d7e5002a2410bb168e5f1a0fdbfb9e66d3f106b89a32d3410c1d1e2  rame-upgrade-firmware
+6e079cb7ab6c91a60777b93de1b75ef3c9251c2fedf44e0a38200fc2a104f4d9  sshd_config"
+sha512sums="014f182397a9609aa8420f88d5c8430d6fc547186cf71264fec5a48cf97e1d8c76398cdc09f16db6bd22d3452ea419e36d6db5b715e81a0c33bf10f9eddca59a  interfaces
+ca76b0ba2c01eccce24b9ba6289a3cca45dd0c875ad431b3dab3c8e70f842f78137e83b4ed4792ede02fce6c2201a1ca166dbdd85adf7ee682ad6fe6bccd67be  modules
+958169d46c24bc020b9f591208a85e042b5cb8aa24052b1496d249f6cc002b94fe0ead16d0645e50b427a0c9c9c4569ecdfa3984ccb2de61f1b7cd82b8045925  rpi.conf
+d3e72cd7f7d2b40cbfe10a0b847bda9960339a5bc450feba503d986b19dd247f5fc7972c1951cfde5e3357f5cefb2921f05291243d98e7373fea0cd9c3d4d3fa  httpd.confd
+ea91cccbc8b91b7e57ebbb587fdca35497ddfbce4c9ec1404ec5277cc35615874dbb182df3f9ef63b19ced969c34fa80d3e4cf0f404bdc920e05a650cf499b52  lbu.conf
+ba26888b55e402a0c62ca66f8f1ef999d98ccd44d6a3a0f226cc2037c2edaa5ac91a0feb79e89626551c7ecbc455b373a5ddf0ae42bffa1060905510bed49db5  rame-upgrade-firmware
+881e5473265cb325a2a7c3d7679a4d9a2eaf0052742d682cdece05c9d884f319b33236725a22e5a71d8b4b06006ac2befa4639e72d87da5a0eef5e46a598aff6  sshd_config"
