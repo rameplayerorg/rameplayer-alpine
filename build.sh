@@ -17,9 +17,11 @@ done
 mkdir -p "$TARGET"/boot "$TARGET"/overlays "$TARGET"/cache
 [ ! -e $TARGET/boot/vmlinuz-rpi  ] && update-kernel -f rpi  -a armhf "$TARGET"/boot
 [ ! -e $TARGET/boot/vmlinuz-rpi2 ] && update-kernel -f rpi2 -a armhf "$TARGET"/boot
-mv -f "$TARGET"/boot/dtbs/*.dtb "$TARGET"
-mv -f "$TARGET"/boot/dtbs/overlays/*.dtb "$TARGET"/overlays
-rm -rf "$TARGET"/boot/dtbs "$TARGET"/boot/System.map-rpi*
+if [ -e "$TARGET"/boot/dtbs ]; then
+	mv -f "$TARGET"/boot/dtbs/*.dtb "$TARGET"
+	mv -f "$TARGET"/boot/dtbs/overlays/*.dtb "$TARGET"/overlays
+	rm -rf "$TARGET"/boot/dtbs "$TARGET"/boot/System.map-rpi*
+fi
 
 # apk repository
 if [ ! -e $TARGET/apks ]; then
@@ -43,19 +45,28 @@ for fw in bootcode.bin fixup.dat start.elf ; do
 		curl https://raw.githubusercontent.com/raspberrypi/firmware/${RPI_FIRMWARE_COMMITID}/boot/${fw} -o "$TARGET"/${fw}
 done
 
-if [ ! -e "$TARGET"/config.txt ]; then
-	cat <<EOF > $TARGET/config.txt
+file_from_stdin() {
+	local tmp=$(mktemp)
+	cat > $tmp
+	if cmp "$1" "$tmp"; then
+		echo "No update for $1"
+		rm "$tmp"
+	else
+		echo "Updated $1"
+		mv "$tmp" "$1"
+	fi
+}
+
+file_from_stdin "$TARGET"/config.txt <<EOF
 disable_splash=1
 boot_delay=0
 [pi1]
 gpu_mem_256=64
 gpu_mem_512=256
-cmdline=cmdline-rpi.txt
 kernel=boot/vmlinuz-rpi
 initramfs boot/initramfs-rpi 0x08000000
 [pi2]
 gpu_mem=256
-cmdline=cmdline-rpi2.txt
 kernel=boot/vmlinuz-rpi2
 initramfs boot/initramfs-rpi2 0x08000000
 [all]
@@ -67,11 +78,13 @@ hdmi_force_hotplug=1
 include usercfg.txt
 EOF
 
-	#local _opts="alpine_dev=mmcblk0p1 modules=loop,squashfs,sd-mod,usb-storage quiet chart"
-	local _opts="alpine_dev=mmcblk0p1 modules=loop,squashfs,sd-mod,usb-storage blacklist=fbcon quiet"
-	echo "BOOT_IMAGE=/boot/vmlinuz-rpi  $_opts" > $TARGET/cmdline-rpi.txt
-	echo "BOOT_IMAGE=/boot/vmlinuz-rpi2 $_opts" > $TARGET/cmdline-rpi2.txt
-fi
+#modules=loop,squashfs,sd-mod,usb-storage quiet chart
+file_from_stdin "$TARGET"/cmdline.txt <<EOF
+modules=loop,squashfs,sd-mod,usb-storage blacklist=fbcon quiet
+EOF
 
 # boot logo, requires imagemagic installed
-[ ! -e "$TARGET"/fbsplash.ppm ] && convert logo.png "$TARGET"/fbsplash.ppm
+if [ ! "$TARGET"/fbsplash.ppm -nt logo.png ]; then
+	echo "Updating $TARGET/fbsplash.ppm"
+	convert logo.png "$TARGET"/fbsplash.ppm
+fi
