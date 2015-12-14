@@ -1,7 +1,7 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=lua-cqueues-pushy
-pkgver=0.20151208
-_commitid=5e8db0c5c76518216ced216c3884d1c44a8c8701
+pkgver=0.20151210
+_commitid=e3607675cdddfd490dd385060aa7fb12fc8c17b9
 pkgrel=0
 pkgdesc="Framework for logic control (based on cqueues)"
 url="https://github.com/fabled/lua-cqueues-pushy"
@@ -39,9 +39,9 @@ package() {
 		"$pkgdir"/etc/init.d/cqpushy || return 1
 }
 
-md5sums="dcb76e57def23cdcadcfad00ef0ebaa4  lua-cqueues-pushy-0.20151208.tar.gz
+md5sums="4ba2f9971e1540da25af098c6c4cf125  lua-cqueues-pushy-0.20151210.tar.gz
 f585d5983128ccb9b9d33a6019107158  cqpushy.initd"
-sha256sums="e73d71d5004690ae5696234501b1ab9b70bb36429d3a869b07b8c78c24cadc54  lua-cqueues-pushy-0.20151208.tar.gz
+sha256sums="ee5557e0800f96ae01dff4ad235133aa33936301acb816a5ae6465cd4f46122d  lua-cqueues-pushy-0.20151210.tar.gz
 4ebdbd3299c4b18b7224edc202bd9a4d5a97f325a474ec222901dbedf7f3bc58  cqpushy.initd"
-sha512sums="bc992303ae002f9d5996b1d7931d21e5f3aeae1413bf141b970d499ed56bd8905a31dec2044389bd96a3a3c2b646784755ec58517c9ecd19c7b1977b6578766f  lua-cqueues-pushy-0.20151208.tar.gz
+sha512sums="152a421ac25b3f9ed15652605525b66c355821989863dfc08fb49bffad51d0c695c5cae9e83879ecf66ae0f8fc6608a198e5ee12b14f4069b3bb621844e7eadc  lua-cqueues-pushy-0.20151210.tar.gz
 9599db364c3a2e77a7fee61304182961cb6132ce9cb58e9b6837312f52a582e838fdb54eb932c3204b558e3db7228a0412870d0a02125d1017f3402155647bd0  cqpushy.initd"
