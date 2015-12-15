@@ -1,7 +1,7 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer-backend
-pkgver=0.0.20151214
-_commitid=b36ae5c1a8cd879f90d5908c25e56a6fcfd23967
+pkgver=0.0.20151215
+_commitid=fc6d49560d96725beac3a3d759a604e10ff04db2
 pkgrel=0
 pkgdesc="Rameplayer Backend"
 url="https://github.com/rameplayerorg/rameplayer-backend"
@@ -20,7 +20,7 @@ source="$pkgname-$pkgver.tar.gz::https://github.com/rameplayerorg/rameplayer-bac
 _srcdir="$srcdir"/$pkgname-$_commitid
 
 prepare() {
-	:
+	sed -e s/'version = "development",'/'version = "'"$pkgver"'",/g' -i $_srcdir/rame.lua
 }
 
 build() {
@@ -32,6 +32,6 @@ package() {
 	install -m755 "$_srcdir"/*.lua "$pkgdir"/usr/share/$pkgname/
 }
 
-md5sums="96e5dd75b8cc921b23384b05018884ab  rameplayer-backend-0.0.20151214.tar.gz"
-sha256sums="3072632694c89eec8c901676950ea55e2ec63133aafc35a021ab4ba092106d18  rameplayer-backend-0.0.20151214.tar.gz"
-sha512sums="ad5710f995e3b30a8d5e6f7e2ce1e25386b02799f90e46d62e3eb2dbd49741c5d97f94b7ee7d19cd5c6c5459eada771c28d8a5943e716adb3709a501d10dd043  rameplayer-backend-0.0.20151214.tar.gz"
+md5sums="e8627b683d3b9cf2e05a2d2632cca005  rameplayer-backend-0.0.20151215.tar.gz"
+sha256sums="c37f69b5e90706e9e93f4352d07490867b12883c6377c3bb1dbe025dcac02f3f  rameplayer-backend-0.0.20151215.tar.gz"
+sha512sums="603fd5dfdbfa6545ed179798c05fc9a13a55ff3ce1bc4df85bb6eaf62dad2a813d36b7bdf0344d631a4c8c993543745456bfd0d7851ae0dc274e850344ffe80e  rameplayer-backend-0.0.20151215.tar.gz"
