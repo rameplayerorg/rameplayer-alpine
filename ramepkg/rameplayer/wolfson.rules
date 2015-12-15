@@ -1,0 +1,3 @@
+SUBSYSTEM=="sound", ACTION=="add|change", ATTRS{id}=="sndrpiwsp", \
+	RUN+="/usr/libexec/wolfson/Playback_to_Headset.sh", \
+	RUN+="/usr/libexec/wolfson/Playback_to_Lineout.sh"
