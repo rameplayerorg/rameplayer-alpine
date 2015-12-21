@@ -1,0 +1,160 @@
+// Definitions for Rameplayer R2   (UNFINISHED - WORK IN PROGRESS)
+// Requires "microchip,pullups" patch in Kernel
+/dts-v1/;
+/plugin/;
+
+/*
+ Rameplayer "R2 Keys":
++------------------------------------+
+|  Up                                |
+|  B5   L1    L2    L3    L4         |
+|                                    |
+|       B1    B2    B3    B4    B7   |
+|      Play Pause  Stop  Rec   (rot) |
+|  B6                                |
+| Down                               |
++------------------------------------+
+L1...L4 = Leds
+B1...B7 = Buttons
+     B7 = Also a rotary
+*/
+
+/ {
+	// Raspberry Pi 1 and 2
+	compatible = "brcm,bcm2835", "brcm,bcm2708", "brcm,bcm2709";
+
+	// mcp23017 IO expander setup of rameplayer "R2 keys" module
+	fragment@0 {
+		target = <&i2c_arm>;
+
+		__overlay__ {
+			status = "okay";
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			gpiom1: mcp23017@20 {
+				compatible = "microchip,mcp23017";
+				reg = <0x20>;
+
+				gpio-controller;
+				#gpio-cells = <2>;
+
+				interrupt-parent = <&gpio>;
+				// INTA->BCM GPIO4, IRQ_TYPE_LEVEL_LOW
+				// http://lxr.free-electrons.com/source/include/dt-bindings/interrupt-controller/irq.h?v=4.1#L17
+				interrupts = <4 8>;
+				interrupt-controller;
+				#interrupt-cells=<2>;
+
+				microchip,irq-mirror; // IOCON,0x40
+				microchip,pullups=<0xffff>; // patched kernel required
+
+				status = "okay";
+			}; // end mcp23017
+
+		}; // __overlay__
+	}; // fragment
+
+
+	// 4 leds, L1...L4
+	fragment@1 {
+		target = <&leds>;
+
+		__overlay__ {
+			// http://lxr.free-electrons.com/source/include/dt-bindings/gpio/gpio.h?v=4.1
+
+			// L4
+			rame_4_rec {
+				label = "rame:orange:rec";
+				gpios = <&gpiom1 0 1>; // GPA0 GPIO_ACTIVE_LOW
+				default-state = "on";
+			};
+
+			// L3
+			rame_3_stop {
+				label = "rame:red:stop";
+				gpios = <&gpiom1 1 1>; // GPA1 GPIO_ACTIVE_LOW
+				default-state = "on";
+			};
+
+			// L2
+			rame_2_pause {
+				label = "rame:yellow:pause";
+				gpios = <&gpiom1 2 1>; // GPA2 GPIO_ACTIVE_LOW
+				default-state = "on";
+			};
+
+			// L1
+			rame_1_play {
+				label = "rame:green:play";
+				gpios = <&gpiom1 3 1>; // GPA3 GPIO_ACTIVE_LOW
+				default-state = "on";
+			};
+
+		}; // __overlay__
+	}; // fragment
+
+
+	// 7 buttons, B1...B7
+	fragment@2 {
+		target = <&soc>;
+
+		__overlay__ {
+
+			rame-keys {
+				compatible = "gpio-keys";
+				#address-cells = <1>;
+				#size-cells = <0>;
+				status = "okay";
+
+				// http://lxr.free-electrons.com/source/include/dt-bindings/input/input.h?v=4.1
+
+				rame_7_rotarybutton {
+					label = "rotary button";
+					linux,code = <28>; // KEY_ENTER
+					gpios = <&gpiom1 6 1>; // GPA6 GPIO_ACTIVE_LOW
+				};
+
+				rame_5_up {
+					label = "Up";
+					linux,code = <103>; // KEY_UP
+					gpios = <&gpiom1 8 1>; // GPB0 GPIO_ACTIVE_LOW
+				};
+
+				rame_6_down {
+					label = "Down";
+					linux,code = <108>; // KEY_DOWN
+					gpios = <&gpiom1 9 1>; // GPB1 GPIO_ACTIVE_LOW
+				};
+
+				rame_1_play {
+					label = "Play";
+					linux,code = <207>; // KEY_PLAY
+					gpios = <&gpiom1 10 1>; // GPB2 GPIO_ACTIVE_LOW
+				};
+
+				rame_2_pause {
+					label = "Pause";
+					linux,code = <119>; // KEY_PAUSE
+					gpios = <&gpiom1 11 1>; // GPB3 GPIO_ACTIVE_LOW
+				};
+
+				rame_3_stop {
+					label = "Stop";
+					linux,code = <128>; // KEY_STOP
+					gpios = <&gpiom1 12 1>; // GPB4 GPIO_ACTIVE_LOW
+				};
+
+				rame_4_rec {
+					label = "Rec";
+					linux,code = <167>; // KEY_RECORD
+					gpios = <&gpiom1 13 1>; // GPB5 GPIO_ACTIVE_LOW
+				};
+
+			}; // rame-keys
+
+		}; // __overlay__
+	}; // fragment
+
+};
+

@@ -88,7 +88,10 @@ if [ ! "$TARGET"/fbsplash.ppm -nt logo.png ]; then
 	convert logo.png "$TARGET"/fbsplash.ppm
 fi
 
-if [ ! "$TARGET"/overlays/rame-kbd-overlay.dtb -nt rame-kbd-overlay.dtb ]; then
-	echo "Updating $TARGET/overlays/rame-kbd-overlay.dtb"
-	cp rame-kbd-overlay.dtb "$TARGET"/overlays/rame-kbd-overlay.dtb
-fi
+for dts in dts/*.dts; do
+	local overlay=$(basename $dts .dts)
+	if [ ! "$TARGET"/overlays/$overlay.dtb -nt dts/$overlay.dts ]; then
+		echo "Updating $TARGET/overlays/$overlay.dtb"
+		dtc -@ -I dts -O dtb dts/$overlay.dts > $TARGET/overlays/$overlay.dtb
+	fi
+done

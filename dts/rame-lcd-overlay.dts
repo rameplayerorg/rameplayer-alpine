@@ -1,0 +1,73 @@
+// LCD screen definitions for Rameplayer R2   (UNFINISHED - WORK IN PROGRESS)
+/dts-v1/;
+/plugin/;
+
+
+// "adafruit18" screen with fb_st7735r chip
+// baesd on pitft28 overlay, fbtft_device source and fb_st7735r source
+/*
+https://github.com/notro/fbtft/blob/master/fbtft_device.c#L180
+https://github.com/notro/fbtft/blob/master/dts/rpi.dts
+https://github.com/notro/fbtft/blob/master/fb_st7735r.c
+*/
+
+/ {
+	// Raspberry Pi 1 and 2
+	compatible = "brcm,bcm2835", "brcm,bcm2708", "brcm,bcm2709";
+
+	fragment@0 {
+		target = <&spi0>;
+		__overlay__ {
+			status = "okay";
+			spidev@0 {
+				status = "disabled";
+			};
+		}; // __overlay__
+	}; // fragment
+
+	fragment@1 {
+		target = <&gpio>;
+
+		__overlay__ {
+			ramelcd_pins: ramelcd_pins {
+				brcm,pins = <24 25>; // dc reset
+				brcm,function = <1 1>;
+				brcm,pull = <0 0>;
+			};
+		}; // __overlay__
+	}; // fragment
+
+	fragment@2 {
+		target = <&spi0>;
+
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			ramelcd: ramelcd@0 {
+				compatible = "sitronix,st7735r";
+				status = "okay";
+
+				reg = <0>;
+				pinctrl-names = "default";
+				pinctrl-0 = <&ramelcd_pins>;
+
+				spi-max-frequency = <32000000>;
+				rotate = <90>;
+				fps = <25>;
+				buswidth = <8>;
+				dc-gpios = <&gpio 24 0>;
+				reset-gpios = <&gpio 25 0>;
+				txbuflen = <32768>; // 32k dma
+				debug = <0>;
+				gamma = "02 1c 07 12 37 32 29 2d 29 25 2B 39 00 01 03 10\n03 1d 07 06 2E 2C 29 2D 2E 2E 37 3F 00 00 02 10";
+
+			}; // end ramelcd
+
+		}; // __overlay__
+	}; // fragment
+
+};
+
+
+
