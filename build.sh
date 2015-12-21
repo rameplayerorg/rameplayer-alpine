@@ -3,7 +3,7 @@
 # locally built packages should be in apk repositories
 # packages: kmod imagemagick alpine-sdk
 
-RPI_FIRMWARE_COMMITID=fa627390f76d7d3c38e80fc88ad1cc6697c04334
+RPI_FIRMWARE_COMMITID=1efc1ece0d1e282b1cf4f371d2f7c4098113c098
 TARGET=$PWD/_image
 
 # Build our packages first
@@ -86,4 +86,9 @@ EOF
 if [ ! "$TARGET"/fbsplash.ppm -nt logo.png ]; then
 	echo "Updating $TARGET/fbsplash.ppm"
 	convert logo.png "$TARGET"/fbsplash.ppm
+fi
+
+if [ ! "$TARGET"/overlays/rame-kbd-overlay.dtb -nt rame-kbd-overlay.dtb ]; then
+	echo "Updating $TARGET/overlays/rame-kbd-overlay.dtb"
+	cp rame-kbd-overlay.dtb "$TARGET"/overlays/rame-kbd-overlay.dtb
 fi
