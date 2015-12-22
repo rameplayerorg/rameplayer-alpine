@@ -1,13 +1,13 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer
-pkgver=0.4.1
+pkgver=0.5
 pkgrel=0
 pkgdesc="Rameplayer configuration"
 url="https://github.com/rameplayerorg/rameplayer-alpine"
 arch="noarch"
 license="GPLv2"
 depends="tzdata openssh rsync dhcpcd eudev dbus
-	raspberrypi alsa-utils ffmpeg omxplayer
+	raspberrypi alsa-utils ffmpeg omxplayer lua-cqueues-pushy
 	rameplayer-webui rameplayer-backend
 	"
 replaces="alpine-baselayout alpine-conf openssh"
@@ -24,8 +24,7 @@ source="interfaces
 	rame-upgrade-firmware
 	sshd_config
 	wolfson.rules
-	Playback_to_Headset.sh
-	Playback_to_Lineout.sh
+	wolfson.sh
 	"
 
 prepare() {
@@ -50,8 +49,7 @@ package() {
 	install -D -m755 rame-upgrade-firmware "$pkgdir"/sbin/rame-upgrade-firmware
 	install -D -m644 sshd_config "$pkgdir"/etc/ssh/sshd_config
 	install -D -m644 wolfson.rules "$pkgdir"/lib/udev/rules.d/90-wolfson.rules
-	install -D -m755 Playback_to_Headset.sh "$pkgdir"/usr/libexec/wolfson/Playback_to_Headset.sh
-	install -D -m755 Playback_to_Lineout.sh "$pkgdir"/usr/libexec/wolfson/Playback_to_Lineout.sh
+	install -D -m755 wolfson.sh "$pkgdir"/usr/libexec/wolfson/wolfson.sh
 
 	mkdir -p "$pkgdir"/etc/cqpushy/
 	ln -s /usr/share/rameplayer-backend/rameplayer.lua "$pkgdir"/etc/cqpushy/cqpushy.lua
@@ -86,9 +84,8 @@ a5f3259412e2cf50b6a43b3b55f2dfd9  rpi.conf
 984e979c6ed96f98d63cda0706780dfe  lbu.conf
 f4857420a028c747dd2fd1f7ba46a1d4  rame-upgrade-firmware
 5e67152f41f19a64dc8e3fe27a6fc5a7  sshd_config
-1b65d9bc607a7b5e07a5b16b1a160d38  wolfson.rules
-ebd9b6875d48079804274922aff751c0  Playback_to_Headset.sh
-f446f8fa074c624ccda86ebef9808d49  Playback_to_Lineout.sh"
+39514f75405235d7c1e1af0d514c5143  wolfson.rules
+10e8f2563058d35ff9d54e770c5c6b58  wolfson.sh"
 sha256sums="3157c93d752a8e3e26d564abf4f92b2b4c0236ff478367c81add68bb9d1ef3ca  interfaces
 a0122aef4832a599c2129ee9d8df2d988e76ab1521ad0185e660e6b917697d77  modules
 c5a448381304ec8b1a714f6f23c18ac108b899e4a9f9e3247c96835ca4d600c4  rpi.conf
@@ -96,9 +93,8 @@ c5a448381304ec8b1a714f6f23c18ac108b899e4a9f9e3247c96835ca4d600c4  rpi.conf
 8a8645340d730ca1df3754917493cbc5c01c3c3e544dc362ea89351f721c1c68  lbu.conf
 b26ccf2003ed2997d3cbafda9d0ac8ac9b119fb463b7032b01a08481ac65c634  rame-upgrade-firmware
 6e079cb7ab6c91a60777b93de1b75ef3c9251c2fedf44e0a38200fc2a104f4d9  sshd_config
-5f1abe280502e0b19a50381aeb42ac43191bed19259895a74c045d27d179f5c1  wolfson.rules
-e3fcbaf0a8125fd6272067d0e09b9172f0c2a177949c8957c9c439c94fab2a97  Playback_to_Headset.sh
-dc777d14216f906d1c352b65dd301d505d392875e1f42316f4880ea9a3ea1df9  Playback_to_Lineout.sh"
+872deb982c1b4a1bbec4a6bc47dc7a4411bee72520456f1f05d88195fb33d65f  wolfson.rules
+b7c6744371304f6eddead73c99d45e5383b7f2329a7ba6e68b5d4616ce770537  wolfson.sh"
 sha512sums="014f182397a9609aa8420f88d5c8430d6fc547186cf71264fec5a48cf97e1d8c76398cdc09f16db6bd22d3452ea419e36d6db5b715e81a0c33bf10f9eddca59a  interfaces
 ca76b0ba2c01eccce24b9ba6289a3cca45dd0c875ad431b3dab3c8e70f842f78137e83b4ed4792ede02fce6c2201a1ca166dbdd85adf7ee682ad6fe6bccd67be  modules
 c44e1370a4fb57574e16d20db29744a444b814055243d07b2652d20d1d6c42efb45880caab6740034e3a096663701286f1577282fec1b39d609ed03261ed52b6  rpi.conf
@@ -106,6 +102,5 @@ d3e72cd7f7d2b40cbfe10a0b847bda9960339a5bc450feba503d986b19dd247f5fc7972c1951cfde
 ea91cccbc8b91b7e57ebbb587fdca35497ddfbce4c9ec1404ec5277cc35615874dbb182df3f9ef63b19ced969c34fa80d3e4cf0f404bdc920e05a650cf499b52  lbu.conf
 c02c64cc73eeb3ada7b6fb89bfe8dc08ae189058c53f6d0f6b0aed216ffe96cf2975f7d780da5e891cd1a536dd0724676a1c0595bb923850492ed7d2690a2031  rame-upgrade-firmware
 881e5473265cb325a2a7c3d7679a4d9a2eaf0052742d682cdece05c9d884f319b33236725a22e5a71d8b4b06006ac2befa4639e72d87da5a0eef5e46a598aff6  sshd_config
-b2dd461c82a2e506c21e3918fee99d3c26c09775d7a698c795dd0106ff280174ed96bc238d7d4a7bfa2d53c23a667b21a3417f28feedc3ed3afc87333d232ec2  wolfson.rules
-d0b748c182b2131bcdde4f071282424f0f7e335cf4112e35ad06a51fe84465745250824bebc2b6973db99d94705796d5447a4a80cb5a26db63d72e5ad2f9980d  Playback_to_Headset.sh
-bedafb3b0ea052ff107af1a4fb50e82e0129dba8ec7a0fffd6cca6982e8e6665b6cc9b659c7bfc76a110602f3e67808b164bbd63ce4cf4b01767f69199361d12  Playback_to_Lineout.sh"
+a58c7398894ecabe3b56d842748620c429e324d14a1252de55664f98153afab9a1283378ccaf0ddd91eebc5c612523b47982af5ec1f683b6ea0560b0d1f2950e  wolfson.rules
+1bce1aea1374093ba084532586e3ec97812fb2ca1e87945d392e2bbbf49f08ccd81cb38e472181197dde13a079c89ec2447dc7d0730d6a0950142c3f392089b5  wolfson.sh"
