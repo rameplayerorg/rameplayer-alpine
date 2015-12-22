@@ -1,4 +1,5 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
+_luaversions="5.2 5.3"
 pkgname=lua-cqueues-pushy
 pkgver=0.20151210
 _commitid=e3607675cdddfd490dd385060aa7fb12fc8c17b9
@@ -7,15 +8,19 @@ pkgdesc="Framework for logic control (based on cqueues)"
 url="https://github.com/fabled/lua-cqueues-pushy"
 arch="all"
 license="GPLv2"
-depends="lua5.3 lua5.3-cqueues>=20150616 lua5.3-struct lua5.3-posix lua5.3-ldbus"
-makedepends="lua5.3-dev"
 install=""
+depends=""
+makedepends=""
 subpackages=""
+for _i in $_luaversions; do
+        makedepends="$makedepends lua$_i-dev"
+        subpackages="$subpackages lua$_i-cqueues-pushy:split_${_i/./_}"
+done
 source="$pkgname-$pkgver.tar.gz::https://github.com/fabled/$pkgname/archive/$_commitid.tar.gz
 	cqpushy.initd
 	"
 
-_srcdir="$srcdir"/$pkgname-$_commitid
+_sdir="$srcdir"/$pkgname-$_commitid
 
 prepare() {
 	local i
@@ -25,19 +30,41 @@ prepare() {
 		*.patch) msg $i; patch -p1 -i "$srcdir"/$i || return 1;;
 		esac
 	done
+	for _v in $_luaversions; do
+		cp -r "$_sdir" "$srcdir"/build-$_v
+	done
 }
 
 build() {
-	cd "$_srcdir"
-	make LUA_VERSION=5.3
+	for _v in $_luaversions; do
+		cd "$srcdir"/build-$_v
+		make LUA_VERSION=$_v
+	done
 }
 
 package() {
-	cd "$_srcdir"
-	make LUA_VERSION=5.3 install DESTDIR="$pkgdir" || return 1
+	for _v in $_luaversions; do
+		cd "$srcdir"/build-$_v
+		make LUA_VERSION=$_v install DESTDIR="$pkgdir" || return 1
+	done
 	install -m755 -D "$srcdir"/cqpushy.initd \
 		"$pkgdir"/etc/init.d/cqpushy || return 1
 }
+
+_split() {
+	local _ver=$1
+	pkgdesc="$pkgdesc - Lua $_ver"
+	depends="lua$_ver-cqueues>=20150616 lua$_ver-struct lua$_ver-posix lua$_ver-ldbus"
+	install_if="lua$_ver $pkgname=$pkgver-r$pkgrel"
+
+	mkdir -p "$subpkgdir"/usr/share/lua "$subpkgdir"/usr/lib/lua
+	mv "$pkgdir"/usr/share/lua/$_ver "$subpkgdir"/usr/share/lua
+	mv "$pkgdir"/usr/lib/lua/$_ver "$subpkgdir"/usr/lib/lua
+}
+
+for _i in $_luaversions; do
+	eval "split_${_i/./_}() { _split $_i; }"
+done
 
 md5sums="4ba2f9971e1540da25af098c6c4cf125  lua-cqueues-pushy-0.20151210.tar.gz
 f585d5983128ccb9b9d33a6019107158  cqpushy.initd"
