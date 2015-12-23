@@ -1,5 +1,9 @@
-// Definitions for Rameplayer R2   (UNFINISHED - WORK IN PROGRESS)
-// Requires "microchip,pullups" patch in Kernel
+// Definitions for Rameplayer R2
+//
+// Kernel patches required for modules:
+// - gpio_mcp23s08: support for "microchip,pullups"
+// - rotary_encoder: IRQ patch for using GPIO expanders behind I2C or SPI bus.
+
 /dts-v1/;
 /plugin/;
 
@@ -153,8 +157,14 @@ B1...B7 = Buttons
 
 			}; // rame-keys
 
+			rame-rotary {
+				compatible = "rotary-encoder";
+				// patched kernel required:
+				gpios = <&gpiom1 4 1>, <&gpiom1 5 1>; // GPA4,GPA5
+				rotary-encoder,relative-axis;
+				linux,axis = <0>; // REL_X
+			}; // rame-rotary
+
 		}; // __overlay__
 	}; // fragment
-
 };
-
