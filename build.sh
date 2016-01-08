@@ -43,20 +43,21 @@ for fw in bootcode.bin fixup.dat start.elf ; do
 		curl https://raw.githubusercontent.com/raspberrypi/firmware/${RPI_FIRMWARE_COMMITID}/boot/${fw} -o "$TARGET"/${fw}
 done
 
-file_from_stdin() {
+file_update() {
 	local tmp=$(mktemp)
-	cat > $tmp
-	if cmp "$1" "$tmp"; then
-		echo "No update for $1"
+	local to="$1"
+	shift
+	"$@" > $tmp
+	if [ -e "$to" ] && cmp -s "$to" "$tmp"; then
+		echo "No update for $to"
 		rm "$tmp"
 	else
-		echo "Updated $1"
-		mv "$tmp" "$1"
+		echo "Updated $to"
+		mv "$tmp" "$to"
 	fi
-	chmod a+r "$1"
 }
 
-file_from_stdin "$TARGET"/config.txt <<EOF
+file_update "$TARGET"/config.txt cat <<EOF
 disable_splash=1
 boot_delay=0
 [pi1]
@@ -78,20 +79,16 @@ include usercfg.txt
 EOF
 
 #modules=loop,squashfs,sd-mod,usb-storage quiet chart
-file_from_stdin "$TARGET"/cmdline.txt <<EOF
+file_update "$TARGET"/cmdline.txt cat <<EOF
 modules=loop,squashfs,sd-mod,usb-storage blacklist=fbcon quiet
 EOF
 
 # boot logo, requires imagemagic installed
-if [ ! "$TARGET"/fbsplash.ppm -nt logo.png ]; then
-	echo "Updating $TARGET/fbsplash.ppm"
-	convert logo.png "$TARGET"/fbsplash.ppm
-fi
+file_update "$TARGET"/fbsplash.ppm  convert logo_fb0.png ppm:-
+file_update "$TARGET"/fbsplash1.ppm convert logo_fb1.png ppm:-
 
 for dts in dts/*.dts; do
 	local overlay=$(basename $dts .dts)
-	if [ ! "$TARGET"/overlays/$overlay.dtb -nt dts/$overlay.dts ]; then
-		echo "Updating $TARGET/overlays/$overlay.dtb"
-		dtc -@ -I dts -O dtb dts/$overlay.dts > $TARGET/overlays/$overlay.dtb
-	fi
+	file_update "$TARGET"/overlays/$overlay.dtb \
+		dtc -@ -I dts -O dtb dts/$overlay.dts
 done
