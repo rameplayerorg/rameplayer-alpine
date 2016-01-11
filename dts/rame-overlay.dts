@@ -1,0 +1,412 @@
+// ---------------------------------------------------------------------------
+// Rameplayer R2 device tree overlay
+//
+// "R2 Keys" kbd (buttons, leds, rotary)
+// - Kernel patches required for modules:
+//   - gpio_mcp23s08: support for "microchip,pullups"
+//   - rotary_encoder: IRQ patch for using GPIO expanders behind I2C or SPI bus.
+//
+// LCD screen ("red" Adafruit 1.8" ST7735R Color TFT LCD)
+// - Based on pitft28 overlay, fbtft_device source and fb_st7735r source
+// - Links:
+//   https://github.com/notro/fbtft/blob/master/dts/rpi.dts
+//   https://github.com/notro/fbtft/blob/master/fbtft_device.c#L180
+//   https://github.com/notro/fbtft/blob/master/fb_st7735r.c
+//
+// Real-Time Clock (DS1307 I2C RTC)
+// - Based on Linux kernel file: arch/arm/boot/dts/overlays/i2c-rtc-overlay.dts
+//
+// Cirrus Logic Audio Card (WM5102,WM8804)
+// - Definition is closely based on this overlay file:
+//   https://github.com/HiassofT/rpi-linux/blob/cirrus-4.1.y/arch/arm/boot/dts/overlays/rpi-cirrus-wm5102-overlay.dts
+//   (wlf,reset-gpio for wlf,wm8804 has been changed)
+//
+// ---------------------------------------------------------------------------
+
+/dts-v1/;
+/plugin/;
+
+
+/ {
+	//// Raspberry Pi 1 and 2
+	//compatible = "brcm,bcm2835", "brcm,bcm2708", "brcm,bcm2709";
+
+	// Raspberry Pi 2
+	compatible = "brcm,bcm2709";
+
+
+	// Rame hardware info
+	fragment@0 {
+		target-path = "/";
+		__overlay__ {
+			rame {
+				hardware = "RAME chassis 1.0";
+			};
+		}; // overlay
+	}; // fragment
+
+
+	// for LCD & Audio:
+	fragment@1 {
+		target = <&spi0>;  // /soc/spi0
+		__overlay__ {
+			spidev@0 {
+				status = "disabled";
+			};
+
+			spidev@1{
+				status = "disabled";
+			};
+		}; // __overlay__
+	}; // fragment
+
+// ---------------------------------------------------------------------------
+
+	/*
+	 Rameplayer "R2 Keys" (kbd):
+	+------------------------------------+
+	|  Up                                |
+	|  B5   L1    L2    L3    L4         |
+	|                                    |
+	|       B1    B2    B3    B4    B7   |
+	|      Play Pause  Stop  Rec   (rot) |
+	|  B6                                |
+	| Down                               |
+	+------------------------------------+
+	L1...L4 = Leds
+	B1...B7 = Buttons
+	     B7 = Also a rotary
+	*/
+
+	// mcp23017 IO expander setup
+	fragment@2 {
+		target = <&i2c_arm>;  // /soc/i2c0 or /soc/i2c1
+
+		__overlay__ {
+			status = "okay";
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			gpiom1: ramekbdio@20 {
+				compatible = "microchip,mcp23017";
+				reg = <0x20>;
+
+				gpio-controller;
+				#gpio-cells = <2>;
+
+				interrupt-parent = <&gpio>;
+				// INTA->BCM GPIO4, IRQ_TYPE_LEVEL_LOW
+				// http://lxr.free-electrons.com/source/include/dt-bindings/interrupt-controller/irq.h?v=4.1#L17
+				interrupts = <4 8>;
+				interrupt-controller;
+				#interrupt-cells=<2>;
+
+				microchip,irq-mirror; // IOCON,0x40
+				microchip,pullups=<0xffff>; // patched kernel required
+
+				status = "okay";
+			}; // ramekbdio
+		}; // __overlay__
+	}; // fragment
+
+
+	// 4 leds, L1...L4
+	fragment@3 {
+		target = <&leds>;  // /soc/leds
+
+		__overlay__ {
+			// http://lxr.free-electrons.com/source/include/dt-bindings/gpio/gpio.h?v=4.1
+
+			// L4
+			rame_4_rec {
+				label = "rame:orange:rec";
+				gpios = <&gpiom1 0 1>; // GPA0 GPIO_ACTIVE_LOW
+				default-state = "on";
+			};
+
+			// L3
+			rame_3_stop {
+				label = "rame:red:stop";
+				gpios = <&gpiom1 1 1>; // GPA1 GPIO_ACTIVE_LOW
+				default-state = "on";
+			};
+
+			// L2
+			rame_2_pause {
+				label = "rame:yellow:pause";
+				gpios = <&gpiom1 2 1>; // GPA2 GPIO_ACTIVE_LOW
+				default-state = "on";
+			};
+
+			// L1
+			rame_1_play {
+				label = "rame:green:play";
+				gpios = <&gpiom1 3 1>; // GPA3 GPIO_ACTIVE_LOW
+				default-state = "on";
+			};
+		}; // __overlay__
+	}; // fragment
+
+
+	// 7 buttons, B1...B7
+	fragment@4 {
+		target = <&soc>;  // /soc
+
+		__overlay__ {
+			rame-keys {
+				compatible = "gpio-keys";
+				#address-cells = <1>;
+				#size-cells = <0>;
+				status = "okay";
+
+				// http://lxr.free-electrons.com/source/include/dt-bindings/input/input.h?v=4.1
+
+				rame_7_rotarybutton {
+					label = "rotary button";
+					linux,code = <28>; // KEY_ENTER
+					gpios = <&gpiom1 6 1>; // GPA6 GPIO_ACTIVE_LOW
+				};
+
+				rame_5_up {
+					label = "Up";
+					linux,code = <103>; // KEY_UP
+					gpios = <&gpiom1 8 1>; // GPB0 GPIO_ACTIVE_LOW
+				};
+
+				rame_6_down {
+					label = "Down";
+					linux,code = <108>; // KEY_DOWN
+					gpios = <&gpiom1 9 1>; // GPB1 GPIO_ACTIVE_LOW
+				};
+
+				rame_1_play {
+					label = "Play";
+					linux,code = <207>; // KEY_PLAY
+					gpios = <&gpiom1 10 1>; // GPB2 GPIO_ACTIVE_LOW
+				};
+
+				rame_2_pause {
+					label = "Pause";
+					linux,code = <119>; // KEY_PAUSE
+					gpios = <&gpiom1 11 1>; // GPB3 GPIO_ACTIVE_LOW
+				};
+
+				rame_3_stop {
+					label = "Stop";
+					linux,code = <128>; // KEY_STOP
+					gpios = <&gpiom1 12 1>; // GPB4 GPIO_ACTIVE_LOW
+				};
+
+				rame_4_rec {
+					label = "Rec";
+					linux,code = <167>; // KEY_RECORD
+					gpios = <&gpiom1 13 1>; // GPB5 GPIO_ACTIVE_LOW
+				};
+			}; // rame-keys
+
+			rame-rotary {
+				compatible = "rotary-encoder";
+				// patched kernel required:
+				gpios = <&gpiom1 4 1>, <&gpiom1 5 1>; // GPA4,GPA5
+				rotary-encoder,relative-axis;
+				linux,axis = <0>; // REL_X
+			}; // rame-rotary
+		}; // __overlay__
+	}; // fragment
+
+// ---------------------------------------------------------------------------
+
+	// LCD screen
+
+	fragment@5 {
+		target = <&gpio>;  // /soc/gpio
+
+		__overlay__ {
+			ramelcd_pins: ramelcd_pins {
+				brcm,pins = <24 25>; // dc reset
+				brcm,function = <1 1>;
+				brcm,pull = <0 0>;
+			};
+		}; // __overlay__
+	}; // fragment
+
+	fragment@6 {
+		target = <&spi0>;  // /soc/spi0
+
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+			ramelcd: ramelcd@0 {
+				compatible = "sitronix,st7735r";
+				status = "okay";
+
+				reg = <0>;
+				pinctrl-names = "default";
+				pinctrl-0 = <&ramelcd_pins>;
+
+				spi-max-frequency = <32000000>;
+				rotate = <90>;
+				fps = <25>;
+				buswidth = <8>;
+				dc-gpios = <&gpio 24 0>;
+				reset-gpios = <&gpio 25 0>;
+				txbuflen = <32768>; // 32k dma
+				debug = <0>;
+				gamma = "02 1c 07 12 37 32 29 2d 29 25 2B 39 00 01 03 10\n03 1d 07 06 2E 2C 29 2D 2E 2E 37 3F 00 00 02 10";
+
+			}; // ramelcd
+		}; // __overlay__
+	}; // fragment
+
+// ---------------------------------------------------------------------------
+
+	// RTC (DS1307)
+
+	fragment@7 {
+		target = <&i2c_arm>;  // /soc/i2c0 or /soc/i2c1
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+			ramertc: ramertc@68 {
+				compatible = "maxim,ds1307";
+				reg = <0x68>;
+				status = "okay";
+			};
+		}; // __overlay__
+	}; // fragment
+
+// ---------------------------------------------------------------------------
+	// Cirrus Logic Audio Card
+
+	fragment@8 {
+		target-path = "/";
+		__overlay__ {
+			aliases {
+				ldo0 = &ldo0;
+				ldo1 = &ldo1;
+			};
+		}; // __overlay__
+	}; // fragment
+
+	fragment@9 {
+		target = <&sound>;  // /sound
+		__overlay__ {
+			compatible = "wlf,rpi-wm5102";
+			i2s-controller = <&i2s>;
+			status = "okay";
+		}; // __overlay__
+	}; // fragment
+
+	fragment@10 {
+		target = <&i2s>;  // /soc/i2s
+		__overlay__ {
+			status = "okay";
+		}; // __overlay__
+	}; // fragment
+
+	fragment@11 {
+		target = <&gpio>;  // /soc/gpio
+		__overlay__ {
+			wlf_pins: wlf_pins {
+				//brcm,pins = <17 22 27 8>; // original
+				brcm,pins = <17 22 27 5>;
+				brcm,function = <1 1 0 1>;
+			};
+		}; // __overlay__
+	}; // fragment
+
+	fragment@12 {
+		target-path = "/soc";
+		__overlay__ {
+
+			ldo1: ldo1 {
+				compatible = "regulator-fixed";
+				regulator-name = "DC_5V";
+				regulator-min-microvolt = <5000000>;
+				regulator-max-microvolt = <5000000>;
+				enable-active-high;
+				regulator-always-on;
+			};
+
+			ldo0: ldo0 {
+				compatible = "regulator-fixed";
+				regulator-name = "DC_1V8";
+				regulator-min-microvolt = <1800000>;
+				regulator-max-microvolt = <1800000>;
+				enable-active-high;
+				regulator-always-on;
+			};
+		}; // __overlay__
+	}; // fragment
+
+	fragment@13 {
+		target = <&spi0>;  // /soc/spi0
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+			wm5102@1{
+				compatible = "wlf,wm5102";
+				reg = <1>;
+				#address-cells = <1>;
+				#size-cells = <0>;
+				spi-max-frequency = <500000>;
+
+				interrupt-parent = <&gpio>;
+				interrupts = <27 8>;
+
+				LDOVDD-supply = <&ldo0>;
+				AVDD-supply = <&ldo0>;
+				DBVDD1-supply = <&ldo0>;
+				DBVDD2-supply = <&ldo0>;
+				DBVDD3-supply = <&ldo0>;
+				CPVDD-supply = <&ldo0>;
+				SPKVDDL-supply = <&ldo1>;
+				SPKVDDR-supply = <&ldo1>;
+
+				wlf,reset = <&gpio 17 0>;
+				wlf,ldoena = <&gpio 22 0>;
+				wlf,gpio-defaults = <
+					0x000fffff
+					0x000fffff
+					0x000fffff
+					0x000fffff
+					0x000fffff
+				>;
+				wlf,micd-configs = <0 1 0>;
+				wlf,dmic-ref = <0 2 0 0>;
+				wlf,clk32k-src = <3>;
+				wlf,inmode = <0 2 1 0>;
+				status = "okay";
+			};
+		}; // __overlay__
+	}; // fragment
+
+	fragment@14 {
+		target = <&i2c1>;  // /soc/i2c1
+		__overlay__ {
+			status = "okay";
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			wm8804@3b {
+				#sound-dai-cells = <0>;
+				compatible = "wlf,wm8804";
+				reg = <0x3b>;
+				status = "okay";
+				PVDD-supply = <&ldo0>;
+				DVDD-supply = <&ldo0>;
+				//wlf,reset-gpio = <&gpio 8 0>; // original
+				wlf,reset-gpio = <&gpio 5 0>; // changed (BCM 5 / Phys 29)
+			};
+		}; // __overlay__
+	}; // fragment
+
+// ---------------------------------------------------------------------------
+
+}; // /

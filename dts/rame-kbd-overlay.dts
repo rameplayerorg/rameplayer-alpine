@@ -1,6 +1,6 @@
 // Definitions for Rameplayer R2
 //
-// Kernel patches required for modules:
+// Linux kernel patches required for modules:
 // - gpio_mcp23s08: support for "microchip,pullups"
 // - rotary_encoder: IRQ patch for using GPIO expanders behind I2C or SPI bus.
 
@@ -8,7 +8,7 @@
 /plugin/;
 
 /*
- Rameplayer "R2 Keys":
+ Rameplayer "R2 Keys" (kbd):
 +------------------------------------+
 |  Up                                |
 |  B5   L1    L2    L3    L4         |
@@ -36,7 +36,7 @@ B1...B7 = Buttons
 			#address-cells = <1>;
 			#size-cells = <0>;
 
-			gpiom1: mcp23017@20 {
+			gpiom1: ramekbdio@20 {
 				compatible = "microchip,mcp23017";
 				reg = <0x20>;
 
@@ -54,7 +54,7 @@ B1...B7 = Buttons
 				microchip,pullups=<0xffff>; // patched kernel required
 
 				status = "okay";
-			}; // end mcp23017
+			}; // ramekbdio
 
 		}; // __overlay__
 	}; // fragment
