@@ -1,0 +1,27 @@
+// RTC definition for Rameplayer R2
+//
+// Based on Linux kernel file: arch/arm/boot/dts/overlays/i2c-rtc-overlay.dts
+
+/dts-v1/;
+/plugin/;
+
+
+/ {
+	// Raspberry Pi
+	compatible = "brcm,bcm2708";
+
+	fragment@0 {
+		target = <&i2c_arm>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+			ramertc: ramertc@68 {
+				compatible = "maxim,ds1307";
+				reg = <0x68>;
+				status = "okay";
+			};
+		}; // __overlay__
+	}; // fragment
+};
