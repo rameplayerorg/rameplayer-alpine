@@ -53,6 +53,7 @@ file_update() {
 		rm "$tmp"
 	else
 		echo "Updated $to"
+		chmod a+r "$tmp"
 		mv "$tmp" "$to"
 	fi
 }
