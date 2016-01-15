@@ -247,7 +247,7 @@
 				pinctrl-0 = <&ramelcd_pins>;
 
 				spi-max-frequency = <32000000>;
-				rotate = <90>;
+				rotate = <270>;
 				fps = <25>;
 				buswidth = <8>;
 				dc-gpios = <&gpio 24 0>;
