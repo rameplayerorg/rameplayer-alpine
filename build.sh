@@ -3,7 +3,7 @@
 # locally built packages should be in apk repositories
 # packages: kmod imagemagick alpine-sdk
 
-RPI_FIRMWARE_COMMITID=1efc1ece0d1e282b1cf4f371d2f7c4098113c098
+RPI_FIRMWARE_COMMITID=1a3022d5c181e51f3d5437ddd82531007e86b5d0
 TARGET=$PWD/_image
 
 # Build our packages first
