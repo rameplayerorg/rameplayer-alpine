@@ -1,22 +1,20 @@
-// LCD screen definitions for Rameplayer R2   (UNFINISHED - WORK IN PROGRESS)
+// RamePlayer CID4: LCD screen ("red" Adafruit 1.8" ST7735R Color TFT LCD)
+//
+// - Based on pitft28 overlay, fbtft_device source and fb_st7735r source
+// - Links:
+//   https://github.com/notro/fbtft/blob/master/dts/rpi.dts
+//   https://github.com/notro/fbtft/blob/master/fbtft_device.c#L180
+//   https://github.com/notro/fbtft/blob/master/fb_st7735r.c
+
 /dts-v1/;
 /plugin/;
-
-
-// "adafruit18" screen with fb_st7735r chip
-// baesd on pitft28 overlay, fbtft_device source and fb_st7735r source
-/*
-https://github.com/notro/fbtft/blob/master/fbtft_device.c#L180
-https://github.com/notro/fbtft/blob/master/dts/rpi.dts
-https://github.com/notro/fbtft/blob/master/fb_st7735r.c
-*/
 
 / {
 	// Raspberry Pi 1 and 2
 	compatible = "brcm,bcm2835", "brcm,bcm2708", "brcm,bcm2709";
 
 	fragment@0 {
-		target = <&spi0>;
+		target = <&spi0>;  // /soc/spi0
 		__overlay__ {
 			status = "okay";
 			spidev@0 {
@@ -26,7 +24,7 @@ https://github.com/notro/fbtft/blob/master/fb_st7735r.c
 	}; // fragment
 
 	fragment@1 {
-		target = <&gpio>;
+		target = <&gpio>;  // /soc/gpio
 
 		__overlay__ {
 			ramelcd_pins: ramelcd_pins {
@@ -38,11 +36,12 @@ https://github.com/notro/fbtft/blob/master/fb_st7735r.c
 	}; // fragment
 
 	fragment@2 {
-		target = <&spi0>;
+		target = <&spi0>;  // /soc/spi0
 
 		__overlay__ {
 			#address-cells = <1>;
 			#size-cells = <0>;
+			status = "okay";
 
 			ramelcd: ramelcd@0 {
 				compatible = "sitronix,st7735r";
@@ -68,6 +67,3 @@ https://github.com/notro/fbtft/blob/master/fb_st7735r.c
 	}; // fragment
 
 };
-
-
-

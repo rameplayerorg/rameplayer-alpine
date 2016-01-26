@@ -1,4 +1,4 @@
-// Definitions for Rameplayer R2, Cirrus audio card
+// RamePlayer CID5: Cirrus Logic Audio Card (WM5102,WM8804)
 //
 // This is almost exact copy of:
 // https://github.com/HiassofT/rpi-linux/blob/cirrus-4.1.y/arch/arm/boot/dts/overlays/rpi-cirrus-wm5102-overlay.dts
@@ -21,7 +21,7 @@
 	};
 
 	fragment@1 {
-		target = <&sound>;
+		target = <&sound>;  // /sound
 		__overlay__ {
 			compatible = "wlf,rpi-wm5102";
 			i2s-controller = <&i2s>;
@@ -30,14 +30,14 @@
 	};
 
 	fragment@2 {
-		target = <&i2s>;
+		target = <&i2s>;  // /soc/i2s
 		__overlay__ {
 			status = "okay";
 		};
 	};
 
 	fragment@3 {
-		target = <&gpio>;
+		target = <&gpio>;  // /soc/gpio
 		__overlay__ {
 			wlf_pins: wlf_pins {
 				//brcm,pins = <17 22 27 8>; // original
@@ -72,7 +72,7 @@
 	};
 
 	fragment@5 {
-		target = <&spi0>;
+		target = <&spi0>;  // /soc/spi0
 		__overlay__ {
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -124,7 +124,7 @@
 	};
 
 	fragment@6 {
-		target = <&i2c1>;
+		target = <&i2c1>;  // /soc/i2c1
 		__overlay__ {
 			status = "okay";
 			#address-cells = <1>;

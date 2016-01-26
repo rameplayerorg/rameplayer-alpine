@@ -1,17 +1,18 @@
-// RTC definition for Rameplayer R2
+// RamePlayer CID6: Real-Time Clock (DS1307 I2C RTC)
 //
 // Based on Linux kernel file: arch/arm/boot/dts/overlays/i2c-rtc-overlay.dts
+// - TinyRTC module w/EEPROM is connected to i2c0 on Raspberry Pi 2
 
 /dts-v1/;
 /plugin/;
 
 
 / {
-	// Raspberry Pi
-	compatible = "brcm,bcm2708";
+	// Raspberry Pi 2
+	compatible = "brcm,bcm2709";
 
 	fragment@0 {
-		target = <&i2c_arm>;
+		target = <&i2c0>;
 		__overlay__ {
 			#address-cells = <1>;
 			#size-cells = <0>;
