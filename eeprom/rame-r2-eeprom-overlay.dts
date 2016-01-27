@@ -1,0 +1,23 @@
+// ---------------------------------------------------------------------------
+// RamePlayer EEPROM device tree overlay
+// ---------------------------------------------------------------------------
+
+/dts-v1/;
+/plugin/;
+
+
+/ {
+	// Raspberry Pi 2
+	compatible = "brcm,bcm2709";
+
+	// Rame hardware info
+	fragment@0 {
+		target-path = "/";
+		__overlay__ {
+			rame {
+				hardware = "RamePlayer chassis 1.0";
+				eeprom-cids = "3,4,5,6"; // r2kbd,lcd,audio,rtc
+			};
+		}; // overlay
+	}; // fragment
+}; // /
