@@ -53,29 +53,29 @@ back_power 1
 
 #        GPIO  FUNCTION  PULL
 #        ----  --------  ----
-setgpio  2     ALT0      UP
-setgpio  3     ALT0      UP
-setgpio  4     INPUT     UP
-setgpio  5     OUTPUT    DOWN
-#setgpio  6     INPUT     DEFAULT
-setgpio  7     ALT0      DOWN
-setgpio  8     ALT0      DOWN
-setgpio  9     ALT0      DOWN
-setgpio  10    ALT0      DOWN
-setgpio  11    ALT0      DOWN
-#setgpio  12    INPUT     DEFAULT
-setgpio  13    OUTPUT    NONE
-#setgpio  14    INPUT     DEFAULT
-#setgpio  15    INPUT     DEFAULT
-#setgpio  16    INPUT     DEFAULT
-setgpio  17    OUTPUT    DOWN
-setgpio  18    ALT0      DOWN
-setgpio  19    ALT0      DOWN
-setgpio  20    ALT0      DOWN
-setgpio  21    ALT0      DOWN
-setgpio  22    OUTPUT    DOWN
-setgpio  23    OUTPUT    NONE
-setgpio  24    OUTPUT    NONE
-setgpio  25    OUTPUT    NONE
-#setgpio  26    INPUT     DEFAULT
-setgpio  27    INPUT     UP
+# setgpio  2     ALT0      UP
+# setgpio  3     ALT0      UP
+# setgpio  4     INPUT     UP
+# setgpio  5     OUTPUT    DOWN
+# ##setgpio  6     INPUT     DEFAULT
+# setgpio  7     ALT0      DOWN
+# setgpio  8     ALT0      DOWN
+# setgpio  9     ALT0      DOWN
+# setgpio  10    ALT0      DOWN
+# setgpio  11    ALT0      DOWN
+# ##setgpio  12    INPUT     DEFAULT
+# #setgpio  13    OUTPUT    NONE
+# ##setgpio  14    INPUT     DEFAULT
+# ##setgpio  15    INPUT     DEFAULT
+# ##setgpio  16    INPUT     DEFAULT
+# setgpio  17    OUTPUT    DOWN
+# setgpio  18    ALT0      DOWN
+# setgpio  19    ALT0      DOWN
+# setgpio  20    ALT0      DOWN
+# setgpio  21    ALT0      DOWN
+# setgpio  22    OUTPUT    DOWN
+# #setgpio  23    OUTPUT    NONE
+# setgpio  24    OUTPUT    NONE
+# setgpio  25    OUTPUT    NONE
+# ##setgpio  26    INPUT     DEFAULT
+# setgpio  27    INPUT     UP
