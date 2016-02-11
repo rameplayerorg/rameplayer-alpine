@@ -1,8 +1,7 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer-utils
-pkgver=0.0.20151208.1
-_commitid=65eab052630618a644cbe2f53c5cf6aef541e9d0
-pkgrel=1
+pkgver=0.4.0
+pkgrel=0
 pkgdesc="Rameplayer Backend"
 url="https://github.com/rameplayerorg/rameplayer-utils"
 arch="armhf"
@@ -12,9 +11,9 @@ makedepends="raspberrypi-dev freetype-dev"
 install=""
 subpackages=""
 
-source="$pkgname-$pkgver.tar.gz::https://github.com/rameplayerorg/rameplayer-utils/archive/$_commitid.tar.gz
+source="$pkgname-$pkgver.tar.gz::https://github.com/rameplayerorg/rameplayer-utils/archive/v$pkgver.tar.gz
 	"
-_srcdir="$srcdir"/$pkgname-$_commitid
+_srcdir="$srcdir"/$pkgname-$pkgver
 
 prepare() {
 	:
@@ -33,6 +32,6 @@ package() {
 	install -m644 "$_srcdir"/ramefbcp/ramefbcp.ttf "$pkgdir"/usr/share/fonts/TTF/
 }
 
-md5sums="2b76a14fee84039507d26fb12bb00133  rameplayer-utils-0.0.20151208.1.tar.gz"
-sha256sums="853a8708d78c1d8c59a9d023d809dbb6348bc1a968299570a739e4368ef28573  rameplayer-utils-0.0.20151208.1.tar.gz"
-sha512sums="120b3e44e1ba660052460540f1b86c8256fd0a0a8ded3275ff2df34e3c01222a8919d9e6bd148732899721061ffd3363e0348b9633ab06fcf6686446c3605deb  rameplayer-utils-0.0.20151208.1.tar.gz"
+md5sums="e3bf3bc153e726c59b15db198030f03c  rameplayer-utils-0.4.0.tar.gz"
+sha256sums="c32d9348c89e89642b5f9d74af0402889dcfa224b21a7271344db387891be9d9  rameplayer-utils-0.4.0.tar.gz"
+sha512sums="82f3365a6b57ede3474c6dfe6eeb08ba379bbd359f93a732cc560ee52c95f96cd49aa3df22309273be7f4fba03c4553316a1a7d3112305c721bf16a0d518b931  rameplayer-utils-0.4.0.tar.gz"
