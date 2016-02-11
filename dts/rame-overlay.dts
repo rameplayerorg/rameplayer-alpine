@@ -35,8 +35,24 @@
 	compatible = "brcm,bcm2709";  // Raspberry Pi 2
 
 
-	// for LCD & Audio:
+	// component ids
 	fragment@0 {
+		target-path = "/";
+		__overlay__ {
+			rame {
+				cid3 = "r2kbd";
+				cid4 = "lcd";
+				cid5 = "audio";
+				cid6 = "rtc";
+			};
+		}; // overlay
+	}; // fragment
+
+
+// ---------------------------------------------------------------------------
+
+	// for LCD & Audio:
+	fragment@1 {
 		target = <&spi0>;  // /soc/spi0
 		__overlay__ {
 			spidev@0 {
@@ -68,7 +84,7 @@
 	*/
 
 	// mcp23017 pin setup
-	fragment@1 {
+	fragment@2 {
 		target = <&gpio>;  // /soc/gpio
 
 		__overlay__ {
@@ -80,7 +96,7 @@
 	}; // fragment
 
 	// mcp23017 IO expander setup
-	fragment@2 {
+	fragment@3 {
 		target = <&i2c_arm>;  // /soc/i2c0 or /soc/i2c1
 
 		__overlay__ {
@@ -112,7 +128,7 @@
 
 
 	// 4 leds, L1...L4
-	fragment@3 {
+	fragment@4 {
 		target = <&leds>;  // /soc/leds
 
 		__overlay__ {
@@ -150,7 +166,7 @@
 
 
 	// 7 buttons, B1...B7
-	fragment@4 {
+	fragment@5 {
 		target = <&soc>;  // /soc
 
 		__overlay__ {
@@ -219,7 +235,7 @@
 
 	// LCD screen
 
-	fragment@5 {
+	fragment@6 {
 		target = <&gpio>;  // /soc/gpio
 
 		__overlay__ {
@@ -231,7 +247,7 @@
 		}; // __overlay__
 	}; // fragment
 
-	fragment@6 {
+	fragment@7 {
 		target = <&spi0>;  // /soc/spi0
 
 		__overlay__ {
@@ -265,7 +281,7 @@
 
 	// RTC (DS1307)
 
-	fragment@7 {
+	fragment@8 {
 		target = <&i2c_arm>;
 		__overlay__ {
 			#address-cells = <1>;
@@ -283,7 +299,7 @@
 // ---------------------------------------------------------------------------
 	// Cirrus Logic Audio Card
 
-	fragment@8 {
+	fragment@9 {
 		target-path = "/";
 		__overlay__ {
 			aliases {
@@ -293,7 +309,7 @@
 		}; // __overlay__
 	}; // fragment
 
-	fragment@9 {
+	fragment@10 {
 		target = <&sound>;  // /sound
 		__overlay__ {
 			compatible = "wlf,rpi-wm5102";
@@ -302,25 +318,25 @@
 		}; // __overlay__
 	}; // fragment
 
-	fragment@10 {
+	fragment@11 {
 		target = <&i2s>;  // /soc/i2s
 		__overlay__ {
 			status = "okay";
 		}; // __overlay__
 	}; // fragment
 
-	fragment@11 {
+	fragment@12 {
 		target = <&gpio>;  // /soc/gpio
 		__overlay__ {
 			wlf_pins: wlf_pins {
 				//brcm,pins = <17 22 27 8>; // original
-				brcm,pins = <17 22 27 5>;
+				brcm,pins = <17 22 27 5>; // changed PIN
 				brcm,function = <1 1 0 1>;
 			};
 		}; // __overlay__
 	}; // fragment
 
-	fragment@12 {
+	fragment@13 {
 		target-path = "/soc";
 		__overlay__ {
 
@@ -344,7 +360,7 @@
 		}; // __overlay__
 	}; // fragment
 
-	fragment@13 {
+	fragment@14 {
 		target = <&spi0>;  // /soc/spi0
 		__overlay__ {
 			#address-cells = <1>;
@@ -388,7 +404,7 @@
 		}; // __overlay__
 	}; // fragment
 
-	fragment@14 {
+	fragment@15 {
 		target = <&i2c1>;  // /soc/i2c1
 		__overlay__ {
 			status = "okay";
@@ -403,7 +419,7 @@
 				PVDD-supply = <&ldo0>;
 				DVDD-supply = <&ldo0>;
 				//wlf,reset-gpio = <&gpio 8 0>; // original
-				wlf,reset-gpio = <&gpio 5 0>; // changed (BCM 5 / Phys 29)
+				wlf,reset-gpio = <&gpio 5 0>; // changed PIN
 			};
 		}; // __overlay__
 	}; // fragment

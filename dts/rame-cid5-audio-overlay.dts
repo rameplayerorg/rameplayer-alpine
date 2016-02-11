@@ -2,7 +2,7 @@
 //
 // This is almost exact copy of:
 // https://github.com/HiassofT/rpi-linux/blob/cirrus-4.1.y/arch/arm/boot/dts/overlays/rpi-cirrus-wm5102-overlay.dts
-// (Only the wlf,reset-gpio for wlf,wm8804 has been changed)
+// (Differences: rame cid node & changed wlf,reset-gpio for wlf,wm8804)
 
 /dts-v1/;
 /plugin/;
@@ -10,7 +10,17 @@
 / {
 	compatible = "brcm,bcm2708";
 
+	// component id
 	fragment@0 {
+		target-path = "/";
+		__overlay__ {
+			rame {
+				cid5 = "audio";
+			};
+		}; // overlay
+	}; // fragment
+
+	fragment@1 {
 		target-path = "/";
 		__overlay__ {
 			aliases {
@@ -20,7 +30,7 @@
 		};
 	};
 
-	fragment@1 {
+	fragment@2 {
 		target = <&sound>;  // /sound
 		__overlay__ {
 			compatible = "wlf,rpi-wm5102";
@@ -29,25 +39,25 @@
 		};
 	};
 
-	fragment@2 {
+	fragment@3 {
 		target = <&i2s>;  // /soc/i2s
 		__overlay__ {
 			status = "okay";
 		};
 	};
 
-	fragment@3 {
+	fragment@4 {
 		target = <&gpio>;  // /soc/gpio
 		__overlay__ {
 			wlf_pins: wlf_pins {
 				//brcm,pins = <17 22 27 8>; // original
-				brcm,pins = <17 22 27 5>;
+				brcm,pins = <17 22 27 5>; // changed PIN
 				brcm,function = <1 1 0 1>;
 			};
 		};
 	};
 
-	fragment@4 {
+	fragment@5 {
 		target-path = "/soc";
 		__overlay__ {
 
@@ -71,7 +81,7 @@
 		};
 	};
 
-	fragment@5 {
+	fragment@6 {
 		target = <&spi0>;  // /soc/spi0
 		__overlay__ {
 			#address-cells = <1>;
@@ -123,7 +133,7 @@
 		};
 	};
 
-	fragment@6 {
+	fragment@7 {
 		target = <&i2c1>;  // /soc/i2c1
 		__overlay__ {
 			status = "okay";

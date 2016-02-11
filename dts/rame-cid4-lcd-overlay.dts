@@ -13,7 +13,17 @@
 	// Raspberry Pi 1 and 2
 	compatible = "brcm,bcm2835", "brcm,bcm2708", "brcm,bcm2709";
 
+	// component id
 	fragment@0 {
+		target-path = "/";
+		__overlay__ {
+			rame {
+				cid4 = "lcd";
+			};
+		}; // overlay
+	}; // fragment
+
+	fragment@1 {
 		target = <&spi0>;  // /soc/spi0
 		__overlay__ {
 			status = "okay";
@@ -23,7 +33,7 @@
 		}; // __overlay__
 	}; // fragment
 
-	fragment@1 {
+	fragment@2 {
 		target = <&gpio>;  // /soc/gpio
 
 		__overlay__ {
@@ -35,7 +45,7 @@
 		}; // __overlay__
 	}; // fragment
 
-	fragment@2 {
+	fragment@3 {
 		target = <&spi0>;  // /soc/spi0
 
 		__overlay__ {
@@ -65,5 +75,4 @@
 
 		}; // __overlay__
 	}; // fragment
-
 };
