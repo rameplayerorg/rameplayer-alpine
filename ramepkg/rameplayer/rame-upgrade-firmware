@@ -14,8 +14,8 @@ rsync \
 	--times --modify-window=1 --whole-file \
 	--exclude cache \
 	--exclude media \
-	--exclude usercfg.txt \
-	--exclude rame.apkovl.tar.gz \
+	--exclude user \
+	--exclude "*.apkovl.tar.gz" \
 	$FIRMWARE_URI \
 	/media/mmcblk0p1/
 /etc/init.d/udev stop
