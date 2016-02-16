@@ -3,7 +3,7 @@
 # locally built packages should be in apk repositories
 # packages: kmod imagemagick alpine-sdk
 
-RPI_FIRMWARE_COMMITID=3dd0c1c6aa3edb2ffc0e3a675eeb4492af50bb37
+RPI_FIRMWARE_COMMITID=fa931b468e18df9be6a379991a0d74264dc3e4c7
 TARGET=$PWD/_image
 
 # Build our packages first
@@ -24,24 +24,28 @@ if [ -e "$TARGET"/boot/dtbs ]; then
 fi
 
 # apk repository
-if [ ! -e $TARGET/apks ]; then
-	mkdir -p "$TARGET"/apks/armhf
-	apk fetch --output "$TARGET"/apks/armhf --recursive \
-		alpine-base acct strace tmux rameplayer \
-		&& \
-	apk index --description "Rameplayer build $(date)" \
-		--rewrite-arch armhf -o "$TARGET"/apks/armhf/APKINDEX.tar.gz "$TARGET"/apks/armhf/*.apk \
-		&& \
-	abuild-sign "$TARGET"/apks/armhf/APKINDEX.tar.gz \
-		|| { rm -rf "$TARGET"/apks; exit 1; }
-	touch "$TARGET"/apks/.boot_repository
-fi
+mkdir -p "$TARGET"/apks/armhf
+apk fetch --purge --output "$TARGET"/apks/armhf --recursive \
+	alpine-base acct strace tmux rameplayer \
+	&& \
+apk index --description "Rameplayer build $(date)" --rewrite-arch armhf \
+	--index "$TARGET"/apks/armhf/APKINDEX.tar.gz \
+	--output "$TARGET"/apks/armhf/APKINDEX.tar.gz \
+	"$TARGET"/apks/armhf/*.apk \
+	&& \
+abuild-sign "$TARGET"/apks/armhf/APKINDEX.tar.gz \
+	|| { rm -f "$TARGET"/apks/armhf/APKINDEX.tar.gz ; exit 1; }
+touch "$TARGET"/apks/.boot_repository
 
 # RPi firmware and boot config
+local OLD_FW="$(cat .rpi_firmware_commitid 2>/dev/null)"
 for fw in bootcode.bin fixup.dat start.elf ; do
-	[ ! -e $TARGET/$fw ] && \
-		curl https://raw.githubusercontent.com/raspberrypi/firmware/${RPI_FIRMWARE_COMMITID}/boot/${fw} -o "$TARGET"/${fw}
+	if [ "${RPI_FIRMWARE_COMMITID}" != "${OLD_FW}" -o ! -e $TARGET/$fw ]; then
+		curl --remote-time https://raw.githubusercontent.com/raspberrypi/firmware/${RPI_FIRMWARE_COMMITID}/boot/${fw} \
+			--output "$TARGET"/${fw} || exit 1
+	fi
 done
+echo -n "${RPI_FIRMWARE_COMMITID}" > .rpi_firmware_commitid
 
 file_update() {
 	local tmp=$(mktemp)
@@ -75,7 +79,9 @@ disable_overscan=1
 config_hdmi_boost=7
 hdmi_clock_change_limit=20
 hdmi_force_hotplug=1
-include usercfg.txt
+include user/ramehw.txt
+include user/ramecfg.txt
+include user/config.txt
 EOF
 
 #modules=loop,squashfs,sd-mod,usb-storage quiet chart
