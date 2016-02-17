@@ -1,6 +1,6 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer-utils
-pkgver=0.4.0
+pkgver=0.4.1
 pkgrel=0
 pkgdesc="Rameplayer Backend"
 url="https://github.com/rameplayerorg/rameplayer-utils"
@@ -32,6 +32,6 @@ package() {
 	install -m644 "$_srcdir"/ramefbcp/ramefbcp.ttf "$pkgdir"/usr/share/fonts/TTF/
 }
 
-md5sums="e3bf3bc153e726c59b15db198030f03c  rameplayer-utils-0.4.0.tar.gz"
-sha256sums="c32d9348c89e89642b5f9d74af0402889dcfa224b21a7271344db387891be9d9  rameplayer-utils-0.4.0.tar.gz"
-sha512sums="82f3365a6b57ede3474c6dfe6eeb08ba379bbd359f93a732cc560ee52c95f96cd49aa3df22309273be7f4fba03c4553316a1a7d3112305c721bf16a0d518b931  rameplayer-utils-0.4.0.tar.gz"
+md5sums="44796042b0ab98b6816661fcd4d841b0  rameplayer-utils-0.4.1.tar.gz"
+sha256sums="066a7617f8f48bd4c7f5fd5a86452ca239eddef5fca4fdea698baf42db0ac4f5  rameplayer-utils-0.4.1.tar.gz"
+sha512sums="4b1b9d8fcac6ae5f4053627a08a9c8b78f26425327c3bb16f564a37a09bbc308c500d62349188b2c70df76a0f1f661bfbec57fe497751b716ca9770baedbbeec  rameplayer-utils-0.4.1.tar.gz"
