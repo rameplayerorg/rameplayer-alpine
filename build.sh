@@ -2,8 +2,10 @@
 
 # locally built packages should be in apk repositories
 # packages: kmod imagemagick alpine-sdk
+# other:    sudo ln -s $PWD/rame.modules /etc/mkinitfs/features.d/
 
 RPI_FIRMWARE_COMMITID=fa931b468e18df9be6a379991a0d74264dc3e4c7
+INITRAMFS_FEATURES="base bootchart ext4 keymap kms mmc rame squashfs usb"
 TARGET=$PWD/_image
 
 # Build our packages first
@@ -15,8 +17,11 @@ done
 
 # Prepare kernels, initramfs, modloop and dtbs
 mkdir -p "$TARGET"/boot "$TARGET"/overlays "$TARGET"/cache
-[ ! -e $TARGET/boot/vmlinuz-rpi  ] && update-kernel -f rpi  -a armhf "$TARGET"/boot
-[ ! -e $TARGET/boot/vmlinuz-rpi2 ] && update-kernel -f rpi2 -a armhf "$TARGET"/boot
+# Ugly hack to fix mkinitfs using local filesystem features
+# instead of the package ones
+export features_dir=/etc/mkinitfs/features.d/
+[ ! -e $TARGET/boot/vmlinuz-rpi  ] && update-kernel -f rpi  -a armhf -F "$INITRAMFS_FEATURES" "$TARGET"/boot
+[ ! -e $TARGET/boot/vmlinuz-rpi2 ] && update-kernel -f rpi2 -a armhf -F "$INITRAMFS_FEATURES" "$TARGET"/boot
 if [ -e "$TARGET"/boot/dtbs ]; then
 	mv -f "$TARGET"/boot/dtbs/*.dtb "$TARGET"
 	mv -f "$TARGET"/boot/dtbs/overlays/*.dtb "$TARGET"/overlays

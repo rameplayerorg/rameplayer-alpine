@@ -1,0 +1,5 @@
+kernel/drivers/spi/spi-bcm2835.ko
+kernel/drivers/gpio/gpio-mcp23s08.ko
+kernel/drivers/leds/leds-gpio.ko
+kernel/drivers/staging/fbtft/fbtft.ko
+kernel/drivers/staging/fbtft/fb_st7735r.ko
