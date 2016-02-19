@@ -224,7 +224,7 @@
 			rame-rotary {
 				compatible = "rotary-encoder";
 				// patched kernel required:
-				gpios = <&gpiom1 4 1>, <&gpiom1 5 1>; // GPA4,GPA5
+				gpios = <&gpiom1 5 1>, <&gpiom1 4 1>; // GPA5,GPA4
 				rotary-encoder,relative-axis;
 				linux,axis = <0>; // REL_X
 			}; // rame-rotary
