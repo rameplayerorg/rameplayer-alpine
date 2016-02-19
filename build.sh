@@ -16,17 +16,23 @@ done
 [ "$ret" == 0 ] || return $ret
 
 # Prepare kernels, initramfs, modloop and dtbs
-mkdir -p "$TARGET"/boot "$TARGET"/overlays "$TARGET"/cache
+kernel_new="$(apk fetch --simulate linux-rpi linux-rpi2|sort -u)"
+kernel_old="$(cat .rpi_kernel 2>/dev/null)"
+[ "${kernel_old}" != "${kernel_new}" ] && rm -rf "$TARGET"/boot
+
 # Ugly hack to fix mkinitfs using local filesystem features
 # instead of the package ones
 export features_dir=/etc/mkinitfs/features.d/
+
+mkdir -p "$TARGET"/boot "$TARGET"/overlays "$TARGET"/cache
 [ ! -e $TARGET/boot/vmlinuz-rpi  ] && update-kernel -f rpi  -a armhf -F "$INITRAMFS_FEATURES" "$TARGET"/boot
 [ ! -e $TARGET/boot/vmlinuz-rpi2 ] && update-kernel -f rpi2 -a armhf -F "$INITRAMFS_FEATURES" "$TARGET"/boot
 if [ -e "$TARGET"/boot/dtbs ]; then
 	mv -f "$TARGET"/boot/dtbs/*.dtb "$TARGET"
-	mv -f "$TARGET"/boot/dtbs/overlays/*.dtb "$TARGET"/overlays
+	[ -e "$TARGET"/boot/dtbs/overlays ] && mv -f "$TARGET"/boot/dtbs/overlays/*.dtb "$TARGET"/overlays
 	rm -rf "$TARGET"/boot/dtbs "$TARGET"/boot/System.map-rpi*
 fi
+[ "${kernel_old}" != "${kernel_new}" ] && echo "${kernel_new}" > .rpi_kernel
 
 # apk repository
 mkdir -p "$TARGET"/apks/armhf
