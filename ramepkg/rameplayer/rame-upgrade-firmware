@@ -15,8 +15,8 @@ fi
 
 mount -o remount,rw /media/mmcblk0p1
 rsync \
-	--delete --delete-delay --delay-updates \
-	--verbose --recursive \
+	--info=progress2 --delete --delete-delay --delay-updates \
+	--recursive \
 	--times --modify-window=1 --whole-file \
 	--exclude cache \
 	--exclude media \
