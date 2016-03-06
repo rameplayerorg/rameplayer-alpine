@@ -1,10 +1,16 @@
 #!/bin/sh
+# takes optional URI as commandline param if no param defaults to config
 
 [ -e /etc/rame-upgrade.conf ] && . /etc/rame-upgrade.conf
 
 if [ -z "$FIRMWARE_URI" ]; then
 	echo "Configure upgrade source in /etc/rame-upgrade.conf"
 	exit 1
+fi
+
+#if the 1st param is not empty
+if [ "$1" != "" ]; then
+FIRMWARE_URI=$1
 fi
 
 mount -o remount,rw /media/mmcblk0p1
