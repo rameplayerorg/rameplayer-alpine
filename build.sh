@@ -109,3 +109,6 @@ for dts in dts/*.dts; do
 	file_update "$TARGET"/overlays/$overlay.dtb \
 		dtc -@ -I dts -O dtb dts/$overlay.dts
 done
+
+# firmware version
+file_update "$TARGET"/rameversion.txt echo "dev-$(date +%Y%m%d)"
