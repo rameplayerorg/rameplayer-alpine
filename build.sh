@@ -4,7 +4,7 @@
 # packages: kmod imagemagick alpine-sdk
 # other:    sudo ln -s $PWD/rame.modules /etc/mkinitfs/features.d/
 
-RPI_FIRMWARE_COMMITID=fa931b468e18df9be6a379991a0d74264dc3e4c7
+RPI_FIRMWARE_COMMITID=951799bbcd795ddf27769d14acf4813fdcbe53dc
 INITRAMFS_FEATURES="base bootchart ext4 keymap kms mmc rame squashfs usb"
 TARGET=$PWD/_image
 
