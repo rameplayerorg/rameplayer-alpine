@@ -85,6 +85,10 @@ initramfs boot/initramfs-rpi 0x08000000
 gpu_mem=256
 kernel=boot/vmlinuz-rpi2
 initramfs boot/initramfs-rpi2 0x08000000
+[pi3]
+gpu_mem=256
+kernel=boot/vmlinuz-rpi2
+initramfs boot/initramfs-rpi2 0x08000000
 [all]
 disable_overscan=1
 config_hdmi_boost=7
