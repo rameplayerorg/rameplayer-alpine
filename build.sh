@@ -4,7 +4,7 @@
 # packages: kmod imagemagick alpine-sdk
 # other:    sudo ln -s $PWD/rame.modules /etc/mkinitfs/features.d/
 
-RPI_FIRMWARE_COMMITID=951799bbcd795ddf27769d14acf4813fdcbe53dc
+RPI_FIRMWARE_COMMITID=4bf906cdd221c4f6815d0da7dda0cd59d25d945b
 INITRAMFS_FEATURES="base bootchart ext4 keymap kms mmc rame squashfs usb"
 TARGET=$PWD/_image
 
@@ -116,3 +116,5 @@ done
 
 # firmware version
 file_update "$TARGET"/rameversion.txt echo "dev-$(date +%Y%m%d)"
+
+exit 0
