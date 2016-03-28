@@ -95,28 +95,28 @@ B1...B7 = Buttons
 
 			// L4
 			rame_4_rame {
-				label = "rame:orange:rame";
+				label = "rame:rame";
 				gpios = <&gpiom1 0 1>; // GPA0 GPIO_ACTIVE_LOW
 				default-state = "on";
 			};
 
 			// L3
 			rame_3_stop {
-				label = "rame:red:stop";
+				label = "rame:stop";
 				gpios = <&gpiom1 1 1>; // GPA1 GPIO_ACTIVE_LOW
 				default-state = "on";
 			};
 
 			// L2
 			rame_2_pause {
-				label = "rame:yellow:pause";
+				label = "rame:pause";
 				gpios = <&gpiom1 2 1>; // GPA2 GPIO_ACTIVE_LOW
 				default-state = "on";
 			};
 
 			// L1
 			rame_1_play {
-				label = "rame:green:play";
+				label = "rame:play";
 				gpios = <&gpiom1 3 1>; // GPA3 GPIO_ACTIVE_LOW
 				default-state = "on";
 			};
