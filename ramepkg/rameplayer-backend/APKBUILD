@@ -1,6 +1,6 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer-backend
-pkgver=0.7.1
+pkgver=0.7.3
 #_commitid=
 pkgrel=0
 pkgdesc="Rameplayer Backend"
@@ -35,6 +35,6 @@ package() {
 	install -m755 "$_srcdir"/plugins/*.lua "$pkgdir"/usr/share/$pkgname/plugins/
 }
 
-md5sums="caa875dae93dce958d587f0cdd0bf82a  rameplayer-backend-0.7.1.tar.gz"
-sha256sums="d640120b8151720db9718287ca8cecd50b798cbfc205262829a1674cb9ca0ef0  rameplayer-backend-0.7.1.tar.gz"
-sha512sums="27ce0510f9c02ff35663aa45423707045eefd0a005edb6c36642821e167955972c28c7fd6dbf84bad8d02be5c6da2db853d37dbd384d06115997a9887118baa4  rameplayer-backend-0.7.1.tar.gz"
+md5sums="b183e1d2e75f344d82105034829ff1d3  rameplayer-backend-0.7.3.tar.gz"
+sha256sums="6b8c52d7d92b7251d3150432f354be97419ebcb9cf9e9c0844eb91d8ddc74d9d  rameplayer-backend-0.7.3.tar.gz"
+sha512sums="79b886c260898a1f1e7af6d383299698d61efc819c589706226e2e144caafea2948a174c6c0eded8fffb72240e770d398a4c8ea0c6be8a9a6eb576cae6453a2b  rameplayer-backend-0.7.3.tar.gz"
