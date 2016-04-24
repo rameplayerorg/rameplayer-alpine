@@ -1,0 +1,10 @@
+#!/sbin/openrc-run
+
+name=rameclock-button
+command=/usr/bin/$name
+command_background=1
+pidfile=/var/run/$name
+
+depend() {
+	need mosquitto
+}

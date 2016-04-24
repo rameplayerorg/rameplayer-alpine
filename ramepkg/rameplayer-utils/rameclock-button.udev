@@ -1,0 +1,15 @@
+#!/bin/sh
+
+while [ -e /run/openrc/rc.starting ]; do
+	sleep 1
+done
+
+if [ "$ACTION" = add ]; then
+	CMD=start
+elif [ "$ACTION" = remove ]; then
+	CMD=stop
+else
+	exit 0
+fi
+
+IN_HOTPLUG=1 rc-service rameclock-button $CMD

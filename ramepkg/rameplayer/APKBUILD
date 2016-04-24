@@ -1,6 +1,6 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer
-pkgver=0.8
+pkgver=0.9
 pkgrel=0
 pkgdesc="Rameplayer configuration"
 url="https://github.com/rameplayerorg/rameplayer-alpine"
@@ -27,6 +27,7 @@ source="interfaces
 	sshd_config
 	wolfson.rules
 	wolfson.sh
+	rc.conf
 	"
 
 prepare() {
@@ -54,6 +55,7 @@ package() {
 	install -D -m644 sshd_config "$pkgdir"/etc/ssh/sshd_config
 	install -D -m644 wolfson.rules "$pkgdir"/lib/udev/rules.d/90-wolfson.rules
 	install -D -m755 wolfson.sh "$pkgdir"/usr/libexec/wolfson/wolfson.sh
+	install -D -m644 rc.conf "$pkgdir"/etc/rc.conf
 
 	mkdir -p "$pkgdir"/etc/cqpushy/
 	ln -s /usr/share/rameplayer-backend/rameplayer.lua "$pkgdir"/etc/cqpushy/cqpushy.lua
@@ -91,7 +93,8 @@ a5f3259412e2cf50b6a43b3b55f2dfd9  rpi.conf
 b7848429067114ac418071ddca215069  rame-upgrade-firmware
 5e67152f41f19a64dc8e3fe27a6fc5a7  sshd_config
 39514f75405235d7c1e1af0d514c5143  wolfson.rules
-10e8f2563058d35ff9d54e770c5c6b58  wolfson.sh"
+10e8f2563058d35ff9d54e770c5c6b58  wolfson.sh
+7e6fb4d3269a81d759885066ef4d6bf8  rc.conf"
 sha256sums="3157c93d752a8e3e26d564abf4f92b2b4c0236ff478367c81add68bb9d1ef3ca  interfaces
 a0122aef4832a599c2129ee9d8df2d988e76ab1521ad0185e660e6b917697d77  modules
 299f43f1a6b39773e6bf0c11e23e9fe0048d3b54dd46d26732abb41bc528e946  ntp.conf
@@ -102,7 +105,8 @@ c5a448381304ec8b1a714f6f23c18ac108b899e4a9f9e3247c96835ca4d600c4  rpi.conf
 cced418097316e2b713a3c2853bbb10e1146385d037aeee21154f4e9194e7b57  rame-upgrade-firmware
 6e079cb7ab6c91a60777b93de1b75ef3c9251c2fedf44e0a38200fc2a104f4d9  sshd_config
 872deb982c1b4a1bbec4a6bc47dc7a4411bee72520456f1f05d88195fb33d65f  wolfson.rules
-b7c6744371304f6eddead73c99d45e5383b7f2329a7ba6e68b5d4616ce770537  wolfson.sh"
+b7c6744371304f6eddead73c99d45e5383b7f2329a7ba6e68b5d4616ce770537  wolfson.sh
+65af34a413251df384928ba82f9922de92f95a4e06ffd95ddf07af5f22b1868a  rc.conf"
 sha512sums="014f182397a9609aa8420f88d5c8430d6fc547186cf71264fec5a48cf97e1d8c76398cdc09f16db6bd22d3452ea419e36d6db5b715e81a0c33bf10f9eddca59a  interfaces
 ca76b0ba2c01eccce24b9ba6289a3cca45dd0c875ad431b3dab3c8e70f842f78137e83b4ed4792ede02fce6c2201a1ca166dbdd85adf7ee682ad6fe6bccd67be  modules
 3fa49a3bd0dcb13e526a634f605d967f78527470233f456fd7ba83d8e72f9c471de398a83e9ab84879d0cd468346feba9f9a3c2f7df708a9b18d4b8729aeae07  ntp.conf
@@ -113,4 +117,5 @@ ea91cccbc8b91b7e57ebbb587fdca35497ddfbce4c9ec1404ec5277cc35615874dbb182df3f9ef63
 e332b2f87988a07aaaaf088a0e69c2179a88a67788cf4ba3a78fa2f7f7dd7252763322c9a88c6b5f7555c3044674fcbffa35a0e97e417fe249759ce6a0ce1b76  rame-upgrade-firmware
 881e5473265cb325a2a7c3d7679a4d9a2eaf0052742d682cdece05c9d884f319b33236725a22e5a71d8b4b06006ac2befa4639e72d87da5a0eef5e46a598aff6  sshd_config
 a58c7398894ecabe3b56d842748620c429e324d14a1252de55664f98153afab9a1283378ccaf0ddd91eebc5c612523b47982af5ec1f683b6ea0560b0d1f2950e  wolfson.rules
-1bce1aea1374093ba084532586e3ec97812fb2ca1e87945d392e2bbbf49f08ccd81cb38e472181197dde13a079c89ec2447dc7d0730d6a0950142c3f392089b5  wolfson.sh"
+1bce1aea1374093ba084532586e3ec97812fb2ca1e87945d392e2bbbf49f08ccd81cb38e472181197dde13a079c89ec2447dc7d0730d6a0950142c3f392089b5  wolfson.sh
+22a23f7036d5990ec73b1656ae994c8165e6d062a8ccc7a6c8ef47e55481bcd4f24da464c639b7478beeabe4f6bc108462360a280db2f52d106753062bdfd250  rc.conf"
