@@ -1,6 +1,6 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer-utils
-pkgver=0.5.0
+pkgver=0.6.0
 pkgrel=0
 pkgdesc="Rameplayer Backend"
 url="https://github.com/rameplayerorg/rameplayer-utils"
@@ -13,25 +13,22 @@ subpackages=""
 
 source="$pkgname-$pkgver.tar.gz::https://github.com/rameplayerorg/rameplayer-utils/archive/v$pkgver.tar.gz
 	"
-_srcdir="$srcdir"/$pkgname-$pkgver
+builddir="$srcdir"/$pkgname-$pkgver
 
 prepare() {
 	:
 }
 
 build() {
-	cd "$_srcdir"
+	cd "$builddir"
 	cmake . && make
 }
 
 package() {
-	mkdir -p "$pkgdir"/usr/bin/ "$pkgdir"/usr/share/fonts/TTF/
-	install -m755 "$_srcdir"/rametext/rametext "$pkgdir"/usr/bin/
-	install -m755 "$_srcdir"/rameclock/rameclock "$pkgdir"/usr/bin/
-	install -m755 "$_srcdir"/ramefbcp/ramefbcp "$pkgdir"/usr/bin/
-	install -m644 "$_srcdir"/ramefbcp/ramefbcp.ttf "$pkgdir"/usr/share/fonts/TTF/
+	cd "$builddir"
+	make install DESTDIR="$pkgdir"
 }
 
-md5sums="310b0dd08151847cd47e1005bbdbee4d  rameplayer-utils-0.5.0.tar.gz"
-sha256sums="e070a11caca651f09900631e982a773e70f4965c928714643e002dde49da7719  rameplayer-utils-0.5.0.tar.gz"
-sha512sums="c076ace4b84d4de6de138ee9269ffe74a78af3c51181eecf49f8a4a53cb13ccc76d5cf56151637893c15b8e33262333e5464f6df631541a271c471cb6fc79312  rameplayer-utils-0.5.0.tar.gz"
+md5sums="f0af9ed2593911b598a18b9c09e4ecf1  rameplayer-utils-0.6.0.tar.gz"
+sha256sums="57030028ff27f9bd456fad9cae3dc44233e58716e759712ce4f398045466f5ee  rameplayer-utils-0.6.0.tar.gz"
+sha512sums="2579f98df59c67c87cdf82e7340a86a3e986e31a1b390c3b14de65dcf11993c0795b4b0af3049781b1a2f2cdba54490cd37904a9133ec64590bb91f6a839bded  rameplayer-utils-0.6.0.tar.gz"
