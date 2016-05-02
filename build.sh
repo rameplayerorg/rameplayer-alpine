@@ -91,9 +91,9 @@ kernel=boot/vmlinuz-rpi2
 initramfs boot/initramfs-rpi2 0x08000000
 [all]
 disable_overscan=1
-config_hdmi_boost=7
-hdmi_clock_change_limit=20
+config_hdmi_boost=4
 hdmi_force_hotplug=1
+audio_pwm_mode=2
 include user/ramehw.txt
 include user/ramecfg.txt
 include user/config.txt
