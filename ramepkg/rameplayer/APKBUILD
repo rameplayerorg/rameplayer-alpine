@@ -1,7 +1,7 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer
 pkgver=0.9
-pkgrel=0
+pkgrel=1
 pkgdesc="Rameplayer configuration"
 url="https://github.com/rameplayerorg/rameplayer-alpine"
 arch="noarch"
@@ -10,7 +10,7 @@ depends="tzdata openssh rsync dhcpcd eudev dbus
 	raspberrypi alsa-utils ffmpeg omxplayer lua-cqueues-pushy
 	rameplayer-webui rameplayer-backend
 	"
-replaces="alpine-baselayout alpine-conf openssh"
+replaces="alpine-baselayout alpine-conf openssh openrc"
 replaces_priority="10"
 makedepends=""
 install=""
