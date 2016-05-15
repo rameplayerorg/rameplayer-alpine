@@ -37,7 +37,7 @@ fi
 # apk repository
 mkdir -p "$TARGET"/apks/armhf
 apk fetch --purge --output "$TARGET"/apks/armhf --recursive \
-	alpine-base acct strace tmux rameplayer \
+	alpine-base acct evtest strace tmux rameplayer \
 	&& \
 apk index --description "Rameplayer build $(date)" --rewrite-arch armhf \
 	--index "$TARGET"/apks/armhf/APKINDEX.tar.gz \
