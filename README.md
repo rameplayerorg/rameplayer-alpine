@@ -12,10 +12,11 @@ You can build a new git master firmware by updating `ramepkg/<package>/APKBUILD`
   ```sudo docker run -v /home/user/projects/rame:/opt/rame -p 8022:22 rameplayerorg/rameplayer```
 
 1. ssh into Docker image.
+1. Install abuild tool: ```apk add abuild```
 
 Do these for every updated package:
 
-1. Update `pkgver` line in `/opt/rame/rameplayer-alpine/ramepkg/<package>/APKBUILD` file.
+1. Update `pkgver` line in `/opt/rame/rameplayer-alpine/ramepkg/<package>/APKBUILD` file. You can edit this also in your host system with your favorite editor.
 1. Run `abuild -F checksum`. It will update checksums in `APKBUILD` file.
 
 Finally `git commit` all changes. After this git master firmware should be updated and available to be used in WebUI.
