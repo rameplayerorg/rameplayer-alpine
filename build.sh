@@ -101,7 +101,7 @@ EOF
 
 #modules=loop,squashfs,sd-mod,usb-storage quiet chart
 file_update "$TARGET"/cmdline.txt cat <<EOF
-modules=loop,squashfs,sd-mod,usb-storage blacklist=fbcon quiet
+modules=loop,squashfs,sd-mod,usb-storage blacklist=fbcon dwc_otg.fiq_fsm_mask=0x5 quiet
 EOF
 
 # boot logo, requires imagemagic installed
