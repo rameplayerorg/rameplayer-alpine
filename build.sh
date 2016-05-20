@@ -76,17 +76,18 @@ file_update() {
 file_update "$TARGET"/config.txt cat <<EOF
 disable_splash=1
 boot_delay=0
-[pi1]
+gpu_mem=256
 gpu_mem_256=64
-gpu_mem_512=256
+[pi0]
+kernel=boot/vmlinuz-rpi
+initramfs boot/initramfs-rpi 0x08000000
+[pi1]
 kernel=boot/vmlinuz-rpi
 initramfs boot/initramfs-rpi 0x08000000
 [pi2]
-gpu_mem=256
 kernel=boot/vmlinuz-rpi2
 initramfs boot/initramfs-rpi2 0x08000000
 [pi3]
-gpu_mem=256
 kernel=boot/vmlinuz-rpi2
 initramfs boot/initramfs-rpi2 0x08000000
 [all]
