@@ -1,0 +1,28 @@
+// RamePlayer CID2: 16x2 Text LCD screen (HD44780)
+//
+// Only enables i2c_arm.
+
+/dts-v1/;
+/plugin/;
+
+/ {
+	// Raspberry Pi 1 and 2
+	compatible = "brcm,bcm2835", "brcm,bcm2708", "brcm,bcm2709";
+
+	// component id
+	fragment@0 {
+		target-path = "/";
+		__overlay__ {
+			rame {
+				cid2 = "textlcd";
+			};
+		}; // overlay
+	}; // fragment
+
+	fragment@1 {
+		target = <&i2c_arm>;  // /soc/i2c0 or /soc/i2c1
+		__overlay__ {
+			status = "okay";
+		}; // __overlay__
+	}; // fragment
+};
