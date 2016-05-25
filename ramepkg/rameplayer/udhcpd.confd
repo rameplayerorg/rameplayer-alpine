@@ -1,1 +1,2 @@
 UDHCPD_OPTS="-S"
+rc_need="rame-eth0"

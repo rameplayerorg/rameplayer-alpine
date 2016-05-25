@@ -1,0 +1,32 @@
+#!/sbin/openrc-run
+#
+# Possibly temporary way to ensure eth0 is up
+
+
+depend() {
+	provide rame-eth0
+	need net
+	after firewall
+}
+
+
+start() {
+	ebegin "rame-eth0 waiting for IP"
+	MAX_TRIES=60
+	counter=0
+
+	while true; do
+		IP=`ifconfig eth0|grep 'inet addr'|cut -d ':' -f 2|cut -d ' ' -f 1`
+		if [ "$IP" != "" ]; then
+			echo IP: $IP
+			break;
+		fi
+		counter=$((counter+1))
+		if [ $counter -ge $MAX_TRIES ]; then
+			echo Max IP waiting tries reached - $counter
+			break;
+		fi
+		sleep 1
+	done
+	eend 0
+}
