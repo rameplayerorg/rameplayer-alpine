@@ -1,6 +1,5 @@
 #!/bin/sh
 DTC=~/git/dtc/dtc
-$DTC -@ -I dts -O dtb rame-overlay.dts > rame-overlay.dtb
 
 $DTC -@ -I dts -O dtb rame-cid1-r1kbd-overlay.dts > rame-cid1-r1kbd-overlay.dtb
 $DTC -@ -I dts -O dtb rame-cid2-textlcd-overlay.dts > rame-cid2-textlcd-overlay.dtb
