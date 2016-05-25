@@ -1,0 +1,89 @@
+// RamePlayer CID1: "R1 Keys" - 4 buttons (r1kbd)
+
+
+/dts-v1/;
+/plugin/;
+
+/*
+ Rameplayer "R1 Keys" (r1kbd):
++------------------+
+|  Up              |
+|  B3              |
+|        B1   B2   |
+|  B4   Play Stop  |
+| Down             |
++------------------+
+B1...B4 = Buttons
+*/
+
+/ {
+	// Raspberry Pi 1 and 2
+	compatible = "brcm,bcm2835", "brcm,bcm2708", "brcm,bcm2709";
+
+	// component id
+	fragment@0 {
+		target-path = "/";
+		__overlay__ {
+			rame {
+				cid1 = "r1kbd";
+			};
+		}; // overlay
+	}; // fragment
+
+	fragment@1 {
+		target = <&gpio>;  // /soc/gpio
+
+		__overlay__ {
+			r1kbd_pins: r1kbd_pins {
+				brcm,pins = <27 22 4 17>; // up down play stop (BCM)
+				brcm,function = <0 0 0 0>; // in
+				brcm,pull = <2 2 2 2>; // up
+			};
+		}; // __overlay__
+	};
+
+	// 4 buttons, B1...B4
+	fragment@2 {
+		target = <&soc>;  // /soc
+
+		__overlay__ {
+
+			rame-keys {
+				compatible = "gpio-keys";
+				#address-cells = <1>;
+				#size-cells = <0>;
+				pinctrl-names = "default";
+                                pinctrl-0 = <&r1kbd_pins>;
+				status = "okay";
+
+				// http://lxr.free-electrons.com/source/include/dt-bindings/input/input.h?v=4.1
+
+				rame_3_up {
+					label = "Up";
+					linux,code = <103>; // KEY_UP
+					gpios = <&gpio 27 1>; // (phys.13) GPIO_ACTIVE_LOW
+				};
+
+				rame_4_down {
+					label = "Down";
+					linux,code = <108>; // KEY_DOWN
+					gpios = <&gpio 22 1>; // (phys.15) GPIO_ACTIVE_LOW
+				};
+
+				rame_1_play {
+					label = "Play";
+					linux,code = <207>; // KEY_PLAY
+					gpios = <&gpio 4 1>; // (phys.7) GPIO_ACTIVE_LOW
+				};
+
+				rame_2_stop {
+					label = "Stop";
+					linux,code = <128>; // KEY_STOP
+					gpios = <&gpio 17 1>; // (phys.11) GPIO_ACTIVE_LOW
+				};
+
+			}; // rame-keys
+
+		}; // __overlay__
+	}; // fragment
+};
