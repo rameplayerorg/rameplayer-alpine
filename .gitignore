@@ -1,5 +1,6 @@
 _image
 .rpi_firmware_commitid
+.rpi_kernel
 eeprom/*.dtb
 eeprom/*.bin
 rame.apkovl.tar.gz
