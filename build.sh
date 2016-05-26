@@ -39,7 +39,9 @@ mkdir -p "$TARGET"/apks/armhf
 apk fetch --purge --output "$TARGET"/apks/armhf --recursive \
 	alpine-base acct evtest strace tmux rameplayer \
 	&& \
-apk index --description "Rameplayer build $(date)" --rewrite-arch armhf \
+apk index \
+	--description "Rameplayer build $(date)" \
+	--rewrite-arch armhf \
 	--index "$TARGET"/apks/armhf/APKINDEX.tar.gz \
 	--output "$TARGET"/apks/armhf/APKINDEX.tar.gz \
 	"$TARGET"/apks/armhf/*.apk \
@@ -66,10 +68,12 @@ file_update() {
 	if [ -e "$to" ] && cmp -s "$to" "$tmp"; then
 		echo "No update for $to"
 		rm "$tmp"
+		return 1
 	else
 		echo "Updated $to"
 		chmod a+r "$tmp"
 		mv "$tmp" "$to"
+		return 0
 	fi
 }
 
@@ -114,6 +118,13 @@ for dts in dts/*.dts; do
 	file_update "$TARGET"/overlays/$overlay.dtb \
 		dtc -@ -I dts -O dtb dts/$overlay.dts
 done
+
+# overlay
+if [ ! -e "rame.apkovl.tar.gz" ] || [ "genapkovl.sh" -nt "rame.apkovl.tar.gz" ]; then
+	fakeroot ./genapkovl.sh rame
+if
+file_update "$TARGET"/rame.apkovl.tar.gz cat rame.apkovl.tar.gz
+file_update "$TARGET"/factory.rst cat rame.apkovl.tar.gz
 
 # firmware version
 file_update "$TARGET"/rameversion.txt echo "dev-$(date +%Y%m%d)"
