@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # locally built packages should be in apk repositories
-# packages: kmod imagemagick alpine-sdk
+# packages: kmod imagemagick alpine-sdk fakeroot
 # other:    sudo ln -s $PWD/rame.modules /etc/mkinitfs/features.d/
 
 RPI_FIRMWARE_COMMITID=611d798ada7d36e4f4252459d55da5713b24853f
@@ -122,7 +122,7 @@ done
 # overlay
 if [ ! -e "rame.apkovl.tar.gz" ] || [ "genapkovl.sh" -nt "rame.apkovl.tar.gz" ]; then
 	fakeroot ./genapkovl.sh rame
-if
+fi
 file_update "$TARGET"/rame.apkovl.tar.gz cat rame.apkovl.tar.gz
 file_update "$TARGET"/factory.rst cat rame.apkovl.tar.gz
 
