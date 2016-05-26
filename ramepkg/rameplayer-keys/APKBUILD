@@ -1,0 +1,27 @@
+pkgname=rameplayer-keys
+pkgver=1.0
+pkgrel=0
+pkgdesc="Public keys for Rameplayer packages"
+url="https://github.com/rameplayerorg/"
+arch="noarch"
+license="GPL"
+depends=""
+makedepends=""
+install=""
+subpackages=""
+replaces=""
+source="rameplayer-5746e469.rsa.pub"
+
+build() {
+	return 0
+}
+
+package() {
+	mkdir -p "$pkgdir"/etc/apk/keys
+	install -m644 "$srcdir"/*.pub \
+		"$pkgdir"/etc/apk/keys/ || return 1
+}
+
+md5sums="4da59e187dda6dc023e4bd0e38310b4d  rameplayer-5746e469.rsa.pub"
+sha256sums="369a01c7372902b3a734ae94fb3397a9d82f3f7f5365e1b892e3ed8af45955a1  rameplayer-5746e469.rsa.pub"
+sha512sums="443fcf82a47d4f0db39b4b6ac62581f5afca22479a5c023f07f98998e3b50a892814283a17c7051a7ac9d082b2aa7cfaee08ac85b03b1df5c239ee55a41e31fd  rameplayer-5746e469.rsa.pub"
