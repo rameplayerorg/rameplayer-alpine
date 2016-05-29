@@ -1,0 +1,73 @@
+# Maintainer: Timo Teräs <timo.teras@iki.fi>
+_luaversions="5.1 5.2 5.3"
+pkgname=lua-lunix
+pkgver=20160415
+_commitid=f1fc49cc21c320f0d9f128a142b4b01c5f6dc37f
+pkgrel=0
+pkgdesc="Lua bindings to common Unix system APIs"
+url="http://25thandclement.com/~william/projects/lunix.html"
+arch="all"
+license="MIT"
+depends=""
+depends_dev=""
+subpackages=""
+makedepends="$depends_dev"
+install=""
+source="lunix-$pkgver.tar.gz::https://github.com/wahern/lunix/archive/$_commitid.tar.gz
+	"
+
+for _i in $_luaversions; do
+	makedepends="$makedepends lua${_i}-dev"
+	subpackages="$subpackages lua${_i}-lunix:_split_${_i/./}"
+done
+
+_builddir="$srcdir"/lunix-$_commitid
+prepare() {
+	local i
+	cd "$_builddir"
+	for i in $source; do
+		case $i in
+		*.patch) msg $i; patch -p1 -i "$srcdir"/$i || return 1;;
+		esac
+	done
+}
+
+build() {
+	cd "$_builddir"
+	# Override the HAVE_* tests that depend on GLIBC. grep for "#define HAVE_" on new releases.
+	export CFLAGS="$CFLAGS -DHAVE_EVENTFD=1 -DHAVE_EPOLL_CREATE1=1 -DHAVE_PIPE2=1"
+	for _i in $_luaversions; do
+		msg "Build for Lua $_i"
+		make all${_i} || return 1
+	done
+}
+
+package() {
+	cd "$_builddir"
+	for _i in $_luaversions; do
+		msg "Install for Lua $_i"
+		make DESTDIR="$pkgdir" prefix=/usr install${_i} || return 1
+	done
+}
+
+_split() {
+	local d= _ver=$1
+	pkgdesc="$pkgdesc - for Lua $_ver"
+	depends=
+	install_if="lua$_ver $pkgname=$pkgver-r$pkgrel"
+	for d in usr/lib/lua usr/share/lua; do
+		if [ -d "$pkgdir"/$d/$_ver ]; then
+			mkdir -p "$subpkgdir"/$d
+			mv "$pkgdir"/$d/$_ver "$subpkgdir"/$d/ || return 1
+		fi
+	done
+}
+
+for _i in $_luaversions; do
+	eval "_split_${_i/./}() { _split $_i; }"
+done
+
+
+md5sums="2aa19a6d921dab7adc39d4948d856839  lunix-20160415.tar.gz"
+sha256sums="76bb12717b2e10bea32f0ba05cb4c925ebcc34d9ef99e0a2b416cdfcb929aa02  lunix-20160415.tar.gz"
+sha512sums="3bdd36cd15a0a1a22c3ff65b0b4cb183b50ece074660a34e7b0898134f31e15b0e93b88b15698cafb9eadfef5891c101896cf5a7e89902d25a0340e5e48046cf  lunix-20160415.tar.gz"
