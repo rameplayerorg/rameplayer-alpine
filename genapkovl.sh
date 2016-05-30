@@ -27,7 +27,7 @@ makefile root:root 0644 "$tmp"/etc/hostname <<EOF
 $HOSTNAME
 EOF
 
-makefile root:root 0644 "$tmp"/etc/shadow <<EOF
+makefile root:shadow 0640 "$tmp"/etc/shadow <<EOF
 root:$6$aX.E08MuE1v0fNlH$ihmYbDsEOp6UH.LSD6HkO/eV9fCY5tkeSvpMyrZsWzdlpNggdAvSdb8fiigSoisKahylx2zH4QV/ewrfGsa3T1:16947:0:::::
 bin:!::0:::::
 daemon:!::0:::::
