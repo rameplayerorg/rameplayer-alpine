@@ -27,7 +27,7 @@ makefile root:root 0644 "$tmp"/etc/hostname <<EOF
 $HOSTNAME
 EOF
 
-makefile root:shadow 0640 "$tmp"/etc/shadow <<EOF
+makefile root:shadow 0640 "$tmp"/etc/shadow <<'EOF'
 root:$6$aX.E08MuE1v0fNlH$ihmYbDsEOp6UH.LSD6HkO/eV9fCY5tkeSvpMyrZsWzdlpNggdAvSdb8fiigSoisKahylx2zH4QV/ewrfGsa3T1:16947:0:::::
 bin:!::0:::::
 daemon:!::0:::::
@@ -91,7 +91,7 @@ EOF
 ln -sf /media/mmcblk0p1/cache "$tmp"/etc/apk/cache
 
 mkdir -p "$tmp"/root/.ssh
-makefile root:root 0600 "$tmp/root/.ssh/authorized_keys" <<EOF
+makefile root:root 0600 "$tmp/root/.ssh/authorized_keys" <<'EOF'
 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBL3uxJ64ChnZfolbCNkHi//EN5oKot0sBQ4ETnBNyy645OETeDnJvz4E7ZeqIGZ/QynmIbPwJiXQ/ENbXkFldDE= fabled
 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBPTZweBlih7IDA3x0yaJ2CX4/6k48UB7YV5CKtSDsJBmIz+QUMuFHZjq/TyuiBlj9sCNCzBrAtSTFKe0asSMvmw= tonic
 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKTBG1h5g2jtORtzEjiYHfbWr14d0MN6krdH1BwxMNXSwyUS4YlGTXbK36IDRa3kPNW0OYs/Wv2Slkm2wntytrQ= iqqmut
