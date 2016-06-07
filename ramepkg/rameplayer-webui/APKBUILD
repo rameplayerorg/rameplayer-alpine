@@ -1,6 +1,6 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer-webui
-pkgver=1.0.2
+pkgver=1.0.3
 pkgrel=0
 pkgdesc="Rameplayer Web Interface"
 url="https://github.com/rameplayerorg/rameplayer-webui"
@@ -39,6 +39,6 @@ package() {
 		"$pkgdir"/usr/share/$pkgname/www/vendor.min.js
 }
 
-md5sums="716be835f6942edd76154306d66b27bb  rameplayer-webui-1.0.2.tar.gz"
-sha256sums="0f8ed8bebd60659fcb374031635f9aa4ebee2eed2cbd735a49eb480f4c4d66ba  rameplayer-webui-1.0.2.tar.gz"
-sha512sums="5da85d6387596b1c0686c68c783fe47b023b11ebcf2532827ece1f64a8716d7161102a709ce4544c0ea395507d4606ce79176ed044474ea889fe9581863ae4a4  rameplayer-webui-1.0.2.tar.gz"
+md5sums="278763232622a3d5c2b222a4e62862fb  rameplayer-webui-1.0.3.tar.gz"
+sha256sums="746cd6c2c77cb8da1737983f7f464e2e2b1d49dac7e13e9caade6a1cd9611077  rameplayer-webui-1.0.3.tar.gz"
+sha512sums="85967aa68753e2082dcce0111938794bf692511d3d15387d1a11d5b3199d5e28788670aabdd86fa6866a0f0d1af24d34b9ac09adb4ecb882ab57cf3e974f0252  rameplayer-webui-1.0.3.tar.gz"
