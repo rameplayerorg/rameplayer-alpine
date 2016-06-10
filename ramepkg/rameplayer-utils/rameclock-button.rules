@@ -1,7 +1,0 @@
-SUBSYSTEM=="hidraw" \
-  ATTRS{busnum}=="1" ATTRS{idVendor}=="1d34" ATTRS{idProduct}=="000d" \
-  SYMLINK+="rame/button" RUN+="rameclock-button"
-
-SUBSYSTEM=="usb" \
-  ENV{ID_VENDOR_ID}=="1d34" ENV{ID_MODEL_ID}=="000d" \
-  ACTION=="remove" RUN+="rameclock-button"

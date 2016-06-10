@@ -1,10 +1,21 @@
 #!/sbin/openrc-run
 
 name=rameclock-button
-command=/usr/bin/$name
-command_background=1
-pidfile=/var/run/$name
 
-depend() {
-	need mosquitto
-}
+if [ $RC_SVCNAME = $name ]; then
+	depend() {
+		need mosquitto
+	}
+	start() {
+		:
+	}
+
+else
+	_dev=$(echo ${RC_SVCNAME#*.} | tr . /)
+	_devtype=${_dev%%/*}
+
+	command=/usr/bin/$name
+	command_args="${_devtype%[0-9]*} /dev/$_dev"
+	command_background=1
+	pidfile=/var/run/$RC_SVCNAME
+fi

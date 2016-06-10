@@ -1,0 +1,7 @@
+#!/bin/sh
+
+while [ -e /run/openrc/rc.starting ]; do
+	sleep 1
+done
+
+IN_HOTPLUG=1 rc-service rameclock-led restart

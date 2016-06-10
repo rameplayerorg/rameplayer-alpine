@@ -1,0 +1,11 @@
+SUBSYSTEM=="hidraw" \
+  ATTRS{busnum}=="1" ATTRS{idVendor}=="1d34" ATTRS{idProduct}=="000d" \
+  ACTION=="add" RUN+="rameclock-button"
+
+SUBSYSTEM=="hidraw" ACTION=="remove" RUN+="rameclock-button"
+
+SUBSYSTEM=="input" KERNEL=="event*" \
+  ENV{ID_PATH}=="platform-soc:rame-cid7-extbuttons" \
+  RUN+="rameclock-button"
+
+SUBSYSTEM=="leds" ACTION=="add" RUN+="rameclock-led"

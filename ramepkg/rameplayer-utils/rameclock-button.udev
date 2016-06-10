@@ -4,7 +4,12 @@ while [ -e /run/openrc/rc.starting ]; do
 	sleep 1
 done
 
+export IN_HOTPLUG=1
+SVC_BASE=rameclock-button
+SVC=$SVC_BASE$(echo ${DEVNAME#/dev} | tr / .)
+
 if [ "$ACTION" = add ]; then
+	rc-service $SVC_BASE start
 	CMD=start
 elif [ "$ACTION" = remove ]; then
 	CMD=stop
@@ -12,4 +17,5 @@ else
 	exit 0
 fi
 
-IN_HOTPLUG=1 rc-service rameclock-button $CMD
+ln -fs $SVC_BASE /etc/init.d/$SVC
+rc-service $SVC $CMD
