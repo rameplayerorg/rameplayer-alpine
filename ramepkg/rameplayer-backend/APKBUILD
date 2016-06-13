@@ -2,7 +2,7 @@
 pkgname=rameplayer-backend
 pkgver=1.0.7
 #_commitid=
-pkgrel=0
+pkgrel=1
 pkgdesc="Rameplayer Backend"
 url="https://github.com/rameplayerorg/rameplayer-backend"
 arch="noarch"
@@ -10,7 +10,7 @@ license="GPLv2"
 depends="
 	lua5.3 lua5.3-cjson lua5.3-penlight lua5.3-posix lua5.3-cqueues
 	lua5.3-ldbus lua5.3-socket lua5.3-evdev lua5.3-cqueues-pushy lua5.3-lunix
-	dbus omxplayer eudev ffmpeg rameplayer-utils
+	dbus omxplayer eudev ffmpeg rameplayer-utils fbida-fbi>=2.12
 	"
 makedepends=""
 install=""
