@@ -1,0 +1,100 @@
+// RamePlayer CID7: extbuttons
+// - for certain base RPi2 device types, with 3 external gpio buttons&leds
+
+/dts-v1/;
+/plugin/;
+
+/ {
+	// Raspberry Pi 1 and 2
+	compatible = "brcm,bcm2835", "brcm,bcm2708", "brcm,bcm2709";
+
+	// component id
+	fragment@0 {
+		target-path = "/";
+		__overlay__ {
+			rame {
+				cid7 = "extbuttons";
+			};
+		}; // overlay
+	}; // fragment
+
+	fragment@1 {
+		target = <&gpio>;  // /soc/gpio
+
+		__overlay__ {
+			rame_cid7_button_pins: rame_cid7_button_pins {
+				brcm,pins = <17 27 22>; // 3 buttons
+				brcm,function = <0 0 0>; // in
+				brcm,pull = <2 2 2>; // up
+			};
+		}; // __overlay__
+	};
+
+	// 3 buttons
+	fragment@2 {
+		target = <&soc>;  // /soc
+
+		__overlay__ {
+
+			rame-cid7-extbuttons {
+				compatible = "gpio-keys";
+				#address-cells = <1>;
+				#size-cells = <0>;
+				pinctrl-names = "default";
+                                pinctrl-0 = <&rame_cid7_button_pins>;
+				status = "okay";
+
+				// http://lxr.free-electrons.com/source/include/dt-bindings/input/input.h?v=4.1
+
+				rame_ext_1 {
+					label = "Button1";
+					linux,code = <2>; // KEY_1
+					gpios = <&gpio 17 1>; // (phys.11) GPIO_ACTIVE_LOW
+				};
+
+				rame_ext_2 {
+					label = "Down";
+					linux,code = <3>; // KEY_2
+					gpios = <&gpio 27 1>; // (phys.13) GPIO_ACTIVE_LOW
+				};
+
+				rame_ext_3 {
+					label = "Play";
+					linux,code = <4>; // KEY_3
+					gpios = <&gpio 22 1>; // (phys.15) GPIO_ACTIVE_LOW
+				};
+
+			}; // rame-keys
+
+		}; // __overlay__
+	}; // fragment
+
+        // 3 leds
+	fragment@3 {
+		target = <&leds>;  // /soc/leds
+
+		__overlay__ {
+			// http://lxr.free-electrons.com/source/include/dt-bindings/gpio/gpio.h?v=4.1
+
+			rame_ext_led_1 {
+				label = "rame:ext1";
+				gpios = <&gpio 23 0>; // (phys.16) GPIO_ACTIVE_HIGH
+				default-state = "off";
+			};
+
+			rame_ext_led_2 {
+				label = "rame:ext2";
+				gpios = <&gpio 24 0>; // (phys.18) GPIO_ACTIVE_HIGH
+				default-state = "off";
+			};
+
+			rame_ext_led_3 {
+				label = "rame:ext3";
+				gpios = <&gpio 25 0>; // (phys.22) GPIO_ACTIVE_HIGH
+				default-state = "off";
+			};
+
+		}; // __overlay__
+	}; // fragment
+
+};
