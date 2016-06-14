@@ -23,7 +23,7 @@
 
 		__overlay__ {
 			rame_cid7_button_pins: rame_cid7_button_pins {
-				brcm,pins = <17 27 22>; // 3 buttons
+				brcm,pins = <22 17 4>; // 3 buttons
 				brcm,function = <0 0 0>; // in
 				brcm,pull = <2 2 2>; // up
 			};
@@ -47,21 +47,21 @@
 				// http://lxr.free-electrons.com/source/include/dt-bindings/input/input.h?v=4.1
 
 				rame_ext_1 {
-					label = "Button1";
+					label = "Green";
 					linux,code = <2>; // KEY_1
-					gpios = <&gpio 17 1>; // (phys.11) GPIO_ACTIVE_LOW
+					gpios = <&gpio 22 1>; // (phys.15) GPIO_ACTIVE_LOW
 				};
 
 				rame_ext_2 {
-					label = "Down";
+					label = "Yellow";
 					linux,code = <3>; // KEY_2
-					gpios = <&gpio 27 1>; // (phys.13) GPIO_ACTIVE_LOW
+					gpios = <&gpio 17 1>; // (phys.11) GPIO_ACTIVE_LOW
 				};
 
 				rame_ext_3 {
-					label = "Play";
+					label = "Red";
 					linux,code = <4>; // KEY_3
-					gpios = <&gpio 22 1>; // (phys.15) GPIO_ACTIVE_LOW
+					gpios = <&gpio 4 1>; // (phys.7) GPIO_ACTIVE_LOW
 				};
 
 			}; // rame-keys
@@ -76,21 +76,24 @@
 		__overlay__ {
 			// http://lxr.free-electrons.com/source/include/dt-bindings/gpio/gpio.h?v=4.1
 
+                        // Green
 			rame_ext_led_1 {
 				label = "rame:ext1";
-				gpios = <&gpio 23 0>; // (phys.16) GPIO_ACTIVE_HIGH
+				gpios = <&gpio 25 0>; // (phys.22) GPIO_ACTIVE_HIGH
 				default-state = "off";
 			};
 
+                        // Yellow
 			rame_ext_led_2 {
 				label = "rame:ext2";
 				gpios = <&gpio 24 0>; // (phys.18) GPIO_ACTIVE_HIGH
 				default-state = "off";
 			};
 
+                        // Red
 			rame_ext_led_3 {
 				label = "rame:ext3";
-				gpios = <&gpio 25 0>; // (phys.22) GPIO_ACTIVE_HIGH
+				gpios = <&gpio 23 0>; // (phys.16) GPIO_ACTIVE_HIGH
 				default-state = "off";
 			};
 

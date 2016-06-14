@@ -7,3 +7,4 @@ $DTC -@ -I dts -O dtb rame-cid3-r2kbd-overlay.dts > rame-cid3-r2kbd-overlay.dtb
 $DTC -@ -I dts -O dtb rame-cid5-audio-overlay.dts > rame-cid5-audio-overlay.dtb
 $DTC -@ -I dts -O dtb rame-cid4-lcd-overlay.dts > rame-cid4-lcd-overlay.dtb
 $DTC -@ -I dts -O dtb rame-cid6-rtc-overlay.dts > rame-cid6-rtc-overlay.dtb
+$DTC -@ -I dts -O dtb rame-cid7-extbuttons-overlay.dts > rame-cid7-extbuttons-overlay.dtb
