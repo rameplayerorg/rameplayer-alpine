@@ -4,4 +4,10 @@ while [ -e /run/openrc/rc.starting ]; do
 	sleep 1
 done
 
-IN_HOTPLUG=1 rc-service rameclock-led restart
+for i in 1 2 3; do
+	while ! [ -e /sys/class/leds/rame:ext$i ]; do
+		sleep 1
+	done
+done
+
+IN_HOTPLUG=1 rc-service rameclock-led start

@@ -8,4 +8,6 @@ SUBSYSTEM=="input" KERNEL=="event*" \
   ENV{ID_PATH}=="platform-soc:rame-cid7-extbuttons" \
   RUN+="rameclock-button"
 
-SUBSYSTEM=="leds" ACTION=="add" RUN+="rameclock-led"
+SUBSYSTEM=="leds" \
+  ENV{DEVPATH}=="/devices/platform/soc/soc:leds/leds/rame:ext3" \
+  ACTION=="add" RUN+="rameclock-led"
