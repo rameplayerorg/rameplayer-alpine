@@ -1,12 +1,21 @@
 #!/bin/sh
 
+# Usage: ./build.sh [directory]
+#
+# Image will be built on given directory or if not given,
+# _image under current directory.
+
 # locally built packages should be in apk repositories
 # packages: kmod imagemagick alpine-sdk fakeroot
 # other:    sudo ln -s $PWD/rame.modules /etc/mkinitfs/features.d/
 
 RPI_FIRMWARE_COMMITID=611d798ada7d36e4f4252459d55da5713b24853f
 INITRAMFS_FEATURES="base bootchart ext4 keymap kms mmc rame squashfs usb"
-TARGET=$PWD/_image
+TARGET="$1"
+if [ -z "$TARGET" ]; then
+	# default value for image directory
+	TARGET=$PWD/_image
+fi
 
 # Build our packages first
 local ret=0
