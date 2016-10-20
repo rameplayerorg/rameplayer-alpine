@@ -27,10 +27,11 @@ export features_dir=/etc/mkinitfs/features.d/
 mkdir -p "$TARGET"/boot "$TARGET"/overlays "$TARGET"/cache
 [ ! -e $TARGET/boot/vmlinuz-rpi  ] && update-kernel -f rpi  -a armhf -p rameplayer-keys -F "$INITRAMFS_FEATURES" "$TARGET"/boot
 [ ! -e $TARGET/boot/vmlinuz-rpi2 ] && update-kernel -f rpi2 -a armhf -p rameplayer-keys -F "$INITRAMFS_FEATURES" "$TARGET"/boot
-if [ -e "$TARGET"/boot/dtbs ]; then
-	mv -f "$TARGET"/boot/dtbs/*.dtb "$TARGET"
-	[ -e "$TARGET"/boot/dtbs/overlays ] && mv -f "$TARGET"/boot/dtbs/overlays/*.dtb "$TARGET"/overlays
-	rm -rf "$TARGET"/boot/dtbs "$TARGET"/boot/System.map-rpi*
+if [ -e "$TARGET"/boot/overlays ]; then
+	# move files to correct directories
+	mv -f "$TARGET"/boot/*.dtb "$TARGET"
+	mv -f "$TARGET"/boot/overlays/*.dtb* "$TARGET"/overlays
+	rm -rf "$TARGET"/boot/overlays "$TARGET"/boot/System.map-rpi*
 fi
 [ "${kernel_old}" != "${kernel_new}" ] && echo "${kernel_new}" > .rpi_kernel
 
