@@ -18,7 +18,7 @@ if [ -z "$TARGET" ]; then
 fi
 
 # Build our packages first
-local ret=0
+ret=0
 for A in lua-lunix lua-cqueues-pushy rameplayer-webui rameplayer-utils rameplayer-backend rameplayer; do
 	(cd ramepkg/$A ; abuild -r 2>&1) || ret=1
 done
@@ -34,14 +34,8 @@ kernel_old="$(cat .rpi_kernel 2>/dev/null)"
 export features_dir=/etc/mkinitfs/features.d/
 
 mkdir -p "$TARGET"/boot "$TARGET"/overlays "$TARGET"/cache
-[ ! -e $TARGET/boot/vmlinuz-rpi  ] && update-kernel -f rpi  -a armhf -p rameplayer-keys -F "$INITRAMFS_FEATURES" "$TARGET"/boot
-[ ! -e $TARGET/boot/vmlinuz-rpi2 ] && update-kernel -f rpi2 -a armhf -p rameplayer-keys -F "$INITRAMFS_FEATURES" "$TARGET"/boot
-if [ -e "$TARGET"/boot/overlays ]; then
-	# move files to correct directories
-	mv -f "$TARGET"/boot/*.dtb "$TARGET"
-	mv -f "$TARGET"/boot/overlays/*.dtb* "$TARGET"/overlays
-	rm -rf "$TARGET"/boot/overlays "$TARGET"/boot/System.map-rpi*
-fi
+[ ! -e $TARGET/boot/vmlinuz-rpi  ] && update-kernel -f rpi  -a armhf --media -p rameplayer-keys -F "$INITRAMFS_FEATURES" "$TARGET"
+[ ! -e $TARGET/boot/vmlinuz-rpi2 ] && update-kernel -f rpi2 -a armhf --media -p rameplayer-keys -F "$INITRAMFS_FEATURES" "$TARGET"
 [ "${kernel_old}" != "${kernel_new}" ] && echo "${kernel_new}" > .rpi_kernel
 
 # apk repository
@@ -61,7 +55,7 @@ abuild-sign "$TARGET"/apks/armhf/APKINDEX.tar.gz \
 touch "$TARGET"/apks/.boot_repository
 
 # RPi firmware and boot config
-local OLD_FW="$(cat .rpi_firmware_commitid 2>/dev/null)"
+OLD_FW="$(cat .rpi_firmware_commitid 2>/dev/null)"
 for fw in bootcode.bin fixup.dat start.elf ; do
 	if [ "${RPI_FIRMWARE_COMMITID}" != "${OLD_FW}" -o ! -e $TARGET/$fw ]; then
 		curl --remote-time https://raw.githubusercontent.com/raspberrypi/firmware/${RPI_FIRMWARE_COMMITID}/boot/${fw} \
@@ -124,7 +118,7 @@ file_update "$TARGET"/fbsplash.ppm  convert logo_fb0.png ppm:-
 file_update "$TARGET"/fbsplash1.ppm convert logo_fb1.png ppm:-
 
 for dts in dts/*.dts; do
-	local overlay=$(basename $dts .dts)
+	overlay=$(basename $dts .dts)
 	file_update "$TARGET"/overlays/$overlay.dtb \
 		dtc -@ -I dts -O dtb dts/$overlay.dts
 done
