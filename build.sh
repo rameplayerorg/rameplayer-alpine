@@ -36,6 +36,7 @@ export features_dir=/etc/mkinitfs/features.d/
 mkdir -p "$TARGET"/boot "$TARGET"/overlays "$TARGET"/cache
 [ ! -e $TARGET/boot/vmlinuz-rpi  ] && update-kernel -f rpi  -a armhf --media -p rameplayer-keys -F "$INITRAMFS_FEATURES" "$TARGET"
 [ ! -e $TARGET/boot/vmlinuz-rpi2 ] && update-kernel -f rpi2 -a armhf --media -p rameplayer-keys -F "$INITRAMFS_FEATURES" "$TARGET"
+rm -rf "$TARGET"/boot/System.map*
 [ "${kernel_old}" != "${kernel_new}" ] && echo "${kernel_new}" > .rpi_kernel
 
 # apk repository
