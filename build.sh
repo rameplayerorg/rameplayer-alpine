@@ -9,7 +9,7 @@
 # packages: kmod imagemagick alpine-sdk fakeroot
 # other:    sudo ln -s $PWD/rame.modules /etc/mkinitfs/features.d/
 
-RPI_FIRMWARE_COMMITID=611d798ada7d36e4f4252459d55da5713b24853f
+RPI_FIRMWARE_COMMITID=debe2d29bbc3df84f74672fae47f3a52fd0d40f1
 INITRAMFS_FEATURES="base bootchart ext4 keymap kms mmc rame squashfs usb"
 TARGET="$1"
 if [ -z "$TARGET" ]; then
@@ -119,7 +119,7 @@ file_update "$TARGET"/fbsplash1.ppm convert logo_fb1.png ppm:-
 
 for dts in dts/*.dts; do
 	overlay=$(basename $dts .dts)
-	file_update "$TARGET"/overlays/$overlay.dtb \
+	file_update "$TARGET"/overlays/${overlay%-overlay}.dtbo \
 		dtc -@ -I dts -O dtb dts/$overlay.dts
 done
 
