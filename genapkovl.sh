@@ -19,7 +19,7 @@ makefile() {
 	chmod "$PERMS" "$FILENAME"
 }
 
-local tmp="$(mktemp -d)"
+tmp="$(mktemp -d)"
 trap cleanup EXIT
 
 mkdir -p "$tmp"/etc
