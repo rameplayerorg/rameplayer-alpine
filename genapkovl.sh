@@ -72,6 +72,7 @@ makefile root:root 0644 "$tmp"/etc/rame-upgrade.conf <<EOF
 FIRMWARE_URI="rsync://dev.rameplayer.org/rameplayer-master/"
 EOF
 ln -sf /usr/share/zoneinfo/Europe/Helsinki "$tmp"/etc/localtime
+echo "Europe/Helsinki" > "$tmp"/etc/timezone
 
 mkdir -p "$tmp"/etc/network
 makefile root:root 0644 "$tmp"/etc/network/interfaces <<EOF
