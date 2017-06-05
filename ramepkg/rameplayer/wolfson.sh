@@ -15,7 +15,7 @@ $master
 cset name='HPOUT1L Input 1' AIF1RX1
 cset name='HPOUT1L Input 1 Volume' $vol
 cset name='HPOUT1L Input 2' ${none:-AIF1RX2}
-cset name='HPOUT1L Input 2 Volume' ${mono:-0}
+cset name='HPOUT1L Input 2 Volume' $vol
 cset name='HPOUT1L Input 3' 'Noise Generator'
 
 cset name='HPOUT1R Input 1' AIF1RX2
