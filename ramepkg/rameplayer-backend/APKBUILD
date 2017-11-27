@@ -2,7 +2,7 @@
 pkgname=rameplayer-backend
 pkgver=1.1.11
 #_commitid=
-pkgrel=0
+pkgrel=1
 pkgdesc="Rameplayer Backend"
 url="https://github.com/rameplayerorg/rameplayer-backend"
 arch="noarch"
@@ -10,7 +10,7 @@ license="GPLv2"
 depends="
 	lua5.3 lua5.3-cjson lua5.3-penlight lua5.3-posix lua5.3-cqueues lua5.3-curl
 	lua5.3-ldbus lua5.3-socket lua5.3-evdev lua5.3-cqueues-pushy lua5.3-lunix
-	dbus omxplayer eudev ffmpeg rameplayer-utils fbida-fbi>=2.12
+	dbus busybox-extras omxplayer eudev ffmpeg rameplayer-utils fbida-fbi>=2.12
 	"
 makedepends=""
 install=""
@@ -35,6 +35,4 @@ package() {
 	install -m755 "$_srcdir"/plugins/*.lua "$pkgdir"/usr/share/$pkgname/plugins/
 }
 
-md5sums="2f94493c3fa978b2f4bc51c95cf2b5bc  rameplayer-backend-1.1.11.tar.gz"
-sha256sums="acf95d7d976822fc60a940994890a1c220f90b3a20867f32749fe6e67ffc5608  rameplayer-backend-1.1.11.tar.gz"
 sha512sums="6cf729565dac4c4a905adcda7419bcf82e36c2b867181597bfda60234dfb53be30f713abdd45f86d8eb01da362a39b8881541440f6ca96437dd7f6e5c105bee4  rameplayer-backend-1.1.11.tar.gz"

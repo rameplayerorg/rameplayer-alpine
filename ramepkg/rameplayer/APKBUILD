@@ -1,12 +1,12 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer
 pkgver=1.0.6
-pkgrel=0
+pkgrel=1
 pkgdesc="Rameplayer configuration"
 url="https://github.com/rameplayerorg/rameplayer-alpine"
 arch="noarch"
 license="GPLv2"
-depends="tzdata openssh rsync dhcpcd eudev dbus
+depends="tzdata openssh rsync dhcpcd eudev dbus busybox
 	raspberrypi alsa-utils ffmpeg omxplayer lua-cqueues-pushy
 	rameplayer-webui rameplayer-backend
 	"

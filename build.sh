@@ -9,7 +9,7 @@
 # packages: kmod imagemagick alpine-sdk fakeroot
 # other:    sudo ln -s $PWD/rame.modules /etc/mkinitfs/features.d/
 
-RPI_FIRMWARE_COMMITID=debe2d29bbc3df84f74672fae47f3a52fd0d40f1
+RPI_FIRMWARE_COMMITID=27993e5acf86d1629428ed1a601e86ecd5e5a1df
 INITRAMFS_FEATURES="base bootchart ext4 keymap kms mmc rame squashfs usb"
 TARGET="$1"
 if [ -z "$TARGET" ]; then
@@ -19,7 +19,7 @@ fi
 
 # Build our packages first
 ret=0
-for A in lua-lunix lua-cqueues-pushy rameplayer-webui rameplayer-utils rameplayer-backend rameplayer; do
+for A in rameplayer-keys rameplayer-webui rameplayer-utils rameplayer-backend rameplayer; do
 	(cd ramepkg/$A ; abuild -r 2>&1) || ret=1
 done
 [ "$ret" == 0 ] || return $ret
@@ -42,7 +42,7 @@ rm -rf "$TARGET"/boot/System.map*
 # apk repository
 mkdir -p "$TARGET"/apks/armhf
 apk fetch --purge --output "$TARGET"/apks/armhf --recursive \
-	alpine-base acct evtest strace tmux rameplayer \
+	alpine-base acct busybox evtest strace tmux rameplayer musl-dbg omxplayer-dbg \
 	&& \
 apk index \
 	--description "Rameplayer build $(date)" \
