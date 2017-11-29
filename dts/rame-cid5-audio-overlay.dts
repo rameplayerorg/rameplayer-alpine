@@ -1,14 +1,19 @@
 // RamePlayer CID5: Cirrus Logic Audio Card (WM5102,WM8804)
 //
 // This is almost exact copy of:
-// https://github.com/HiassofT/rpi-linux/blob/cirrus-4.1.y/arch/arm/boot/dts/overlays/rpi-cirrus-wm5102-overlay.dts
+// https://github.com/raspberrypi/linux/blob/rpi-4.9.y/arch/arm/boot/dts/overlays/rpi-cirrus-wm5102-overlay.dts
 // (Differences: rame cid node & changed wlf,reset-gpio for wlf,wm8804)
 
 /dts-v1/;
 /plugin/;
 
+// Macros replaced with raw values
+//#include <dt-bindings/pinctrl/bcm2835.h>
+//#include <dt-bindings/gpio/gpio.h>
+//#include <dt-bindings/mfd/arizona.h>
+
 / {
-	compatible = "brcm,bcm2708";
+	compatible = "brcm,bcm2835", "brcm,bcm2708", "brcm,bcm2709";
 
 	// component id
 	fragment@0 {
@@ -18,70 +23,45 @@
 				cid5 = "audio";
 			};
 		}; // overlay
-	}; // fragment
+	};
 
 	fragment@1 {
-		target-path = "/";
-		__overlay__ {
-			aliases {
-				ldo0 = &ldo0;
-				ldo1 = &ldo1;
-			};
-		};
-	};
-
-	fragment@2 {
-		target = <&sound>;  // /sound
-		__overlay__ {
-			compatible = "wlf,rpi-wm5102";
-			i2s-controller = <&i2s>;
-			status = "okay";
-		};
-	};
-
-	fragment@3 {
 		target = <&i2s>;  // /soc/i2s
 		__overlay__ {
 			status = "okay";
 		};
 	};
 
-	fragment@4 {
+	fragment@2 {
 		target = <&gpio>;  // /soc/gpio
 		__overlay__ {
 			wlf_pins: wlf_pins {
 				//brcm,pins = <17 22 27 8>; // original
 				brcm,pins = <17 22 27 5>; // changed PIN
-				brcm,function = <1 1 0 1>;
+				brcm,function = <
+					1 // BCM2835_FSEL_GPIO_OUT
+					1 // BCM2835_FSEL_GPIO_OUT
+					0 // BCM2835_FSEL_GPIO_IN
+					1 // BCM2835_FSEL_GPIO_OUT
+				>;
 			};
 		};
 	};
 
-	fragment@5 {
-		target-path = "/soc";
+	fragment@3 {
+		target-path = "/";
 		__overlay__ {
-
-			ldo1: ldo1 {
+			rpi_cirrus_reg_1v8: rpi_cirrus_reg_1v8 {
 				compatible = "regulator-fixed";
-				regulator-name = "DC_5V";
-				regulator-min-microvolt = <5000000>;
-				regulator-max-microvolt = <5000000>;
-				enable-active-high;
-				regulator-always-on;
-			};
-
-			ldo0: ldo0 {
-				compatible = "regulator-fixed";
-				regulator-name = "DC_1V8";
+				regulator-name = "RPi-Cirrus 1v8";
 				regulator-min-microvolt = <1800000>;
 				regulator-max-microvolt = <1800000>;
-				enable-active-high;
 				regulator-always-on;
 			};
 		};
 	};
 
-	fragment@6 {
+	fragment@4 {
 		target = <&spi0>;  // /soc/spi0
 		__overlay__ {
 			#address-cells = <1>;
@@ -99,41 +79,65 @@
 			wm5102@1{
 				compatible = "wlf,wm5102";
 				reg = <1>;
-				#address-cells = <1>;
-				#size-cells = <0>;
+
 				spi-max-frequency = <500000>;
 
 				interrupt-parent = <&gpio>;
 				interrupts = <27 8>;
+				interrupt-controller;
+				#interrupt-cells = <2>;
 
-				LDOVDD-supply = <&ldo0>;
-				AVDD-supply = <&ldo0>;
-				DBVDD1-supply = <&ldo0>;
-				DBVDD2-supply = <&ldo0>;
-				DBVDD3-supply = <&ldo0>;
-				CPVDD-supply = <&ldo0>;
-				SPKVDDL-supply = <&ldo1>;
-				SPKVDDR-supply = <&ldo1>;
+				gpio-controller;
+				#gpio-cells = <2>;
 
+				LDOVDD-supply = <&rpi_cirrus_reg_1v8>;
+				AVDD-supply = <&rpi_cirrus_reg_1v8>;
+				DBVDD1-supply = <&rpi_cirrus_reg_1v8>;
+				DBVDD2-supply = <&vdd_3v3_reg>;
+				DBVDD3-supply = <&vdd_3v3_reg>;
+				CPVDD-supply = <&rpi_cirrus_reg_1v8>;
+				SPKVDDL-supply = <&vdd_5v0_reg>;
+				SPKVDDR-supply = <&vdd_5v0_reg>;
+				DCVDD-supply = <&arizona_ldo1>;
+
+				//wlf,reset = <&gpio 17 GPIO_ACTIVE_HIGH>;
 				wlf,reset = <&gpio 17 0>;
+				//wlf,ldoena = <&gpio 22 GPIO_ACTIVE_HIGH>;
 				wlf,ldoena = <&gpio 22 0>;
 				wlf,gpio-defaults = <
-					0x000fffff
-					0x000fffff
-					0x000fffff
-					0x000fffff
-					0x000fffff
+					0xffffffff // ARIZONA_GP_DEFAULT
+					0xffffffff // ARIZONA_GP_DEFAULT
+					0xffffffff // ARIZONA_GP_DEFAULT
+					0xffffffff // ARIZONA_GP_DEFAULT
+					0xffffffff // ARIZONA_GP_DEFAULT
 				>;
 				wlf,micd-configs = <0 1 0>;
-				wlf,dmic-ref = <0 2 0 0>;
-				wlf,clk32k-src = <3>;
-				wlf,inmode = <0 2 1 0>;
+				wlf,dmic-ref = <
+					0 // ARIZONA_DMIC_MICVDD
+					2 // ARIZONA_DMIC_MICBIAS2
+					0 // ARIZONA_DMIC_MICVDD
+					0 // ARIZONA_DMIC_MICVDD
+				>;
+				wlf,inmode = <
+					0 // ARIZONA_INMODE_DIFF
+					2 // ARIZONA_INMODE_DMIC
+					1 // ARIZONA_INMODE_SE
+					0 // ARIZONA_INMODE_DIFF
+				>;
 				status = "okay";
+
+				arizona_ldo1: ldo1 {
+					regulator-name = "LDO1";
+					// default constraints as in
+					// arizona-ldo1.c
+					regulator-min-microvolt = <1200000>;
+					regulator-max-microvolt = <1800000>;
+				};
 			};
 		};
 	};
 
-	fragment@7 {
+	fragment@5 {
 		target = <&i2c1>;  // /soc/i2c1
 		__overlay__ {
 			status = "okay";
@@ -141,15 +145,23 @@
 			#size-cells = <0>;
 
 			wm8804@3b {
-				#sound-dai-cells = <0>;
 				compatible = "wlf,wm8804";
 				reg = <0x3b>;
 				status = "okay";
-				PVDD-supply = <&ldo0>;
-				DVDD-supply = <&ldo0>;
-				//wlf,reset-gpio = <&gpio 8 0>; // original
+				PVDD-supply = <&vdd_3v3_reg>;
+				DVDD-supply = <&vdd_3v3_reg>;
+				//wlf,reset-gpio = <&gpio 8 GPIO_ACTIVE_HIGH>; // original
 				wlf,reset-gpio = <&gpio 5 0>; // changed PIN
 			};
+		};
+	};
+
+	fragment@6 {
+		target = <&sound>;  // /sound
+		__overlay__ {
+			compatible = "wlf,rpi-cirrus";
+			i2s-controller = <&i2s>;
+			status = "okay";
 		};
 	};
 };

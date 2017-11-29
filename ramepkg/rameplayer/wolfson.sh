@@ -8,7 +8,7 @@ cset name='Speaker Digital Volume' 100"
 [ "$1" == "mono" ] && { vol=29; none=""; master=""; }
 [ "$1" == "stereo" ] && { master=""; }
 
-amixer -q -Dhw:sndrpiwsp --stdin <<EOF
+amixer -q -Dhw:RPiCirrus --stdin <<EOF
 cset name='Noise Generator Volume' 0
 $master
 
