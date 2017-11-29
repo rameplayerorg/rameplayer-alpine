@@ -8,6 +8,7 @@ arch="noarch"
 license="GPLv2"
 depends="tzdata openssh rsync dhcpcd eudev dbus busybox
 	raspberrypi alsa-utils ffmpeg omxplayer lua-cqueues-pushy
+	nginx nginx-mod-rtmp
 	rameplayer-webui rameplayer-backend
 	"
 replaces="alpine-baselayout alpine-conf busybox-initscripts dhcpcd openssh openrc"
@@ -22,7 +23,8 @@ source="interfaces
 	ntp.conf
 	ntpd.confd
 	rpi.conf
-	httpd.confd
+	nginx.conf
+	stat.xsl
 	lbu.conf
 	rame-upgrade-firmware
 	rame.list.lbu
@@ -57,7 +59,8 @@ package() {
 	install -D -m644 ntp.conf "$pkgdir"/etc/ntp.conf
 	install -D -m644 ntpd.confd "$pkgdir"/etc/conf.d/ntpd
 	install -D -m644 rpi.conf "$pkgdir"/etc/modprobe.d/rpi.conf
-	install -D -m644 httpd.confd "$pkgdir"/etc/conf.d/httpd
+	install -D -m644 nginx.conf "$pkgdir"/etc/nginx/nginx.conf
+	install -D -m644 stat.xsl "$pkgdir"/etc/nginx/rtmp/stat.xsl
 	install -D -m644 lbu.conf "$pkgdir"/etc/lbu/lbu.conf
 	install -D -m755 rame-upgrade-firmware "$pkgdir"/sbin/rame-upgrade-firmware
 	install -D -m644 sshd_config "$pkgdir"/etc/ssh/sshd_config
@@ -74,7 +77,7 @@ package() {
 
 	rc_add hwdrivers default
 	rc_add ntpd default
-	rc_add httpd default
+	rc_add nginx default
 	rc_add cqpushy default
 	rc_add sshd default
 	rc_add networking default
@@ -101,14 +104,15 @@ cffbb809df40d478c611b48f0f6fb87eb389113e317e1fffc3e9f388548f21cf9a43afa54dcc27bd
 3fa49a3bd0dcb13e526a634f605d967f78527470233f456fd7ba83d8e72f9c471de398a83e9ab84879d0cd468346feba9f9a3c2f7df708a9b18d4b8729aeae07  ntp.conf
 0b8f266bee4d941c67564abbeb26c627bc1d8418b1b4a07a8c549dfc615e406f54750247c05b9d4dbe197682496d11934404d4b2095c4d96f0af4ce248a6ed3b  ntpd.confd
 dfd53b941eaab640b391cd293bfc1f70326de93f95eb9ad481ab6caa9e15789adddf99a72c93285faf46c6cff8da8e7f518f1f6da5d53d37019f019e087256b5  rpi.conf
-d3e72cd7f7d2b40cbfe10a0b847bda9960339a5bc450feba503d986b19dd247f5fc7972c1951cfde5e3357f5cefb2921f05291243d98e7373fea0cd9c3d4d3fa  httpd.confd
+d9d0da8eae89bd75a4d8e4e238083346d4d75bd826efc7b1d320177544a21e13406f88387d1d55f4f2a80de8a9471134fcbe028c817d477ca6cb545b68e7d3b9  nginx.conf
+13c6a307230d224614bbe11601c9b08c6f9e1e4db43a78f08d90a1fa4c4216eadee94a256d78a33dc6a264078330ad51af32bb98951c8d3c1dc963a890c9388c  stat.xsl
 ea91cccbc8b91b7e57ebbb587fdca35497ddfbce4c9ec1404ec5277cc35615874dbb182df3f9ef63b19ced969c34fa80d3e4cf0f404bdc920e05a650cf499b52  lbu.conf
 e332b2f87988a07aaaaf088a0e69c2179a88a67788cf4ba3a78fa2f7f7dd7252763322c9a88c6b5f7555c3044674fcbffa35a0e97e417fe249759ce6a0ce1b76  rame-upgrade-firmware
 20a54accffe6b259164d9ad10ff707cf20f28403df9a516f7dd89ad1a86043991c18678cf3aae3abbd1481b19a5474b74587f74b1560df81eeafa88b185cbb46  rame.list.lbu
 881e5473265cb325a2a7c3d7679a4d9a2eaf0052742d682cdece05c9d884f319b33236725a22e5a71d8b4b06006ac2befa4639e72d87da5a0eef5e46a598aff6  sshd_config
 897aa5eaf26a778de18c21a5213ae488cea1ff460010b53cbead9f689131e5ebd3f116e70f54774647186210dea1eff9ca1e8f9bfbc515fe7e6bc96f7b615e33  sysctl.conf
 a58c7398894ecabe3b56d842748620c429e324d14a1252de55664f98153afab9a1283378ccaf0ddd91eebc5c612523b47982af5ec1f683b6ea0560b0d1f2950e  wolfson.rules
-ffc6f398ac388511868d035418989197e1a50d20077532b271e222dd2c47f382ac1fc5ffc596c178b4e9df354c5a53406c40839cc52cef85c5a8363adfffed44  wolfson.sh
+e0c0495dc0ef0982933667d483e0175fe4d7cc5fd9322b169ab3a5ced2a4835f3d7d9730393dc67a8b133cd5debce06cc923dbc67fe55f58a5283f10cc7039dd  wolfson.sh
 214c6e19f28923bc38d284ffb9e788cb7255c670ff1a89b3e19dc76f8d357711dacc30898a7284c6223a59cb031384d84151b6ffdd5fb150ca73f486753deb55  udhcpd.conf
 8e926df006786348955893ec34eeab1da0c2bfb024fb0b04366b040ea9a1ac315d76b959a718cd30f68098cc43610231c4c766a246b566a1546d8f415cd4984e  udhcpd.confd
 e6a86ece1cc2d6996009a0c90a9d37f6af49f7bfc90feea4bada5d5fd30c1517627e2a83df0978a397d2e834cf2c5605ae7a0884bc8a71332bc7ad2282d57ceb  rame-eth0

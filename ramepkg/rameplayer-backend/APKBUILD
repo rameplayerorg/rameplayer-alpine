@@ -1,6 +1,6 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer-backend
-pkgver=1.1.11
+pkgver=1.2.0_beta1
 #_commitid=
 pkgrel=1
 pkgdesc="Rameplayer Backend"
@@ -10,13 +10,15 @@ license="GPLv2"
 depends="
 	lua5.3 lua5.3-cjson lua5.3-penlight lua5.3-posix lua5.3-cqueues lua5.3-curl
 	lua5.3-ldbus lua5.3-socket lua5.3-evdev lua5.3-cqueues-pushy lua5.3-lunix
-	dbus busybox-extras omxplayer eudev ffmpeg rameplayer-utils fbida-fbi>=2.12
+	bmd-tools dbus busybox-extras omxplayer eudev ffmpeg rameplayer-utils fbida-fbi>=2.12
 	"
 makedepends=""
 install=""
 subpackages=""
 
 source="$pkgname-$pkgver.tar.gz::https://github.com/rameplayerorg/rameplayer-backend/archive/${_commitid:-v$pkgver}.tar.gz
+	ramerecorder.rules
+	ramerecorder.udev
 	"
 _srcdir="$srcdir"/$pkgname-${_commitid:-$pkgver}
 
@@ -33,6 +35,11 @@ package() {
 	install -m755 "$_srcdir"/*.lua "$pkgdir"/usr/share/$pkgname/
 	install -m755 "$_srcdir"/rame/*.lua "$pkgdir"/usr/share/$pkgname/rame/
 	install -m755 "$_srcdir"/plugins/*.lua "$pkgdir"/usr/share/$pkgname/plugins/
+
+	install -D -m 644 "$srcdir"/ramerecorder.rules "$pkgdir"/lib/udev/rules.d/90-ramerecorder.rules
+	install -D "$srcdir"/ramerecorder.udev "$pkgdir"/lib/udev/ramerecorder
 }
 
-sha512sums="6cf729565dac4c4a905adcda7419bcf82e36c2b867181597bfda60234dfb53be30f713abdd45f86d8eb01da362a39b8881541440f6ca96437dd7f6e5c105bee4  rameplayer-backend-1.1.11.tar.gz"
+sha512sums="9ea1d48340fe7aa6c11c60ecb33852afe2dd6e759539e49dee4e84bfae214cffc21c576e818fcfa1566174027ed533d7ffbede882d218e04d9a62c968dd57291  rameplayer-backend-1.2.0_beta1.tar.gz
+e8d7f8f391ae4de545e5ce3a8455f7ed37ea53bc0a11bcdc7a9bf6840ed5f235f473eba12adef5a50b352197ee9af534871019f93fcb617657a9c3af666fe3d7  ramerecorder.rules
+487279badd11d0312c5923c9c4e00eac510877024188772f112d3126b84e2e4842e8be1ba0184322932d03de5db9ce6f71778f3b0ca6bf688f153780a4d106b6  ramerecorder.udev"

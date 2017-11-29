@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# when initializing, rameplayer-backend checks existence of $FLAGFILE and
+# then listens to notifications via REST API
+
+while [ -e /run/openrc/rc.starting ]; do
+	sleep 1
+done
+
+FLAGFILE="/var/run/ramerecorder"
+BASEURL="http://localhost:8000/recorder"
+
+if [ "$ACTION" = add ]; then
+	touch $FLAGFILE
+	wget -q --spider "$BASEURL/enable"
+elif [ "$ACTION" = remove ]; then
+	rm -f $FLAGFILE
+	wget -q --spider "$BASEURL/disable"
+else
+	exit 0
+fi

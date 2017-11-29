@@ -1,0 +1,6 @@
+SUBSYSTEM=="usb" \
+  ATTRS{busnum}=="1" ATTRS{idVendor}=="1edb" ATTRS{idProduct}=="bd43" \
+  ENV{DEVTYPE}=="usb_device" ACTION=="add" RUN+="ramerecorder"
+
+SUBSYSTEM=="usb" \
+  ACTION=="remove" ENV{ID_MODEL}=="H.264_Pro_Recorder" RUN+="ramerecorder"
