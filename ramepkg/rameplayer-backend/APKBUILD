@@ -1,8 +1,8 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer-backend
-pkgver=1.2.0_beta1
+pkgver=1.2.0
 #_commitid=
-pkgrel=1
+pkgrel=0
 pkgdesc="Rameplayer Backend"
 url="https://github.com/rameplayerorg/rameplayer-backend"
 arch="noarch"
@@ -40,6 +40,6 @@ package() {
 	install -D "$srcdir"/ramerecorder.udev "$pkgdir"/lib/udev/ramerecorder
 }
 
-sha512sums="9ea1d48340fe7aa6c11c60ecb33852afe2dd6e759539e49dee4e84bfae214cffc21c576e818fcfa1566174027ed533d7ffbede882d218e04d9a62c968dd57291  rameplayer-backend-1.2.0_beta1.tar.gz
+sha512sums="917ef9cd70a4c4e32de38fab247dbe411395b2c722927a99c1ff90d6ad33a8a38acd5a7e8b664ee951e134da675ac20ec9e07703600299e59c8d1f18adf1f775  rameplayer-backend-1.2.0.tar.gz
 e8d7f8f391ae4de545e5ce3a8455f7ed37ea53bc0a11bcdc7a9bf6840ed5f235f473eba12adef5a50b352197ee9af534871019f93fcb617657a9c3af666fe3d7  ramerecorder.rules
 487279badd11d0312c5923c9c4e00eac510877024188772f112d3126b84e2e4842e8be1ba0184322932d03de5db9ce6f71778f3b0ca6bf688f153780a4d106b6  ramerecorder.udev"
