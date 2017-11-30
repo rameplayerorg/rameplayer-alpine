@@ -1,2 +1,2 @@
-SUBSYSTEM=="sound", ACTION=="add|change", ATTRS{id}=="sndrpiwsp", \
+SUBSYSTEM=="sound", ACTION=="add|change", ATTRS{id}=="RPiCirrus", \
 	RUN+="/usr/libexec/wolfson/wolfson.sh"
