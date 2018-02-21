@@ -1,8 +1,8 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 _luaversions="5.2 5.3"
 pkgname=lua-cqueues-pushy
-pkgver=0.20170214
-_commitid=efc063e9527d4e3f5b98ed1447ddcec48e236efa
+pkgver=0.20180221
+_commitid=4599f3634d50c7eb2fba1257804fc4435b08afde
 pkgrel=0
 pkgdesc="Framework for logic control (based on cqueues)"
 url="https://github.com/rameplayerorg/lua-cqueues-pushy"
@@ -66,9 +66,5 @@ for _i in $_luaversions; do
 	eval "split_${_i/./_}() { _split $_i; }"
 done
 
-md5sums="62d3fa9ab114d7c0a63d5180b3518014  lua-cqueues-pushy-0.20170214.tar.gz
-f585d5983128ccb9b9d33a6019107158  cqpushy.initd"
-sha256sums="dd8a8fc3eb8b567b90c746cda414e820f735df73b3d2f5c1ca7aa4aa78adcb4c  lua-cqueues-pushy-0.20170214.tar.gz
-4ebdbd3299c4b18b7224edc202bd9a4d5a97f325a474ec222901dbedf7f3bc58  cqpushy.initd"
-sha512sums="9dbd5cfcd0a3132ef389a9a62a6b3946908a8942b53bfb0c0c3de48783a739d9040d057349018b8b406b2a5326c8363d352a170972c2062937d43db717b2931f  lua-cqueues-pushy-0.20170214.tar.gz
+sha512sums="941018eeb03f1250e32479e0c432c5d049a2fbac6fc3831b9f3b5634764e5d00ba64b5293f02625996a957cd36a83ccf2662a909c6898657d1cc8f4bd2e81f77  lua-cqueues-pushy-0.20180221.tar.gz
 9599db364c3a2e77a7fee61304182961cb6132ce9cb58e9b6837312f52a582e838fdb54eb932c3204b558e3db7228a0412870d0a02125d1017f3402155647bd0  cqpushy.initd"
