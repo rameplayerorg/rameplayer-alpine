@@ -3,4 +3,4 @@ SUBSYSTEM=="usb" \
   ENV{DEVTYPE}=="usb_device" ACTION=="add" RUN+="ramerecorder"
 
 SUBSYSTEM=="usb" \
-  ACTION=="remove" ENV{ID_MODEL}=="H.264_Pro_Recorder" RUN+="ramerecorder"
+  ACTION=="remove" ENV{ID_VENDOR_ID}=="1edb" ENV{ID_MODEL_ID}=="bd43" RUN+="ramerecorder"
