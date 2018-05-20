@@ -1,6 +1,6 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer-utils
-pkgver=0.7.3
+pkgver=0.7.4
 pkgrel=1
 pkgdesc="Rameplayer Backend"
 url="https://github.com/rameplayerorg/rameplayer-utils"
@@ -38,20 +38,8 @@ package() {
 	install -D "$srcdir"/rameclock-led.initd "$pkgdir"/etc/init.d/rameclock-led
 }
 
-md5sums="5a3af8a352757965b056625459d79a4d  rameplayer-utils-0.7.3.tar.gz
-6a73fb20aed4f4e3346764c761ac5b60  rameclock.rules
-4aae2e0e0d80cddab56a8e1b1214aecf  rameclock-button.udev
-49ba6a840878ed433506afc8a5d213fd  rameclock-button.initd
-463401e6f979ac67493cef173eee3756  rameclock-led.udev
-158ea3aa859045dc3824bb5012196515  rameclock-led.initd"
-sha256sums="36c107d8aa9de9d2f7a1332d710c060f6c31f71705cbdb19dfef5f39c5056723  rameplayer-utils-0.7.3.tar.gz
-6e55479cf400ac517b0ad876ab895ce94df004cb97c3df0362d1f4e94da42888  rameclock.rules
-2bfe3c87094a866c433d40d72833b8449ea179be5c6c8a114ee53c35b9828a53  rameclock-button.udev
-98825e8f04ab11448c05597283f4ed2708c61eabcdfe016be4798b28c073e473  rameclock-button.initd
-4ec7ad597f14dd57a4104fb132d99de203165d03307218af9d666989cd54f65e  rameclock-led.udev
-135e35c569e2d711c44f583a3f56d4d616ce73f4a85c5d4892d8e311542949a4  rameclock-led.initd"
-sha512sums="ce4f7552479b87b2bd56f595340c7112001fcf4a216ad5066c1c789fed8acff227822cfb4ae43caff9d7b7708f60ae572e3218cd98edb8fb40a4b73be2d3da34  rameplayer-utils-0.7.3.tar.gz
-fe5f4792b54f36eb54ed69873a186e9783532fe8be15fe2f02c567fd031f13fa9480bbb346f7c9f9b93d3c74c4219a52402768d1724d948b5b8c2d467eab28f5  rameclock.rules
+sha512sums="1eb89921f3b20333e014dfcf3140c24ec22d7ef5c92896618e635f44721fb5af5e171b7a670ac1d53380b43554020a248d08a34fb36d8838d70939bda93913d5  rameplayer-utils-0.7.4.tar.gz
+40020da3df20ae1ca15826f8779199e1342534650c16adfc7c9fe5b98cb170853ec6ab9c6b1385cdbd0e16ffe4d5a0b34bbb7c3c4857ec11e9f9dec732dfb703  rameclock.rules
 05f0c7171070c36b096ba331bd3b969cbc6728fd1e9f7ccb68cd6b2f92ab3d819bb72aeb70f0d200a356180804b9c409fe6c8ecca83ecb5c7205518c58ee1897  rameclock-button.udev
 07da0037a31b19cbf3fae1558bb8ac45928546d734c0ebf83500c83ce5b96c2864ac6892376caa7171f205c666e7281c1de5b6809b6a4bd5d2e7fbf1b291b572  rameclock-button.initd
 09ebe6facc4f7bca6e74f4a61a4d93b6d0f9cb06d36f74e5723d548f674e5550a11991499789463ee9b724ff8bc4d4b9956938e32a47d29dc1294538b8a7fb2c  rameclock-led.udev
