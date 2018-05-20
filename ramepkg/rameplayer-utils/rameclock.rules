@@ -9,5 +9,5 @@ SUBSYSTEM=="input" KERNEL=="event*" \
   RUN+="rameclock-button"
 
 SUBSYSTEM=="leds" \
-  ENV{DEVPATH}=="/devices/platform/soc/soc:leds/leds/rame:ext3" \
+  ENV{DEVPATH}=="/devices/platform/leds/leds/rame:ext3" \
   ACTION=="add" RUN+="rameclock-led"
