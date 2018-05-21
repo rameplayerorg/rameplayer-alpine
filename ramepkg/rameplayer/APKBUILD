@@ -1,6 +1,6 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer
-pkgver=1.0.8
+pkgver=1.0.9
 pkgrel=0
 pkgdesc="Rameplayer configuration"
 url="https://github.com/rameplayerorg/rameplayer-alpine"
@@ -9,6 +9,7 @@ license="GPLv2"
 depends="tzdata openssh rsync dhcpcd eudev dbus busybox
 	raspberrypi alsa-utils ffmpeg omxplayer lua-cqueues-pushy
 	nginx nginx-mod-rtmp
+	fuse-exfat ntfs-3g util-linux
 	rameplayer-webui rameplayer-backend
 	"
 replaces="alpine-baselayout alpine-conf busybox-initscripts dhcpcd openssh openrc"
@@ -36,6 +37,7 @@ source="interfaces
 	udhcpd.confd
 	rame-eth0
 	rc.conf
+	mount.exfat
 	"
 
 prepare() {
@@ -71,6 +73,7 @@ package() {
 	install -D -m644 udhcpd.confd "$pkgdir"/etc/conf.d/udhcpd
 	install -D -m755 rame-eth0 "$pkgdir"/etc/init.d/rame-eth0
 	install -D -m755 rame.list.lbu "$pkgdir"/etc/apk/protected_paths.d/rame.list
+	install -D -m755 mount.exfat "$pkgdir"/sbin/mount.exfat
 
 	mkdir -p "$pkgdir"/etc/cqpushy/
 	ln -s /usr/share/rameplayer-backend/rameplayer.lua "$pkgdir"/etc/cqpushy/cqpushy.lua

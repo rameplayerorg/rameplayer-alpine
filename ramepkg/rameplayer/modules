@@ -2,4 +2,5 @@ af_packet
 i2c-bcm2708
 i2c-dev
 spi-bcm2835
+fuse
 #fbtft_device name=adafruit18 rotate=90
