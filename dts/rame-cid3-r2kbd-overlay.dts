@@ -2,11 +2,6 @@
 //
 // MCP23017 setup based on:
 // - https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=104638
-//
-// Linux kernel patches required for modules:
-// - gpio_mcp23s08: support for "microchip,pullups"
-// - rotary_encoder: Fix for EPROBE_DEFER handling & threaded IRQ patch
-//                   (for using GPIO expanders behind I2C or SPI bus).
 
 /dts-v1/;
 /plugin/;
@@ -66,6 +61,9 @@ B1...B7 = Buttons
 				compatible = "microchip,mcp23017";
 				reg = <0x20>;
 
+				pinctrl-names = "default";
+				pinctrl-0 = <&gpiom1_pullups>;
+
 				gpio-controller;
 				#gpio-cells = <2>;
 
@@ -77,9 +75,16 @@ B1...B7 = Buttons
 				#interrupt-cells=<2>;
 
 				microchip,irq-mirror; // IOCON,0x40
-				microchip,pullups=<0xffff>; // patched kernel required
 
 				status = "okay";
+
+				gpiom1_pullups: pinmux {
+					pins =	"gpio0", "gpio1", "gpio2", "gpio3",
+						"gpio4", "gpio5", "gpio6", "gpio7",
+						"gpio8", "gpio9", "gpio10", "gpio11",
+						"gpio12", "gpio13", "gpio14", "gpio15";
+					bias-pull-up;
+				};
 			}; // ramekbdio
 
 		}; // __overlay__
