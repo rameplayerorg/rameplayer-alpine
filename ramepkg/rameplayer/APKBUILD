@@ -1,7 +1,7 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer
-pkgver=1.0.9
-pkgrel=1
+pkgver=1.0.10
+pkgrel=0
 pkgdesc="Rameplayer configuration"
 url="https://github.com/rameplayerorg/rameplayer-alpine"
 arch="noarch"
@@ -9,7 +9,7 @@ license="GPLv2"
 depends="tzdata openssh rsync dhcpcd eudev dbus busybox
 	raspberrypi alsa-utils ffmpeg omxplayer lua-cqueues-pushy
 	nginx nginx-mod-rtmp
-	fuse-exfat ntfs-3g util-linux
+	fuse-exfat ntfs-3g util-linux dosfstools fuse-exfat-utils ntfs-3g-progs
 	rameplayer-webui rameplayer-backend
 	"
 replaces="alpine-baselayout alpine-conf busybox-initscripts dhcpcd openssh openrc"
