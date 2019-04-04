@@ -85,6 +85,7 @@ package() {
 	rc_add sshd default
 	rc_add networking default
 	rc_add dhcpcd default
+	rc_add hwclock default
 	rc_add devfs sysinit
 	rc_add dmesg sysinit
 	rc_add modloop sysinit
