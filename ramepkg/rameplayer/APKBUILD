@@ -35,6 +35,7 @@ source="interfaces
 	wolfson.sh
 	udhcpd.conf
 	udhcpd.confd
+	syslog.confd
 	rame-eth0
 	rc.conf
 	mount.exfat
@@ -71,6 +72,7 @@ package() {
 	install -D -m644 rc.conf "$pkgdir"/etc/rc.conf
 	install -D -m644 udhcpd.conf "$pkgdir"/etc/udhcpd.conf
 	install -D -m644 udhcpd.confd "$pkgdir"/etc/conf.d/udhcpd
+	install -D -m644 syslog.confd "$pkgdir"/etc/conf.d/syslog
 	install -D -m755 rame-eth0 "$pkgdir"/etc/init.d/rame-eth0
 	install -D -m755 rame.list.lbu "$pkgdir"/etc/apk/protected_paths.d/rame.list
 	install -D -m755 mount.exfat "$pkgdir"/sbin/mount.exfat
