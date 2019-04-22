@@ -11,8 +11,3 @@ for i in 1 2 3; do
 done
 
 IN_HOTPLUG=1 rc-service rameclock-led start
-
-# need to restart this if it has already started:
-if [ -e /run/openrc/started/rameclock-button.input.event0 ]; then
-	rc-service rameclock-button.input.event0 restart
-fi

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-while [ -e /run/openrc/rc.starting ]; do
+while [ ! -e /run/openrc/started/mosquitto ]; do
 	sleep 1
 done
 
