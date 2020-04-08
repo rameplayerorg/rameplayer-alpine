@@ -1,6 +1,6 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer
-pkgver=1.0.16
+pkgver=1.0.17
 pkgrel=0
 pkgdesc="Rameplayer configuration"
 url="https://github.com/rameplayerorg/rameplayer-alpine"
