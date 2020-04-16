@@ -9,7 +9,7 @@
 # packages: kmod imagemagick alpine-sdk fakeroot
 # other:    sudo ln -s $PWD/rame.modules /etc/mkinitfs/features.d/
 
-RPI_FIRMWARE_COMMITID=f0694b1ec66a88abab334c460f212ebf19ab7cd8
+RPI_FIRMWARE_COMMITID=11a76e07ef1b6304a378c4ee3da200fe6facea46
 INITRAMFS_FEATURES="base bootchart ext4 keymap kms mmc rame squashfs usb"
 TARGET="$1"
 if [ -z "$TARGET" ]; then
