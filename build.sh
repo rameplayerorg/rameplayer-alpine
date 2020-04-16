@@ -27,7 +27,7 @@ done
 # Prepare kernels, initramfs, modloop and dtbs
 kernel_new="$(apk fetch --repositories-file $PWD/repositories --simulate linux-rpi linux-rpi2|sort -u)"
 kernel_old="$(cat .rpi_kernel 2>/dev/null)"
-[ "${kernel_old}" != "${kernel_new}" ] && rm -rf "$TARGET"/boot
+[ "${kernel_old}" != "${kernel_new}" ] && rm -rf "$TARGET"/boot "$TARGET"/overlays "$TARGET"/*.dtb
 
 # Ugly hack to fix mkinitfs using local filesystem features
 # instead of the package ones
