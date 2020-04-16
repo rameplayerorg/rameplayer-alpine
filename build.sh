@@ -37,6 +37,7 @@ mkdir -p "$TARGET"/boot "$TARGET"/overlays "$TARGET"/cache "$TARGET"/media
 [ ! -e $TARGET/boot/vmlinuz-rpi  ] && update-kernel --repositories-file $PWD/repositories -f rpi  -a armhf --media -p rameplayer-keys -F "$INITRAMFS_FEATURES" "$TARGET"
 [ ! -e $TARGET/boot/vmlinuz-rpi2 ] && update-kernel --repositories-file $PWD/repositories -f rpi2 -a armhf --media -p rameplayer-keys -F "$INITRAMFS_FEATURES" "$TARGET"
 rm -rf "$TARGET"/boot/System.map*
+chmod a+r "$TARGET"/boot/initramfs*
 [ "${kernel_old}" != "${kernel_new}" ] && echo "${kernel_new}" > .rpi_kernel
 
 # apk repository
