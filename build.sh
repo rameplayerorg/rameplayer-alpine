@@ -25,7 +25,7 @@ done
 [ "$ret" == 0 ] || return $ret
 
 # Prepare kernels, initramfs, modloop and dtbs
-kernel_new="$(apk fetch --simulate linux-rpi linux-rpi2|sort -u)"
+kernel_new="$(apk fetch --repositories-file $PWD/repositories --simulate linux-rpi linux-rpi2|sort -u)"
 kernel_old="$(cat .rpi_kernel 2>/dev/null)"
 [ "${kernel_old}" != "${kernel_new}" ] && rm -rf "$TARGET"/boot
 
@@ -34,14 +34,14 @@ kernel_old="$(cat .rpi_kernel 2>/dev/null)"
 export features_dir=/etc/mkinitfs/features.d/
 
 mkdir -p "$TARGET"/boot "$TARGET"/overlays "$TARGET"/cache "$TARGET"/media
-[ ! -e $TARGET/boot/vmlinuz-rpi  ] && update-kernel -f rpi  -a armhf --media -p rameplayer-keys -F "$INITRAMFS_FEATURES" "$TARGET"
-[ ! -e $TARGET/boot/vmlinuz-rpi2 ] && update-kernel -f rpi2 -a armhf --media -p rameplayer-keys -F "$INITRAMFS_FEATURES" "$TARGET"
+[ ! -e $TARGET/boot/vmlinuz-rpi  ] && update-kernel --repositories-file $PWD/repositories -f rpi  -a armhf --media -p rameplayer-keys -F "$INITRAMFS_FEATURES" "$TARGET"
+[ ! -e $TARGET/boot/vmlinuz-rpi2 ] && update-kernel --repositories-file $PWD/repositories -f rpi2 -a armhf --media -p rameplayer-keys -F "$INITRAMFS_FEATURES" "$TARGET"
 rm -rf "$TARGET"/boot/System.map*
 [ "${kernel_old}" != "${kernel_new}" ] && echo "${kernel_new}" > .rpi_kernel
 
 # apk repository
 mkdir -p "$TARGET"/apks/armhf
-apk fetch --purge --output "$TARGET"/apks/armhf --recursive \
+apk fetch --repositories-file $PWD/repositories --purge --output "$TARGET"/apks/armhf --recursive \
 	alpine-base acct busybox evtest strace tmux rameplayer musl-dbg omxplayer-dbg \
 	&& \
 apk index \
