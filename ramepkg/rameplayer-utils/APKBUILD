@@ -1,7 +1,7 @@
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=rameplayer-utils
-pkgver=0.7.7
-pkgrel=2
+pkgver=0.8.0
+pkgrel=0
 pkgdesc="Rameplayer Backend"
 url="https://github.com/rameplayerorg/rameplayer-utils"
 arch="armhf"
@@ -38,7 +38,7 @@ package() {
 	install -D "$srcdir"/rameclock-led.initd "$pkgdir"/etc/init.d/rameclock-led
 }
 
-sha512sums="731b6f8578d844d1ba9accee4c09570ab2e939220e5019e0019ef9e4298a210e8eba0bf2a03f151fb1b796b6a4a23f33ea309dbd8e6ea18d196898d861bc8981  rameplayer-utils-0.7.7.tar.gz
+sha512sums="9ee6b4ad201e860b71106775f0a6e4d12e98f7fde138d18ed6c131a78b0f4782b97a85b43a3ec88cd3905b96ad261b9b85b9ddeed8ea9ee7d7c2cfffa2a6aefe  rameplayer-utils-0.8.0.tar.gz
 40020da3df20ae1ca15826f8779199e1342534650c16adfc7c9fe5b98cb170853ec6ab9c6b1385cdbd0e16ffe4d5a0b34bbb7c3c4857ec11e9f9dec732dfb703  rameclock.rules
 dcd31efa262d461999d03408911bae9252a748c8b53cdf175c8d65c3e0bcc281422730a1641c744ac6e732ef542b95c3c7981e393d9edb8b7e0dc20be95f2b7b  rameclock-button.udev
 07da0037a31b19cbf3fae1558bb8ac45928546d734c0ebf83500c83ce5b96c2864ac6892376caa7171f205c666e7281c1de5b6809b6a4bd5d2e7fbf1b291b572  rameclock-button.initd
