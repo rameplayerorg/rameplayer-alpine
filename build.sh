@@ -19,7 +19,7 @@ fi
 
 # Build our packages first
 ret=0
-for A in rameplayer-keys rameplayer-webui rameplayer-utils rameplayer-backend rameplayer; do
+for A in lua-cqueues-pushy rameplayer-keys rameplayer-webui rameplayer-utils rameplayer-backend rameplayer; do
 	(cd ramepkg/$A ; abuild -r 2>&1) || ret=1
 done
 [ "$ret" == 0 ] || return $ret
