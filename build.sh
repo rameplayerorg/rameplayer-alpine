@@ -25,6 +25,7 @@ done
 [ "$ret" == 0 ] || return $ret
 
 # Prepare kernels, initramfs, modloop and dtbs
+apk update --repositories-file $PWD/repositories
 kernel_new="$(apk fetch --repositories-file $PWD/repositories --simulate linux-rpi linux-rpi2|sort -u)"
 kernel_old="$(cat .rpi_kernel 2>/dev/null)"
 [ "${kernel_old}" != "${kernel_new}" ] && rm -rf "$TARGET"/boot "$TARGET"/overlays "$TARGET"/*.dtb
